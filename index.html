@@ -1630,8 +1630,6 @@ const navGo = (pg, el) => go(pg, el);
 
 // PAKET_LİMİT zaten satır 828'de tanımlı
 
-// filtreleKayitlar alias (export için)
-const filtreleKayitlar = list => filtrele(list || KAYITLAR);
 
 // ── KATEGORİ YÖNETİMİ ─────────────────────────
 
@@ -2016,18 +2014,17 @@ async function ssKaydet() {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-(function(){
-  try {
-    if(typeof supabase === 'undefined') throw new Error('supabase CDN yüklenemedi');
-    const { createClient } = supabase;
-    sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-    _appBaslat();
-  } catch(e) {
-    console.error('Başlatma hatası:', e);
-    // sb null kalırsa bile auth ekranını göster
-    try { lsGizle(); authGoster(); } catch(e2){}
-  }
-})();
+try {
+  if(typeof supabase === 'undefined') throw new Error('CDN yuklenemedi');
+  sb = supabase.createClient(
+    'https://wxvbvxrjvktavshtdidu.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k'
+  );
+  _appBaslat();
+} catch(e) {
+  console.error('Baslama hatasi:', e);
+  try { lsGizle(); authGoster(); } catch(e2){}
+}
 </script>
 </body>
 </html>
