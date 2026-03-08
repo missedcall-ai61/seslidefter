@@ -885,58 +885,68 @@ const SIRI_CMDS=[
 // INIT — window.onload ile çalış (tüm fonksiyonlar hazır olduktan sonra)
 // ══════════════════════════════════════════════
 async function _appBaslat(){
-  console.log('🚀 _appBaslat başladı');
-  // 3 saniye sonra fallback buton göster
-  setTimeout(()=>{
-    const fb = document.getElementById('ls-fallback');
-    if(fb && document.getElementById('ls').style.display !== 'none') fb.style.display='block';
-  }, 3000);
+  // Her koşulda çalışacak güvenli fallback
+  function _girisCik(){ lsGizle(); authGoster(); }
+
   // Dark mode
   try {
     darkMode = localStorage.getItem('sd-dark') === '1';
     if(darkMode) document.documentElement.setAttribute('data-theme','dark');
   } catch(e){}
 
-  // Fallback — mutlaka login göster
-  const tmr = setTimeout(()=>{
-    console.warn('⏰ Timeout! lsGizle+authGoster çağrılıyor');
-    lsGizle(); authGoster();
-  }, 8000);
+  // 5sn'de hâlâ yüklenmezse direkt giriş ekranına at
+  const tmr = setTimeout(_girisCik, 5000);
 
-  await new Promise(r => setTimeout(r, 200));
-  console.log('🔌 Supabase getSession çağrılıyor...');
+  // 3sn'de fallback butonu göster
+  setTimeout(()=>{
+    try {
+      const fb = document.getElementById('ls-fallback');
+      const ls = document.getElementById('ls');
+      if(fb && ls && ls.style.display !== 'none') fb.style.display = 'block';
+    } catch(e){}
+  }, 3000);
+
   try {
-    const {data:{session}, error} = await sb.auth.getSession();
-    console.log('✅ getSession tamamlandı', {session: !!session, error});
+    const {data:{session}} = await sb.auth.getSession();
     clearTimeout(tmr);
-    if(session?.user){ USER=session.user; await init(); lsGizle(); }
-    else { lsGizle(); authGoster(); }
+    if(session?.user){
+      USER = session.user;
+      try { await init(); } catch(e){ console.error('init hatası:', e); }
+    }
+    lsGizle();
+    if(!session?.user) authGoster();
   } catch(e) {
     clearTimeout(tmr);
-    console.error('❌ Auth error:', e);
-    lsGizle();
-    authGoster();
+    console.error('getSession hatası:', e);
+    _girisCik();
   }
 
-  sb.auth.onAuthStateChange(async(event, session)=>{
-    if(event==='PASSWORD_RECOVERY'){
-      lsGizle();
-      document.getElementById('auth').style.display='none';
-      document.getElementById('sifre-sifirla-ekran').style.display='flex';
-      return;
-    }
-    if(event==='SIGNED_IN' && session?.user){
-      // Şifre sıfırlama ekranı açıksa geçme
-      const ss = document.getElementById('sifre-sifirla-ekran');
-      if(ss && ss.style.display==='flex') return;
-      USER=session.user; await init(); authGizle(); lsGizle();
-    }
-    else if(event==='SIGNED_OUT'){
-      USER=null; KAYITLAR=[]; ALACAKLAR=[]; VERECEKLER=[];
-      document.getElementById('sifre-sifirla-ekran').style.display='none';
-      authGoster();
-    }
-  });
+  // Auth state dinle
+  try {
+    sb.auth.onAuthStateChange(async(event, session)=>{
+      if(event==='PASSWORD_RECOVERY'){
+        lsGizle();
+        const auth = document.getElementById('auth');
+        const ss = document.getElementById('sifre-sifirla-ekran');
+        if(auth) auth.style.display='none';
+        if(ss) ss.style.display='flex';
+        return;
+      }
+      if(event==='SIGNED_IN' && session?.user){
+        const ss = document.getElementById('sifre-sifirla-ekran');
+        if(ss && ss.style.display==='flex') return;
+        USER = session.user;
+        try { await init(); } catch(e){ console.error('init hatası:', e); }
+        authGizle(); lsGizle();
+      }
+      else if(event==='SIGNED_OUT'){
+        USER=null; KAYITLAR=[]; ALACAKLAR=[]; VERECEKLER=[];
+        const ss = document.getElementById('sifre-sifirla-ekran');
+        if(ss) ss.style.display='none';
+        authGoster();
+      }
+    });
+  } catch(e){ console.error('onAuthStateChange hatası:', e); }
 }
 
 // Sayfa tamamen yüklenince başlat
@@ -945,7 +955,7 @@ async function _appBaslat(){
 async function init(){
   await profilYukle();
   await verileriYukle();
-  rAna();
+  go('ana');        // sayfayı aktif et
   vadeBildirim();
   rSiri();
 }
@@ -1534,7 +1544,7 @@ function go(pg,el){
   document.getElementById('pg-'+pg)?.classList.add('on');
   if(el)el.classList.add('on');
   document.querySelectorAll(`[data-pg="${pg}"]`).forEach(x=>x.classList.add('on'));
-  document.getElementById('scroll').scrollTop=0;
+  const _s=document.getElementById('scroll'); if(_s)_s.scrollTop=0;
   if(pg==='ana')rAna();
   if(pg==='kayitlar')rKayitlar();
   if(pg==='alacak')rAlacak();
@@ -2007,17 +2017,18 @@ async function ssKaydet() {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-// Supabase yüklendi — şimdi init et
-try {
-  const { createClient } = supabase;
-  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-  console.log('✅ Supabase hazır');
-  _appBaslat();
-} catch(e) {
-  console.error('❌ Supabase init hatası:', e);
-  lsGizle();
-  authGoster();
-}
+(function(){
+  try {
+    if(typeof supabase === 'undefined') throw new Error('supabase CDN yüklenemedi');
+    const { createClient } = supabase;
+    sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    _appBaslat();
+  } catch(e) {
+    console.error('Başlatma hatası:', e);
+    // sb null kalırsa bile auth ekranını göster
+    try { lsGizle(); authGoster(); } catch(e2){}
+  }
+})();
 </script>
 </body>
 </html>
