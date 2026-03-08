@@ -1385,20 +1385,27 @@ async function kayitKaydet(){
   lb(true);
   if(aktifTur==='alacak'){
     const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,created_at:new Date().toISOString()};
+    console.log('Alacak insert:', y);
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
-    if(error){toast(error.message,'err');lb(false);return;}
+    console.log('Alacak result:', {data,error});
+    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     if(data)ALACAKLAR.unshift(data[0]);
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('🤝 Alacak eklendi!','ok');
   }else if(aktifTur==='verecek'){
     const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,created_at:new Date().toISOString()};
+    console.log('Verecek insert:', y);
     const{data,error}=await sb.from('verecekler').insert([y]).select();
-    if(error){toast(error.message,'err');lb(false);return;}
+    console.log('Verecek result:', {data,error});
+    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     if(data)VERECEKLER.unshift(data[0]);
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
   }else{
-    const y={tur:aktifTur,tutar,aciklama,kisi,kategori:secilenKat||null,tarih:new Date().toISOString(),user_id:USER.id};
+    const tarihStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const y={tur:aktifTur,tutar,aciklama,kisi,kategori:secilenKat||null,tarih:tarihStr,user_id:USER.id};
+    console.log('Kayit insert:', y);
     const{data,error}=await sb.from('kayitlar').insert([y]).select();
-    if(error){toast(error.message,'err');lb(false);return;}
+    console.log('Kayit result:', {data,error});
+    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     if(data)KAYITLAR.unshift(data[0]);
     closeM('m-kayit');formTemizle();rAna();
     toast(`${aktifTur==='gelir'?'💵':'💸'} ₺${f(tutar)} kaydedildi!`,'ok');
@@ -1805,7 +1812,7 @@ async function sesIsle(metin) {
     return;
   }
   if (tutar > 0) {
-    const yeni={tur,tutar,aciklama:metin,kisi,kategori:kat,tarih:new Date().toISOString(),user_id:USER.id};
+    const yeni={tur,tutar,aciklama:metin,kisi,kategori:kat,tarih:new Date().toISOString().split('T')[0],user_id:USER.id};
     const{data,error}=await sb.from('kayitlar').insert([yeni]).select();
     if(error){toast('⚠️ Kayıt eklenemedi: '+error.message,'err');return;}
     if(data) KAYITLAR.unshift(data[0]);
