@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SesliDefter — Konuş, Kaydet</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ee;
+  --card: #ffffff;
+  --card2: #faf9f6;
+  --border: #e8e4dc;
+  --ink: #1a1814;
+  --ink2: #3d3a34;
+  --muted: #9b9488;
+  --green: #1a7a4a;
+  --green-l: #e8f5ee;
+  --green-m: #c3e8d3;
+  --red: #c0392b;
+  --red-l: #fdecea;
+  --red-m: #f5c6c2;
+  --amber: #b45309;
+  --amber-l: #fef3c7;
+  --blue: #1d4ed8;
+  --blue-l: #eff6ff;
+  --radius: 18px;
+  --shadow: 0 2px 16px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); }
+body { font-family: 'Outfit', sans-serif; color: var(--ink); display: flex; flex-direction: column; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 18px;
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 1px 0 var(--border);
+}
+.tb-brand { display: flex; align-items: center; gap: 9px; }
+.tb-logo-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, #1a7a4a, #2ecc71);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; box-shadow: 0 2px 8px rgba(26,122,74,.3);
+}
+.tb-logo-text { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; color: var(--ink); }
+.tb-logo-text span { color: var(--green); }
+.tb-right { display: flex; align-items: center; gap: 8px; }
+.tb-plan { background: var(--amber-l); color: var(--amber); font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 20px; }
+.tb-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+
+/* ── SCROLL ── */
+.scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+
+/* ── BOTTOM NAV ── */
+.bnav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--card); border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around;
+  padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,.06);
+}
+.bni { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 14px; border-radius: 10px; cursor: pointer; min-width: 56px; transition: all .18s; }
+.bni-ico { font-size: 22px; line-height: 1; }
+.bni-lbl { font-size: 10px; font-weight: 500; color: var(--muted); }
+.bni.on .bni-lbl { color: var(--green); font-weight: 600; }
+.bni.on .bni-ico { filter: drop-shadow(0 0 4px rgba(26,122,74,.4)); }
+
+/* ── PAGE ── */
+.pg { display: none; }
+.pg.on { display: block; }
+
+/* ── ANA SAYFA ── */
+.ana-header {
+  background: linear-gradient(160deg, #1a7a4a 0%, #145f38 100%);
+  padding: 22px 18px 70px;
+  position: relative; overflow: hidden;
+}
+.ana-header::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.ana-header::after {
+  content: ''; position: absolute; bottom: -60px; left: -30px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+}
+.ana-greet { font-size: 13px; color: rgba(255,255,255,.7); font-weight: 500; margin-bottom: 4px; }
+.ana-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 18px; line-height: 1.2; }
+.ana-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 1; }
+.ana-kpi {
+  background: rgba(255,255,255,.12); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.18); border-radius: 14px; padding: 14px;
+}
+.ana-kpi-l { font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500; margin-bottom: 4px; }
+.ana-kpi-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #fff; }
+.ana-kpi-d { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 2px; }
+
+/* ── SES BUTONU ── */
+.ses-wrap {
+  margin: -46px 18px 0; position: relative; z-index: 10; margin-bottom: 16px;
+}
+.ses-card {
+  background: var(--card); border-radius: 22px;
+  box-shadow: var(--shadow-lg); padding: 22px 20px;
+  border: 1px solid var(--border);
+}
+.ses-card-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; text-align: center; }
+.ses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.ses-btn {
+  border: none; border-radius: 14px; padding: 16px 12px;
+  cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  transition: all .18s; position: relative; overflow: hidden;
+}
+.ses-btn:active { transform: scale(.96); }
+.ses-btn-ico { font-size: 26px; }
+.ses-btn.gelir { background: var(--green-l); color: var(--green); border: 1.5px solid var(--green-m); }
+.ses-btn.gider { background: var(--red-l); color: var(--red); border: 1.5px solid var(--red-m); }
+.ses-btn.alacak { background: var(--amber-l); color: var(--amber); border: 1.5px solid #fde68a; }
+.ses-btn.ozet { background: var(--blue-l); color: var(--blue); border: 1.5px solid #bfdbfe; }
+.ses-mic-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, #1a7a4a, #2ecc71);
+  color: #fff; font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(26,122,74,.35);
+  transition: all .2s;
+}
+.ses-mic-btn:active { transform: scale(.97); }
+.ses-mic-btn.dinliyor {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  box-shadow: 0 4px 20px rgba(192,57,43,.35);
+  animation: mic-pulse 1.2s infinite;
+}
+@keyframes mic-pulse { 0%,100%{box-shadow:0 4px 20px rgba(192,57,43,.35)} 50%{box-shadow:0 4px 32px rgba(192,57,43,.6)} }
+.ses-mic-wave { display: flex; align-items: center; gap: 3px; height: 20px; }
+.ses-mic-bar { width: 3px; background: rgba(255,255,255,.8); border-radius: 99px; animation: wave 1s ease-in-out infinite; }
+.ses-mic-bar:nth-child(1){height:6px;animation-delay:0s}
+.ses-mic-bar:nth-child(2){height:14px;animation-delay:.15s}
+.ses-mic-bar:nth-child(3){height:20px;animation-delay:.3s}
+.ses-mic-bar:nth-child(4){height:12px;animation-delay:.45s}
+.ses-mic-bar:nth-child(5){height:8px;animation-delay:.6s}
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
+
+/* ── DEMO KOMUT ── */
+.demo-cmds { display: flex; gap: 7px; overflow-x: auto; padding: 0 0 4px; margin-bottom: 0; scrollbar-width: none; }
+.demo-cmds::-webkit-scrollbar { display: none; }
+.demo-cmd {
+  flex-shrink: 0; padding: 7px 13px; border-radius: 20px;
+  background: var(--card2); border: 1px solid var(--border);
+  font-size: 12px; color: var(--ink2); cursor: pointer;
+  font-weight: 500; transition: all .18s; white-space: nowrap;
+}
+.demo-cmd:active { background: var(--green-l); border-color: var(--green-m); color: var(--green); }
+
+/* ── BÖLÜM BAŞLIĞI ── */
+.sec-hdr { display: flex; align-items: center; justify-content: space-between; padding: 0 18px; margin: 18px 0 10px; }
+.sec-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; }
+.sec-link { font-size: 13px; color: var(--green); font-weight: 600; cursor: pointer; }
+
+/* ── KAYIT KARTLARI ── */
+.kayit-list { padding: 0 18px; display: flex; flex-direction: column; gap: 8px; }
+.kayit-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 13px 14px; display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow); transition: all .18s;
+  animation: slideIn .3s ease both;
+}
+@keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.kayit-card:active { transform: scale(.99); }
+.kayit-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.kayit-ico.g { background: var(--green-l); }
+.kayit-ico.r { background: var(--red-l); }
+.kayit-ico.a { background: var(--amber-l); }
+.kayit-info { flex: 1; min-width: 0; }
+.kayit-desc { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kayit-meta { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.kayit-amt { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; flex-shrink: 0; }
+.kayit-amt.g { color: var(--green); }
+.kayit-amt.r { color: var(--red); }
+.kayit-amt.a { color: var(--amber); }
+
+/* ── ALACAK ── */
+.alacak-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px; margin: 0 18px 8px; box-shadow: var(--shadow);
+}
+.alacak-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.alacak-name { font-size: 15px; font-weight: 700; }
+.alacak-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.alacak-bot { display: flex; align-items: center; justify-content: space-between; }
+.alacak-amt { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; color: var(--green); }
+.alacak-vade { font-size: 11px; color: var(--muted); }
+.alacak-btn {
+  padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+  border: none; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .18s;
+}
+.alacak-btn:active { transform: scale(.96); }
+.alacak-tahsil { background: var(--green-l); color: var(--green); border: 1px solid var(--green-m); }
+.alacak-wa { background: #e7f9ee; color: #25d366; border: 1px solid #b7f0cd; }
+
+/* ── ÖZET ── */
+.ozet-kart {
+  margin: 0 18px 12px;
+  background: linear-gradient(135deg, #1a7a4a, #145f38);
+  border-radius: 18px; padding: 20px;
+  box-shadow: 0 6px 30px rgba(26,122,74,.25);
+}
+.ozet-kart-title { font-size: 12px; color: rgba(255,255,255,.7); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 16px; }
+.ozet-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.ozet-item { text-align: center; }
+.ozet-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 800; color: #fff; }
+.ozet-l { font-size: 11px; color: rgba(255,255,255,.65); margin-top: 2px; }
+.ozet-divider { width: 1px; background: rgba(255,255,255,.2); }
+.ozet-net { text-align: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.15); }
+.ozet-net-l { font-size: 12px; color: rgba(255,255,255,.7); }
+.ozet-net-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; color: #fff; margin-top: 3px; }
+
+/* ── HAFTALIK CHART ── */
+.chart-kart {
+  margin: 0 18px 12px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 18px; padding: 18px;
+  box-shadow: var(--shadow);
+}
+.chart-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+.chart-bars { display: flex; gap: 6px; align-items: flex-end; height: 80px; }
+.chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; gap: 2px; }
+.chart-bar { flex: 1; border-radius: 4px 4px 0 0; transition: height .6s cubic-bezier(.4,0,.2,1); min-height: 3px; }
+.chart-day { font-size: 9.5px; color: var(--muted); font-weight: 500; }
+.chart-legend { display: flex; gap: 12px; margin-bottom: 10px; }
+.chart-leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+.chart-leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+/* ── RAPOR SAYFASI ── */
+.rapor-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px; margin-bottom: 12px; }
+.r-kpi { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); }
+.r-kpi-ico { font-size: 20px; margin-bottom: 6px; }
+.r-kpi-l { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.r-kpi-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; margin: 3px 0; }
+.r-kpi-v.g { color: var(--green); }
+.r-kpi-v.r { color: var(--red); }
+.r-kpi-v.a { color: var(--amber); }
+.r-kpi-v.b { color: var(--blue); }
+
+/* ── MODAL ── */
+.mover {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 300;
+  display: flex; align-items: flex-end;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.mover.on { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--card); border-radius: 24px 24px 0 0; width: 100%;
+  max-height: 88vh; overflow-y: auto;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  transform: translateY(100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.15);
+}
+.mover.on .modal { transform: translateY(0); }
+.mhandle { width: 38px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 18px; }
+.mtitle { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.msub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+/* ── SES GİRİŞ ── */
+.ses-input-area {
+  background: var(--bg); border: 2px dashed var(--border); border-radius: 16px;
+  padding: 20px; text-align: center; margin-bottom: 16px;
+  transition: all .3s;
+}
+.ses-input-area.aktif { border-color: var(--green); background: var(--green-l); }
+.ses-input-txt { font-size: 16px; color: var(--muted); margin-bottom: 8px; }
+.ses-input-txt.aktif { color: var(--green); font-weight: 600; }
+.ses-input-result { font-size: 22px; font-weight: 700; color: var(--ink); min-height: 32px; }
+
+/* ── FORM ── */
+.fg { margin-bottom: 13px; }
+.fl { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; display: block; }
+.fi { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 13px 15px; color: var(--ink); font-family: 'Outfit', sans-serif; font-size: 15px; outline: none; transition: border-color .2s; width: 100%; }
+.fi:focus { border-color: var(--green); }
+.fsel { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 13px 15px; color: var(--ink); font-family: 'Outfit', sans-serif; font-size: 15px; outline: none; width: 100%; -webkit-appearance: none; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btns { display: flex; gap: 10px; margin-top: 18px; }
+.btn { padding: 14px; border-radius: 13px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; font-family: 'Outfit', sans-serif; transition: all .2s; flex: 1; text-align: center; }
+.btn:active { transform: scale(.97); }
+.btn-p { background: linear-gradient(135deg, #1a7a4a, #2ecc71); color: #fff; box-shadow: 0 4px 16px rgba(26,122,74,.3); }
+.btn-gh { background: var(--bg); color: var(--ink2); border: 1.5px solid var(--border); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+  z-index: 2000; background: var(--ink); color: #fff; border-radius: 13px;
+  padding: 12px 20px; font-size: 14px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2); white-space: nowrap;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.ok { background: var(--green); }
+.toast.err { background: var(--red); }
+
+/* ── BOŞLUK DOLDURMA ── */
+.ph { padding: 16px 18px; }
+
+/* ── DEMO BANNER ── */
+.demo-banner {
+  margin: 0 18px 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 16px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.demo-banner-ico { font-size: 28px; flex-shrink: 0; }
+.demo-banner-title { font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.demo-banner-sub { font-size: 11.5px; color: rgba(255,255,255,.8); }
+
+/* ── DESKTOP ── */
+@media(min-width:860px){
+  body { flex-direction: row; }
+  .dskbar { width: 260px; flex-shrink: 0; background: var(--card); border-right: 1px solid var(--border); display: flex; flex-direction: column; height: 100vh; }
+  .dsk-top { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
+  .dsk-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .dsk-logo-icon { width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg,#1a7a4a,#2ecc71); display: flex; align-items: center; justify-content: center; font-size: 19px; }
+  .dsk-logo-text { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; }
+  .dsk-logo-text span { color: var(--green); }
+  .dsk-user { display: flex; align-items: center; gap: 9px; background: var(--bg); border-radius: 11px; padding: 9px 12px; }
+  .dsk-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#667eea,#764ba2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .dsk-uname { font-size: 13px; font-weight: 600; }
+  .dsk-uplan { font-size: 11px; color: var(--muted); }
+  .dsk-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+  .dsk-sec { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 10px 10px 4px; font-weight: 600; }
+  .dsk-item { display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 10px; cursor: pointer; font-size: 13.5px; color: var(--ink2); transition: all .18s; border: 1px solid transparent; font-weight: 500; }
+  .dsk-item:hover { background: var(--bg); }
+  .dsk-item.on { background: var(--green-l); color: var(--green); border-color: var(--green-m); font-weight: 600; }
+  .dsk-siri { margin: 10px; background: linear-gradient(135deg,#1a7a4a,#2ecc71); border: none; border-radius: 12px; padding: 12px 16px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(26,122,74,.3); }
+  .dmain { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .bnav { display: none; }
+  .topbar { padding: 14px 24px; }
+  .scroll { padding-bottom: 20px; }
+  .pg { max-width: 600px; margin: 0 auto; padding: 0 8px; }
+}
+@media(max-width:859px){ .dskbar { display: none; } .dmain { flex: 1; display: flex; flex-direction: column; min-height: 0; } }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- Desktop Sidebar -->
+<div class="dskbar">
+  <div class="dsk-top">
+    <div class="dsk-brand">
+      <div class="dsk-logo-icon">📒</div>
+      <div class="dsk-logo-text">Sesli<span>Defter</span></div>
+    </div>
+    <div class="dsk-user">
+      <div class="dsk-avatar">A</div>
+      <div><div class="dsk-uname">Ahmet Usta</div><div class="dsk-uplan">🟡 Deneme Sürümü</div></div>
+    </div>
+  </div>
+  <div class="dsk-nav">
+    <div class="dsk-sec">Ana Menü</div>
+    <div class="dsk-item on" onclick="go('ana',this)">🏠 Ana Sayfa</div>
+    <div class="dsk-item" onclick="go('kayitlar',this)">📋 Kayıtlar</div>
+    <div class="dsk-item" onclick="go('alacak',this)">💰 Alacak / Verecek</div>
+    <div class="dsk-item" onclick="go('rapor',this)">📊 Raporlar</div>
+    <div class="dsk-sec">Araçlar</div>
+    <div class="dsk-item" onclick="go('siri',this)">🎙️ Siri & Ses Komutları</div>
+    <div class="dsk-item" onclick="go('ayar',this)">⚙️ Ayarlar</div>
+  </div>
+  <button class="dsk-siri" onclick="siriDemo()">
+    <div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.8);animation:p 1.5s infinite"></div>
+    Hey Siri — Dene
+  </button>
+</div>
+
+<div class="dmain">
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo-icon">📒</div>
+    <div class="tb-logo-text">Sesli<span>Defter</span></div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-plan">🟡 Demo</div>
+    <div class="tb-avatar">A</div>
+  </div>
+</div>
+
+<!-- Scroll -->
+<div class="scroll" id="scroll">
+
+<!-- ANA SAYFA -->
+<div class="pg on" id="pg-ana">
+
+  <div class="ana-header">
+    <div class="ana-greet">🌅 Günaydın, Ahmet Usta!</div>
+    <div class="ana-title">Bugün nasıl<br>gidiyor?</div>
+    <div class="ana-kpis">
+      <div class="ana-kpi">
+        <div class="ana-kpi-l">Bugünkü Gelir</div>
+        <div class="ana-kpi-v" id="h-gelir">₺2.450</div>
+        <div class="ana-kpi-d">↑ 3 işlem</div>
+      </div>
+      <div class="ana-kpi">
+        <div class="ana-kpi-l">Güncel Bakiye</div>
+        <div class="ana-kpi-v" id="h-bakiye">₺8.750</div>
+        <div class="ana-kpi-d">Kasa durumu</div>
+      </div>
+      <div class="ana-kpi">
+        <div class="ana-kpi-l">Açık Alacak</div>
+        <div class="ana-kpi-v" id="h-alacak">₺1.800</div>
+        <div class="ana-kpi-d">2 kişide</div>
+      </div>
+      <div class="ana-kpi">
+        <div class="ana-kpi-l">Bu Ay Kar</div>
+        <div class="ana-kpi-v" id="h-kar">₺14.200</div>
+        <div class="ana-kpi-d">↑ %18</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ses Kartı -->
+  <div class="ses-wrap">
+    <div class="ses-card">
+      <div class="ses-card-title">⚡ Hızlı Kayıt</div>
+      <div class="ses-grid">
+        <button class="ses-btn gelir" onclick="hizliKayit('gelir')">
+          <div class="ses-btn-ico">💵</div>
+          <span>Gelir Ekle</span>
+        </button>
+        <button class="ses-btn gider" onclick="hizliKayit('gider')">
+          <div class="ses-btn-ico">💸</div>
+          <span>Gider Ekle</span>
+        </button>
+        <button class="ses-btn alacak" onclick="hizliKayit('alacak')">
+          <div class="ses-btn-ico">🤝</div>
+          <span>Alacak Ekle</span>
+        </button>
+        <button class="ses-btn ozet" onclick="go('rapor')">
+          <div class="ses-btn-ico">📊</div>
+          <span>Özet Gör</span>
+        </button>
+      </div>
+      <button class="ses-mic-btn" id="mic-btn" onclick="toggleSes()">
+        <span id="mic-ico">🎙️</span>
+        <span id="mic-txt">Sesle Kayıt Ekle</span>
+        <div class="ses-mic-wave" id="mic-wave" style="display:none">
+          <div class="ses-mic-bar"></div><div class="ses-mic-bar"></div>
+          <div class="ses-mic-bar"></div><div class="ses-mic-bar"></div>
+          <div class="ses-mic-bar"></div>
+        </div>
+      </button>
+      <div style="margin-top:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:7px;font-weight:500">🎯 Demo komutlar dene:</div>
+        <div class="demo-cmds" id="demo-cmds">
+          <div class="demo-cmd" onclick="runDemo('500 lira aldım')">💵 "500 lira aldım"</div>
+          <div class="demo-cmd" onclick="runDemo('Ahmet\'e 300 borç verdim')">🤝 "Ahmet'e 300 borç"</div>
+          <div class="demo-cmd" onclick="runDemo('200 lira kira ödedim')">💸 "200 lira kira"</div>
+          <div class="demo-cmd" onclick="runDemo('bugün ne kazandım')">📊 "Bugün ne kazandım"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <div class="demo-banner-ico">🚀</div>
+    <div>
+      <div class="demo-banner-title">Bu bir demo!</div>
+      <div class="demo-banner-sub">Gerçek uygulamada ses tanıma aktif olacak. Şimdi demo komutları dene.</div>
+    </div>
+  </div>
+
+  <!-- Son Kayıtlar -->
+  <div class="sec-hdr">
+    <div class="sec-title">Son Kayıtlar</div>
+    <div class="sec-link" onclick="go('kayitlar')">Tümü →</div>
+  </div>
+  <div class="kayit-list" id="son-kayitlar"></div>
+  <div style="height:8px"></div>
+
+</div>
+
+<!-- KAYITLAR -->
+<div class="pg" id="pg-kayitlar">
+  <div class="ph" style="padding-bottom:12px">
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px">
+      <span style="color:var(--muted)">🔍</span>
+      <input style="background:none;border:none;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:var(--ink);flex:1" placeholder="Ara..." oninput="filterKayit(this.value)">
+    </div>
+  </div>
+  <div style="display:flex;gap:7px;padding:0 18px 12px;overflow-x:auto;scrollbar-width:none">
+    <div class="demo-cmd on" id="fil-hepsi" onclick="filterTur('')" style="background:var(--green-l);border-color:var(--green-m);color:var(--green)">Tümü</div>
+    <div class="demo-cmd" id="fil-gelir" onclick="filterTur('gelir')">💵 Gelir</div>
+    <div class="demo-cmd" id="fil-gider" onclick="filterTur('gider')">💸 Gider</div>
+    <div class="demo-cmd" id="fil-alacak" onclick="filterTur('alacak')">🤝 Alacak</div>
+  </div>
+  <div class="kayit-list" id="tum-kayitlar"></div>
+  <div style="height:8px"></div>
+</div>
+
+<!-- ALACAK / VERECEK -->
+<div class="pg" id="pg-alacak">
+  <div class="ph" style="padding-bottom:4px">
+    <div class="ozet-kart" style="margin:0 0 12px">
+      <div class="ozet-kart-title">Alacak / Verecek Özeti</div>
+      <div class="ozet-row">
+        <div class="ozet-item"><div class="ozet-v" id="av-alacak">₺1.800</div><div class="ozet-l">Alacak</div></div>
+        <div class="ozet-divider"></div>
+        <div class="ozet-item"><div class="ozet-v" id="av-verecek">₺650</div><div class="ozet-l">Verecek</div></div>
+        <div class="ozet-divider"></div>
+        <div class="ozet-item"><div class="ozet-v" id="av-net">₺1.150</div><div class="ozet-l">Net</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-hdr"><div class="sec-title">Alacaklarım</div><div class="sec-link" onclick="hizliKayit('alacak')">+ Ekle</div></div>
+  <div id="alacak-liste"></div>
+  <div class="sec-hdr" style="margin-top:8px"><div class="sec-title">Vereceklerim</div><div class="sec-link" onclick="hizliKayit('verecek')">+ Ekle</div></div>
+  <div id="verecek-liste"></div>
+  <div style="height:8px"></div>
+</div>
+
+<!-- RAPORLAR -->
+<div class="pg" id="pg-rapor">
+  <div class="ph" style="padding-bottom:0">
+    <div class="rapor-kpi">
+      <div class="r-kpi"><div class="r-kpi-ico">💵</div><div class="r-kpi-l">Bu Ay Gelir</div><div class="r-kpi-v g" id="r-gelir">₺24.500</div></div>
+      <div class="r-kpi"><div class="r-kpi-ico">💸</div><div class="r-kpi-l">Bu Ay Gider</div><div class="r-kpi-v r" id="r-gider">₺10.300</div></div>
+      <div class="r-kpi"><div class="r-kpi-ico">📈</div><div class="r-kpi-l">Net Kar</div><div class="r-kpi-v g" id="r-kar">₺14.200</div></div>
+      <div class="r-kpi"><div class="r-kpi-ico">🤝</div><div class="r-kpi-l">Açık Alacak</div><div class="r-kpi-v a" id="r-alacak">₺1.800</div></div>
+    </div>
+  </div>
+
+  <div class="chart-kart">
+    <div class="chart-title">Bu Hafta</div>
+    <div class="chart-legend">
+      <div class="chart-leg"><div class="chart-leg-dot" style="background:#1a7a4a"></div>Gelir</div>
+      <div class="chart-leg"><div class="chart-leg-dot" style="background:#e74c3c"></div>Gider</div>
+    </div>
+    <div class="chart-bars" id="chart-bars"></div>
+  </div>
+
+  <div class="chart-kart">
+    <div class="chart-title">📦 En Sık Kullanılan Kategoriler</div>
+    <div id="cat-chart" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+  </div>
+</div>
+
+<!-- SİRİ -->
+<div class="pg" id="pg-siri">
+  <div class="ph">
+    <div style="background:linear-gradient(135deg,#1a7a4a,#145f38);border-radius:18px;padding:20px;margin-bottom:14px">
+      <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px">🎙️ Siri ile Konuş</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:16px">"Hey Siri,<br>500 lira aldım"</div>
+      <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.6">
+        ✅ Kasaya eklendi: <strong>+₺500 Gelir</strong><br>
+        📊 Güncel bakiye: <strong>₺8.750</strong>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px">Kullanabileceğin komutlar:</div>
+    <div id="siri-cmds"></div>
+  </div>
+</div>
+
+<!-- AYARLAR -->
+<div class="pg" id="pg-ayar">
+  <div class="ph">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px">
+      <div style="padding:16px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">İşletme Bilgileri</div>
+        <div class="fg"><label class="fl">İşletme Adı</label><input class="fi" value="Ahmet Usta'nın Tamircisi"></div>
+        <div class="fg"><label class="fl">Sektör</label><select class="fsel"><option>Tamirci</option><option>Berber / Kuaför</option><option>Market</option><option>Kafe</option><option>Diğer</option></select></div>
+        <button class="btn btn-p" style="padding:12px">💾 Kaydet</button>
+      </div>
+      <div style="padding:16px">
+        <div style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Paket</div>
+        <div style="background:var(--amber-l);border:1px solid #fde68a;border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:14px;font-weight:700;color:var(--amber)">Deneme Sürümü</div><div style="font-size:12px;color:var(--muted);margin-top:2px">14 gün · 100 kayıt hakkı</div></div>
+          <button style="background:var(--green);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer" onclick="toast('💳 Ödeme sayfası yakında!','ok')">Yükselt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /scroll -->
+
+<!-- Bottom Nav -->
+<nav class="bnav">
+  <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
+  <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
+  <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
+  <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
+  <div class="bni" onclick="go('siri',this)" data-pg="siri"><div class="bni-ico">🎙️</div><div class="bni-lbl">Siri</div></div>
+</nav>
+
+</div><!-- /dmain -->
+
+<!-- MODAL: Hızlı Kayıt -->
+<div class="mover" id="m-kayit">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="m-kayit-title">💵 Gelir Ekle</div>
+    <div class="msub">Tutar ve açıklama gir, kasana düşsün.</div>
+
+    <div class="ses-input-area" id="ses-area">
+      <div class="ses-input-txt" id="ses-hint">🎙️ Sesle girmek için mikrofona bas</div>
+      <div class="ses-input-result" id="ses-result"></div>
+    </div>
+
+    <div class="fg"><label class="fl">Tutar ₺</label><input class="fi" type="number" id="k-tutar" placeholder="0,00" inputmode="decimal"></div>
+    <div class="fg"><label class="fl">Açıklama</label><input class="fi" id="k-aciklama" placeholder="Ne için?"></div>
+    <div class="fg" id="k-kisi-wrap" style="display:none"><label class="fl">Kişi Adı</label><input class="fi" id="k-kisi" placeholder="Ahmet Usta..."></div>
+    <div class="fg" id="k-vade-wrap" style="display:none"><label class="fl">Vade Tarihi</label><input class="fi" type="date" id="k-vade"></div>
+    <div class="btns">
+      <button class="btn btn-gh" onclick="closeM('m-kayit')">İptal</button>
+      <button class="btn btn-p" id="m-kayit-btn" onclick="kayitEkle()">💾 Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ses Demo -->
+<div class="mover" id="m-ses">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">🎙️ Ses Komutu Çalışıyor</div>
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:48px;margin-bottom:12px">🎙️</div>
+      <div style="background:var(--green-l);border:1px solid var(--green-m);border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:4px">Algılanan komut:</div>
+        <div style="font-size:20px;font-weight:700;color:var(--green)" id="ses-demo-txt">"500 lira aldım"</div>
+      </div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:8px">→ Kasaya ekleniyor...</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:p 1s infinite"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:p 1s .15s infinite"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:p 1s .3s infinite"></div>
+      </div>
+    </div>
+    <div id="ses-demo-result" style="display:none;background:var(--green-l);border:1px solid var(--green-m);border-radius:12px;padding:14px;text-align:center">
+      <div style="font-size:28px;margin-bottom:6px">✅</div>
+      <div style="font-size:16px;font-weight:700;color:var(--green)" id="ses-demo-result-txt">Kaydedildi!</div>
+    </div>
+  </div>
+</div>
+
+<style>@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}</style>
+
+<script>
+// ===== VERİ =====
+const RENKLER = ['#1a7a4a','#e74c3c','#b45309','#1d4ed8','#7c3aed','#0891b2'];
+let kayitlar = [
+  {id:1,tur:'gelir',tutar:850,aciklama:'Telefon tamiri',kisi:'',tarih:'Bugün 14:30'},
+  {id:2,tur:'gelir',tutar:1200,aciklama:'Tablet ekran değişimi',kisi:'',tarih:'Bugün 11:15'},
+  {id:3,tur:'gider',tutar:400,aciklama:'Malzeme alımı',kisi:'',tarih:'Bugün 09:00'},
+  {id:4,tur:'alacak',tutar:800,aciklama:'Bilgisayar tamiri',kisi:'Mehmet Bey',tarih:'Dün 16:20'},
+  {id:5,tur:'gelir',tutar:600,aciklama:'Klavye değişimi',kisi:'',tarih:'Dün 13:45'},
+  {id:6,tur:'gider',tutar:250,aciklama:'Kira ödemesi',kisi:'',tarih:'Dün 10:00'},
+  {id:7,tur:'alacak',tutar:1000,aciklama:'Samsung Galaxy tamir',kisi:'Ali Usta',tarih:'3 gün önce'},
+  {id:8,tur:'gider',tutar:180,aciklama:'Elektrik faturası',kisi:'',tarih:'4 gün önce'},
+];
+let alacaklar = [
+  {id:1,isim:'Mehmet Bey',tutar:800,aciklama:'Bilgisayar tamiri',vade:'15 Ocak'},
+  {id:2,isim:'Ali Usta',tutar:1000,aciklama:'Samsung Galaxy tamir',vade:'20 Ocak'},
+];
+let verecekler = [
+  {id:1,isim:'Tedarikçi A',tutar:450,aciklama:'Parça faturası',vade:'12 Ocak'},
+  {id:2,isim:'Elektrik İdare',tutar:200,aciklama:'Ocak faturası',vade:'25 Ocak'},
+];
+let aktifTur = '', filTur = '';
+
+const SIRI_CMDS = [
+  {cmd:'"500 lira aldım"',aciklama:'Kasaya gelir ekler'},
+  {cmd:'"Ahmet\'e 300 lira borç verdim"',aciklama:'Alacak kaydı açar'},
+  {cmd:'"200 lira kira ödedim"',aciklama:'Gider kaydı ekler'},
+  {cmd:'"Bugün ne kazandım?"',aciklama:'Günlük özet okur'},
+  {cmd:'"Bu ay ne kadar kazandım?"',aciklama:'Aylık özeti söyler'},
+  {cmd:'"Kasa bakiyesi nedir?"',aciklama:'Anlık bakiyeyi okur'},
+  {cmd:'"Alacaklarım var mı?"',aciklama:'Açık alacakları listeler'},
+];
+
+// ===== NAV =====
+function go(pg, el) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.bni,.dsk-item').forEach(x => x.classList.remove('on'));
+  document.getElementById('pg-'+pg).classList.add('on');
+  if(el) el.classList.add('on');
+  document.querySelectorAll(`[data-pg="${pg}"]`).forEach(x => x.classList.add('on'));
+  document.getElementById('scroll').scrollTop = 0;
+  if(pg==='ana') rAna();
+  if(pg==='kayitlar') rKayitlar();
+  if(pg==='alacak') rAlacak();
+  if(pg==='rapor') rRapor();
+  if(pg==='siri') rSiri();
+}
+
+// ===== RENDER ANA =====
+function rAna() {
+  const gel = kayitlar.filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
+  const gid = kayitlar.filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
+  const alac = alacaklar.reduce((a,b)=>a+b.tutar,0);
+  document.getElementById('h-gelir').textContent='₺'+f(gel);
+  document.getElementById('h-bakiye').textContent='₺'+f(gel-gid);
+  document.getElementById('h-alacak').textContent='₺'+f(alac);
+  const son = kayitlar.slice(-5).reverse();
+  document.getElementById('son-kayitlar').innerHTML = son.map(k => kayitKart(k)).join('');
+}
+
+function kayitKart(k) {
+  const ico = k.tur==='gelir'?'💵':k.tur==='gider'?'💸':'🤝';
+  const cls = k.tur==='gelir'?'g':k.tur==='gider'?'r':'a';
+  const prefix = k.tur==='gelir'?'+':k.tur==='gider'?'-':'';
+  return `<div class="kayit-card">
+    <div class="kayit-ico ${cls}">${ico}</div>
+    <div class="kayit-info">
+      <div class="kayit-desc">${k.aciklama}${k.kisi?` — <span style="color:var(--muted)">${k.kisi}</span>`:''}</div>
+      <div class="kayit-meta">${k.tarih}</div>
+    </div>
+    <div class="kayit-amt ${cls}">${prefix}₺${f(k.tutar)}</div>
+  </div>`;
+}
+
+// ===== RENDER KAYITLAR =====
+function rKayitlar() {
+  let list = filTur ? kayitlar.filter(k=>k.tur===filTur) : kayitlar;
+  document.getElementById('tum-kayitlar').innerHTML = [...list].reverse().map(k => kayitKart(k)).join('') || '<div style="text-align:center;padding:32px;color:var(--muted)">📭 Kayıt bulunamadı</div>';
+}
+
+function filterTur(tur) {
+  filTur = tur;
+  ['hepsi','gelir','gider','alacak'].forEach(id => {
+    const el = document.getElementById('fil-'+id);
+    if(!el) return;
+    const isOn = (tur===''&&id==='hepsi')||(tur===id);
+    el.style.background = isOn?'var(--green-l)':'';
+    el.style.borderColor = isOn?'var(--green-m)':'';
+    el.style.color = isOn?'var(--green)':'';
+  });
+  rKayitlar();
+}
+
+function filterKayit(q) {
+  const list = kayitlar.filter(k =>
+    k.aciklama.toLowerCase().includes(q.toLowerCase()) ||
+    (k.kisi||'').toLowerCase().includes(q.toLowerCase())
+  );
+  document.getElementById('tum-kayitlar').innerHTML = [...list].reverse().map(k => kayitKart(k)).join('') || '<div style="text-align:center;padding:32px;color:var(--muted)">🔍 Sonuç yok</div>';
+}
+
+// ===== RENDER ALACAK =====
+function rAlacak() {
+  const ta = alacaklar.reduce((a,b)=>a+b.tutar,0);
+  const tv = verecekler.reduce((a,b)=>a+b.tutar,0);
+  document.getElementById('av-alacak').textContent='₺'+f(ta);
+  document.getElementById('av-verecek').textContent='₺'+f(tv);
+  document.getElementById('av-net').textContent='₺'+f(ta-tv);
+
+  document.getElementById('alacak-liste').innerHTML = alacaklar.map(a => `
+    <div class="alacak-card">
+      <div class="alacak-top">
+        <div>
+          <div class="alacak-name">${a.isim}</div>
+          <div class="alacak-desc">${a.aciklama}</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);text-align:right">📅 ${a.vade}</div>
+      </div>
+      <div class="alacak-bot">
+        <div class="alacak-amt">₺${f(a.tutar)}</div>
+        <div style="display:flex;gap:6px">
+          <button class="alacak-btn alacak-wa" onclick="waHatirla('${a.isim}',${a.tutar})">💬 Hatırlat</button>
+          <button class="alacak-btn alacak-tahsil" onclick="tahsil(${a.id})">✓ Tahsil</button>
+        </div>
+      </div>
+    </div>
+  `).join('') || '<div style="text-align:center;padding:20px;color:var(--muted)">🎉 Alacak yok!</div>';
+
+  document.getElementById('verecek-liste').innerHTML = verecekler.map(v => `
+    <div class="alacak-card" style="border-color:var(--red-m)">
+      <div class="alacak-top">
+        <div>
+          <div class="alacak-name">${v.isim}</div>
+          <div class="alacak-desc">${v.aciklama}</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);text-align:right">📅 ${v.vade}</div>
+      </div>
+      <div class="alacak-bot">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--red)">₺${f(v.tutar)}</div>
+        <button class="alacak-btn" style="background:var(--red-l);color:var(--red);border:1px solid var(--red-m)" onclick="verecekOde(${v.id})">✓ Ödendi</button>
+      </div>
+    </div>
+  `).join('') || '<div style="text-align:center;padding:20px;color:var(--muted)">🎉 Verecek yok!</div>';
+}
+
+// ===== RENDER RAPOR =====
+function rRapor() {
+  const gel = kayitlar.filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
+  const gid = kayitlar.filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
+  const alac = alacaklar.reduce((a,b)=>a+b.tutar,0);
+  document.getElementById('r-gelir').textContent='₺'+f(gel);
+  document.getElementById('r-gider').textContent='₺'+f(gid);
+  document.getElementById('r-kar').textContent='₺'+f(gel-gid);
+  document.getElementById('r-alacak').textContent='₺'+f(alac);
+
+  // Haftalık chart
+  const days=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+  const gData=[2100,1800,3200,2600,2400,1900,2450];
+  const giData=[800,1200,600,900,1100,400,400];
+  const max=Math.max(...gData,...giData);
+  document.getElementById('chart-bars').innerHTML=days.map((d,i)=>`
+    <div class="chart-col">
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="height:${gData[i]/max*100}%;background:#1a7a4a;opacity:.85"></div>
+        <div class="chart-bar" style="height:${giData[i]/max*100}%;background:#e74c3c;opacity:.75"></div>
+      </div>
+      <div class="chart-day">${d}</div>
+    </div>
+  `).join('');
+
+  // Kategori chart
+  const cats=[{l:'Telefon Tamiri',v:45},{l:'Ekran Değişimi',v:30},{l:'Malzeme',v:15},{l:'Diğer',v:10}];
+  document.getElementById('cat-chart').innerHTML=cats.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="font-size:12px;color:var(--muted);width:110px;text-align:right;flex-shrink:0">${c.l}</div>
+      <div style="flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${c.v}%;background:${RENKLER[i]};border-radius:99px;transition:width .6s"></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:${RENKLER[i]};width:32px">%${c.v}</div>
+    </div>
+  `).join('');
+}
+
+// ===== RENDER SİRİ =====
+function rSiri() {
+  document.getElementById('siri-cmds').innerHTML = SIRI_CMDS.map(c => `
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="siriDemo('${c.cmd}')">
+      <div style="width:36px;height:36px;border-radius:10px;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🎙️</div>
+      <div>
+        <div style="font-size:13.5px;font-weight:600;color:var(--green);font-style:italic">${c.cmd}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${c.aciklama}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MODAL =====
+function openM(id) { document.getElementById(id).classList.add('on'); }
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+document.querySelectorAll('.mover').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('on'); }));
+
+// ===== HIZLI KAYIT =====
+const MODAL_CFG = {
+  gelir: { title:'💵 Gelir Ekle', btn:'💾 Kasaya Ekle', kisi:false, vade:false },
+  gider: { title:'💸 Gider Ekle', btn:'💾 Kasaya Ekle', kisi:false, vade:false },
+  alacak: { title:'🤝 Alacak Ekle', btn:'💾 Alacak Kaydet', kisi:true, vade:true },
+  verecek: { title:'📤 Verecek Ekle', btn:'💾 Verecek Kaydet', kisi:true, vade:true },
+};
+function hizliKayit(tur) {
+  aktifTur = tur;
+  const cfg = MODAL_CFG[tur];
+  document.getElementById('m-kayit-title').textContent = cfg.title;
+  document.getElementById('m-kayit-btn').textContent = cfg.btn;
+  document.getElementById('k-kisi-wrap').style.display = cfg.kisi?'block':'none';
+  document.getElementById('k-vade-wrap').style.display = cfg.vade?'block':'none';
+  document.getElementById('k-tutar').value = '';
+  document.getElementById('k-aciklama').value = '';
+  document.getElementById('ses-result').textContent = '';
+  openM('m-kayit');
+}
+
+function kayitEkle() {
+  const tutar = parseFloat(document.getElementById('k-tutar').value);
+  const aciklama = document.getElementById('k-aciklama').value.trim();
+  if(!tutar || !aciklama) { toast('Tutar ve açıklama zorunlu!', 'err'); return; }
+  const kisi = document.getElementById('k-kisi').value;
+  if(aktifTur==='alacak') {
+    alacaklar.push({id:Date.now(),isim:kisi||'Bilinmiyor',tutar,aciklama,vade:'30 gün'});
+  } else if(aktifTur==='verecek') {
+    verecekler.push({id:Date.now(),isim:kisi||'Bilinmiyor',tutar,aciklama,vade:'30 gün'});
+  } else {
+    kayitlar.push({id:Date.now(),tur:aktifTur,tutar,aciklama,kisi,tarih:'Şimdi'});
+  }
+  closeM('m-kayit');
+  rAna();
+  const emojis = {gelir:'💵',gider:'💸',alacak:'🤝',verecek:'📤'};
+  toast(`${emojis[aktifTur]} +₺${f(tutar)} kaydedildi!`, 'ok');
+}
+
+function tahsil(id) {
+  const a = alacaklar.find(x=>x.id===id);
+  if(a) {
+    kayitlar.push({id:Date.now(),tur:'gelir',tutar:a.tutar,aciklama:'Tahsilat — '+a.isim,kisi:a.isim,tarih:'Şimdi'});
+    alacaklar = alacaklar.filter(x=>x.id!==id);
+    rAlacak(); rAna();
+    toast('✅ Tahsil edildi, kasaya eklendi!', 'ok');
+  }
+}
+
+function verecekOde(id) {
+  const v = verecekler.find(x=>x.id===id);
+  if(v) {
+    kayitlar.push({id:Date.now(),tur:'gider',tutar:v.tutar,aciklama:'Ödeme — '+v.isim,kisi:v.isim,tarih:'Şimdi'});
+    verecekler = verecekler.filter(x=>x.id!==id);
+    rAlacak(); rAna();
+    toast('✅ Ödeme kaydedildi!', 'ok');
+  }
+}
+
+function waHatirla(isim, tutar) {
+  const msg = `Merhaba ${isim},\n\nSize olan ₺${f(tutar)} tutarındaki alacağımı hatırlatmak istedim.\n\nUygun bir zamanda iletişime geçerseniz sevinirim. 🙏`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ===== SES DEMOsu =====
+let sesAktif = false;
+function toggleSes() {
+  sesAktif = !sesAktif;
+  const btn = document.getElementById('mic-btn');
+  const ico = document.getElementById('mic-ico');
+  const txt = document.getElementById('mic-txt');
+  const wave = document.getElementById('mic-wave');
+  if(sesAktif) {
+    btn.classList.add('dinliyor');
+    ico.textContent = '⏹️'; txt.textContent = 'Dinleniyor...'; wave.style.display='flex';
+    setTimeout(()=>{ sesAktif=false; btn.classList.remove('dinliyor'); ico.textContent='🎙️'; txt.textContent='Sesle Kayıt Ekle'; wave.style.display='none'; toast('🎙️ Gerçek uygulamada ses tanıma aktif!', 'ok'); }, 3000);
+  } else {
+    btn.classList.remove('dinliyor');
+    ico.textContent = '🎙️'; txt.textContent = 'Sesle Kayıt Ekle'; wave.style.display='none';
+  }
+}
+
+function runDemo(cmd) {
+  document.getElementById('ses-demo-txt').textContent = `"${cmd}"`;
+  document.getElementById('ses-demo-result').style.display = 'none';
+  openM('m-ses');
+
+  // Parse komutu
+  let tutar = 0, aciklama = cmd, tur = 'gelir', kisi = '';
+  const tutarMatch = cmd.match(/(\d+)\s*lira/i);
+  if(tutarMatch) tutar = parseInt(tutarMatch[1]);
+  if(cmd.includes('ödedim')||cmd.includes('gider')) tur='gider';
+  if(cmd.includes('borç')||cmd.includes('alacak')) tur='alacak';
+  if(cmd.includes('kazandım')||cmd.includes('bakiye')||cmd.includes('ozet')) {
+    setTimeout(()=>{
+      closeM('m-ses');
+      go('rapor');
+    }, 2000);
+    return;
+  }
+  const kisiMatch = cmd.match(/^([A-ZÇĞİÖŞÜa-zçğışöşü]+)'[ae]/);
+  if(kisiMatch) kisi = kisiMatch[1];
+
+  setTimeout(()=>{
+    const rt = document.getElementById('ses-demo-result');
+    rt.style.display = 'block';
+    const emoji = tur==='gelir'?'💵':tur==='gider'?'💸':'🤝';
+    document.getElementById('ses-demo-result-txt').textContent = `${emoji} ₺${tutar} kaydedildi!`;
+    if(tutar>0) {
+      kayitlar.push({id:Date.now(),tur,tutar,aciklama:cmd,kisi,tarih:'Şimdi'});
+      rAna();
+    }
+    setTimeout(()=>{
+      closeM('m-ses');
+      toast(`${tur==='gelir'?'💵':tur==='gider'?'💸':'🤝'} ₺${tutar||0} ${tur} kaydedildi!`, 'ok');
+    }, 1500);
+  }, 2000);
+}
+
+function siriDemo(cmd) {
+  const c = typeof cmd === 'string' ? cmd : '"500 lira aldım"';
+  runDemo(c.replace(/"/g,''));
+}
+
+// ===== TOAST =====
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast '+type+' show';
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ===== UTILS =====
+const f = n => Number(n||0).toLocaleString('tr-TR');
+
+// ===== INIT =====
+rAna();
+</script>
+</body>
+</html>
