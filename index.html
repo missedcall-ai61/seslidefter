@@ -51,7 +51,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 @keyframes ldot{0%,80%,100%{transform:scale(0);opacity:.3}40%{transform:scale(1);opacity:1}}
 
 /* AUTH */
-#auth{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;overflow-y:auto;padding-top:var(--safe-t);display:none;}
+#auth{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;overflow-y:auto;padding-top:var(--safe-t);}
 .auth-hero{background:linear-gradient(160deg,#1a7a4a,#145f38);padding:48px 28px 40px;text-align:center;position:relative;overflow:hidden;}
 .auth-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06);}
 .auth-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;color:#fff;margin-bottom:6px;position:relative;z-index:1;}
@@ -890,8 +890,10 @@ async function _appBaslat(){
   } catch(e){}
 
   // 5 saniye içinde cevap gelmezse login göster
-  const tmr = setTimeout(()=>{ lsGizle(); authGoster(); }, 5000);
+  const tmr = setTimeout(()=>{ console.warn('Timeout — login göster'); lsGizle(); authGoster(); }, 8000);
 
+  // Supabase CDN tam yüklendiyse devam et
+  await new Promise(r => setTimeout(r, 100));
   try {
     const {data:{session}} = await sb.auth.getSession();
     clearTimeout(tmr);
@@ -1576,9 +1578,9 @@ function paketSec(paket){toast(`💳 ${paket==='esnaf'?'Esnaf':'Pro'} ödeme ent
 // ══════════════════════════════════════════════
 // AUTH UI
 // ══════════════════════════════════════════════
-function authGoster(){document.getElementById('auth').style.display='flex';}
+function authGoster(){const a=document.getElementById('auth');a.style.display='flex';a.style.flexDirection='column';}
 function authGizle(){document.getElementById('auth').style.display='none';}
-function lsGizle(){const el=document.getElementById('ls');el.classList.add('hide');setTimeout(()=>el.style.display='none',500);}
+function lsGizle(){const el=document.getElementById('ls');if(!el)return;el.classList.add('hide');setTimeout(()=>{el.style.display='none';},600);}
 
 // ══════════════════════════════════════════════
 // UTILS
