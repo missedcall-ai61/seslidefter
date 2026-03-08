@@ -880,26 +880,57 @@ const SIRI_CMDS=[
 ];
 
 // ══════════════════════════════════════════════
-// INIT
+// INIT — window.onload ile çalış (tüm fonksiyonlar hazır olduktan sonra)
 // ══════════════════════════════════════════════
-(async()=>{
-  // Dark mode
-  darkMode = localStorage.getItem('sd-dark')==='1';
-  if(darkMode) setDark(true);
+async function _appBaslat(){
+  // Dark mode (önce uygula)
+  try {
+    darkMode = localStorage.getItem('sd-dark') === '1';
+    if(darkMode) document.documentElement.setAttribute('data-theme','dark');
+  } catch(e){}
 
-  const tmr = setTimeout(()=>{lsGizle();authGoster();},5000);
-  try{
+  // 5 saniye içinde cevap gelmezse login göster
+  const tmr = setTimeout(()=>{ lsGizle(); authGoster(); }, 5000);
+
+  try {
     const {data:{session}} = await sb.auth.getSession();
     clearTimeout(tmr);
-    if(session?.user){USER=session.user;await init();lsGizle();}
-    else{lsGizle();authGoster();}
-  }catch(e){clearTimeout(tmr);lsGizle();authGoster();}
+    if(session?.user){ USER=session.user; await init(); lsGizle(); }
+    else { lsGizle(); authGoster(); }
+  } catch(e) {
+    clearTimeout(tmr);
+    console.error('Auth error:', e);
+    lsGizle();
+    authGoster();
+  }
 
-  sb.auth.onAuthStateChange(async(event,session)=>{
-    if(event==='SIGNED_IN'&&session?.user){USER=session.user;await init();authGizle();lsGizle();}
-    else if(event==='SIGNED_OUT'){USER=null;KAYITLAR=[];ALACAKLAR=[];VERECEKLER=[];authGoster();}
+  sb.auth.onAuthStateChange(async(event, session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      lsGizle();
+      document.getElementById('auth').style.display='none';
+      document.getElementById('sifre-sifirla-ekran').style.display='flex';
+      return;
+    }
+    if(event==='SIGNED_IN' && session?.user){
+      // Şifre sıfırlama ekranı açıksa geçme
+      const ss = document.getElementById('sifre-sifirla-ekran');
+      if(ss && ss.style.display==='flex') return;
+      USER=session.user; await init(); authGizle(); lsGizle();
+    }
+    else if(event==='SIGNED_OUT'){
+      USER=null; KAYITLAR=[]; ALACAKLAR=[]; VERECEKLER=[];
+      document.getElementById('sifre-sifirla-ekran').style.display='none';
+      authGoster();
+    }
   });
-})();
+}
+
+// Sayfa tamamen yüklenince başlat
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', _appBaslat);
+} else {
+  _appBaslat();
+}
 
 async function init(){
   await profilYukle();
@@ -1956,32 +1987,5 @@ async function ssKaydet() {
   </div>
 </div>
 
-<script>
-// PASSWORD_RECOVERY event'ini yakala
-// (Supabase auth listener'a ek olarak URL hash kontrolü)
-(function checkRecovery() {
-  const hash = window.location.hash;
-  if (hash && hash.includes('type=recovery')) {
-    // Sayfa yüklenince şifre sıfırlama ekranını göster
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('ls')?.classList.add('hide');
-        document.getElementById('sifre-sifirla-ekran').style.display = 'flex';
-      }, 800);
-    });
-  }
-})();
-
-// onAuthStateChange'e PASSWORD_RECOVERY ekle
-// Mevcut listener'ın üzerine yaz
-const _origListener = sb.auth.onAuthStateChange.bind(sb.auth);
-sb.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    document.getElementById('ls')?.classList.add('hide');
-    document.getElementById('auth').style.display = 'none';
-    document.getElementById('sifre-sifirla-ekran').style.display = 'flex';
-  }
-});
-</script>
 </body>
 </html>
