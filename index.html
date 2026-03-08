@@ -832,8 +832,8 @@ body{font-family:'Outfit',sans-serif;color:var(--ink);display:flex;flex-directio
 // ══════════════════════════════════════════════
 // CONFIG — Supabase bilgilerini buraya gir
 // ══════════════════════════════════════════════
-const SUPABASE_URL = 'SUPABASE_URL_BURAYA';
-const SUPABASE_KEY = 'SUPABASE_ANON_KEY_BURAYA';
+const SUPABASE_URL = 'https://wxvbvxrjvktavshtdidu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k';
 
 // ══════════════════════════════════════════════
 // SUPABASE INIT
@@ -871,8 +871,16 @@ const SIRI_CMDS = [
     return;
   }
 
-  // Auth state
-  sb.auth.onAuthStateChange(async (event, session) => {
+  // 5 saniye içinde cevap gelmezse auth ekranını göster
+  const loadingTimeout = setTimeout(() => {
+    loadingGizle();
+    authGoster();
+  }, 5000);
+
+  try {
+    // Mevcut session kontrol et
+    const { data: { session } } = await sb.auth.getSession();
+    clearTimeout(loadingTimeout);
     if(session?.user) {
       USER = session.user;
       await profilYukle();
@@ -880,8 +888,26 @@ const SIRI_CMDS = [
       authGizle();
       loadingGizle();
     } else {
-      USER = null;
       loadingGizle();
+      authGoster();
+    }
+  } catch(e) {
+    clearTimeout(loadingTimeout);
+    loadingGizle();
+    authGoster();
+  }
+
+  // Auth state değişikliklerini dinle
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if(event === 'SIGNED_IN' && session?.user) {
+      USER = session.user;
+      await profilYukle();
+      await verileriYukle();
+      authGizle();
+      loadingGizle();
+    } else if(event === 'SIGNED_OUT') {
+      USER = null;
+      KAYITLAR = []; ALACAKLAR = []; VERECEKLER = [];
       authGoster();
     }
   });
