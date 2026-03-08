@@ -11,8 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="SesliDefter">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- CDN scripts moved to body -->
 <style>
 :root{
   --bg:#f5f3ee;--card:#fff;--card2:#faf9f6;--bd:#e8e4dc;
@@ -352,6 +351,11 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   <div class="ls-logo">📒 SesliDefter</div>
   <div class="ls-sub">Konuş, kaydet.</div>
   <div class="ls-dots"><div class="ls-dot"></div><div class="ls-dot"></div><div class="ls-dot"></div></div>
+  <div id="ls-fallback" style="display:none;margin-top:24px">
+    <button onclick="lsGizle();authGoster()" style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:12px 24px;border-radius:99px;font-size:14px;font-weight:600;cursor:pointer">
+      Giriş Ekranına Geç →
+    </button>
+  </div>
 </div>
 
 <!-- AUTH -->
@@ -808,9 +812,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 // ══════════════════════════════════════════════
 const SUPABASE_URL = 'https://wxvbvxrjvktavshtdidu.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k';
-
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+let sb = null; // body sonundaki script yüklenince init edilecek
 
 // ══════════════════════════════════════════════
 // STATE
@@ -883,25 +885,35 @@ const SIRI_CMDS=[
 // INIT — window.onload ile çalış (tüm fonksiyonlar hazır olduktan sonra)
 // ══════════════════════════════════════════════
 async function _appBaslat(){
-  // Dark mode (önce uygula)
+  console.log('🚀 _appBaslat başladı');
+  // 3 saniye sonra fallback buton göster
+  setTimeout(()=>{
+    const fb = document.getElementById('ls-fallback');
+    if(fb && document.getElementById('ls').style.display !== 'none') fb.style.display='block';
+  }, 3000);
+  // Dark mode
   try {
     darkMode = localStorage.getItem('sd-dark') === '1';
     if(darkMode) document.documentElement.setAttribute('data-theme','dark');
   } catch(e){}
 
-  // 5 saniye içinde cevap gelmezse login göster
-  const tmr = setTimeout(()=>{ console.warn('Timeout — login göster'); lsGizle(); authGoster(); }, 8000);
+  // Fallback — mutlaka login göster
+  const tmr = setTimeout(()=>{
+    console.warn('⏰ Timeout! lsGizle+authGoster çağrılıyor');
+    lsGizle(); authGoster();
+  }, 8000);
 
-  // Supabase CDN tam yüklendiyse devam et
-  await new Promise(r => setTimeout(r, 100));
+  await new Promise(r => setTimeout(r, 200));
+  console.log('🔌 Supabase getSession çağrılıyor...');
   try {
-    const {data:{session}} = await sb.auth.getSession();
+    const {data:{session}, error} = await sb.auth.getSession();
+    console.log('✅ getSession tamamlandı', {session: !!session, error});
     clearTimeout(tmr);
     if(session?.user){ USER=session.user; await init(); lsGizle(); }
     else { lsGizle(); authGoster(); }
   } catch(e) {
     clearTimeout(tmr);
-    console.error('Auth error:', e);
+    console.error('❌ Auth error:', e);
     lsGizle();
     authGoster();
   }
@@ -928,11 +940,7 @@ async function _appBaslat(){
 }
 
 // Sayfa tamamen yüklenince başlat
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', _appBaslat);
-} else {
-  _appBaslat();
-}
+// _appBaslat, CDN yüklendikten sonra çağrılıyor (body sonu)
 
 async function init(){
   await profilYukle();
@@ -1580,7 +1588,14 @@ function paketSec(paket){toast(`💳 ${paket==='esnaf'?'Esnaf':'Pro'} ödeme ent
 // ══════════════════════════════════════════════
 function authGoster(){const a=document.getElementById('auth');a.style.display='flex';a.style.flexDirection='column';}
 function authGizle(){document.getElementById('auth').style.display='none';}
-function lsGizle(){const el=document.getElementById('ls');if(!el)return;el.classList.add('hide');setTimeout(()=>{el.style.display='none';},600);}
+function lsGizle(){
+  const el=document.getElementById('ls');
+  if(!el)return;
+  console.log('🙈 lsGizle çağrıldı');
+  el.style.opacity='0';
+  el.style.pointerEvents='none';
+  setTimeout(()=>{ el.style.display='none'; },500);
+}
 
 // ══════════════════════════════════════════════
 // UTILS
@@ -1989,5 +2004,20 @@ async function ssKaydet() {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+// Supabase yüklendi — şimdi init et
+try {
+  const { createClient } = supabase;
+  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  console.log('✅ Supabase hazır');
+  _appBaslat();
+} catch(e) {
+  console.error('❌ Supabase init hatası:', e);
+  lsGizle();
+  authGoster();
+}
+</script>
 </body>
 </html>
