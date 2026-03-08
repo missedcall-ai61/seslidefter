@@ -1599,6 +1599,172 @@ function toast(msg,type='ok'){const t=document.getElementById('toast');t.textCon
 function lb(on){const el=document.getElementById('lbar');el.style.width=on?'72%':'100%';if(!on)setTimeout(()=>el.style.width='0',300);}
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+
+// ══════════════════════════════════════════════
+// ŞİFRE SIFIRLAMA
+// ══════════════════════════════════════════════
+function ssSifreGoster(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId + '-btn') || event.currentTarget;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+function ssGoster() {
+  const p1 = document.getElementById('ss-pass1').value;
+  const p2 = document.getElementById('ss-pass2').value;
+  // Güç göstergesi
+  const gucWrap = document.getElementById('ss-guc-wrap');
+  if (p1.length > 0) {
+    gucWrap.style.display = 'block';
+    let guc = 0;
+    if (p1.length >= 6) guc++;
+    if (p1.length >= 10) guc++;
+    if (/[0-9]/.test(p1)) guc++;
+    if (/[^a-zA-Z0-9]/.test(p1)) guc++;
+    const renkler = ['#e74c3c','#e67e22','#f1c40f','#1a7a4a'];
+    const txtler = ['Çok zayıf','Zayıf','Orta','Güçlü 💪'];
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById('ss-g' + i);
+      el.style.background = i <= guc ? renkler[guc-1] : 'var(--bd)';
+    }
+    document.getElementById('ss-guc-txt').textContent = txtler[guc-1] || '';
+    document.getElementById('ss-guc-txt').style.color = renkler[guc-1] || 'var(--mu)';
+  } else {
+    gucWrap.style.display = 'none';
+  }
+  // Eşleşme
+  const esEl = document.getElementById('ss-eslesme');
+  if (p2.length > 0) {
+    esEl.style.display = 'block';
+    if (p1 === p2) {
+      esEl.textContent = '✅ Şifreler eşleşiyor';
+      esEl.style.color = 'var(--gr)';
+    } else {
+      esEl.textContent = '❌ Şifreler eşleşmiyor';
+      esEl.style.color = 'var(--rd)';
+    }
+  } else {
+    esEl.style.display = 'none';
+  }
+}
+
+async function ssKaydet() {
+  const p1 = document.getElementById('ss-pass1').value;
+  const p2 = document.getElementById('ss-pass2').value;
+  const errEl = document.getElementById('ss-err');
+  errEl.style.display = 'none';
+  if (!p1 || p1.length < 6) {
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠️ Şifre en az 6 karakter olmalı!';
+    return;
+  }
+  if (p1 !== p2) {
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠️ Şifreler eşleşmiyor!';
+    return;
+  }
+  document.getElementById('ss-btn').style.display = 'none';
+  document.getElementById('ss-loading').style.display = 'block';
+  const { error } = await sb.auth.updateUser({ password: p1 });
+  document.getElementById('ss-btn').style.display = 'block';
+  document.getElementById('ss-loading').style.display = 'none';
+  if (error) {
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠️ ' + error.message;
+    return;
+  }
+  // Başarılı
+  document.getElementById('sifre-sifirla-ekran').style.display = 'none';
+  toast('✅ Şifren güncellendi! Giriş yapabilirsin.', 'ok');
+  // Oturumu kapat, login'e yönlendir
+  await sb.auth.signOut();
+}
+</script>
+
+<!-- ŞİFRE SIFIRLAMA EKRANI -->
+<div id="sifre-sifirla-ekran" style="display:none;position:fixed;inset:0;z-index:600;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <div style="width:100%;max-width:400px;background:var(--card);border-radius:22px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.15);border:1px solid var(--bd);">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px;">🔑</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Yeni Şifre Belirle</div>
+      <div style="font-size:13px;color:var(--mu);">Güçlü bir şifre seç, en az 6 karakter.</div>
+    </div>
+    <div id="ss-err" style="display:none;background:var(--rdl);border:1px solid var(--rdm);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--rd);margin-bottom:14px;"></div>
+    <!-- Yeni şifre -->
+    <div style="margin-bottom:12px;">
+      <label style="font-size:10.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px;">Yeni Şifre</label>
+      <div style="position:relative;">
+        <input id="ss-pass1" type="password" placeholder="••••••••" autocomplete="new-password"
+          style="background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;padding:12px 44px 12px 13px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:15px;outline:none;width:100%;"
+          oninput="ssGoster()">
+        <button onclick="ssSifreGoster('ss-pass1','ss-eye1')" id="ss-eye1-btn"
+          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--mu);">👁️</button>
+      </div>
+    </div>
+    <!-- Güç göstergesi -->
+    <div id="ss-guc-wrap" style="display:none;margin-bottom:12px;">
+      <div style="display:flex;gap:4px;margin-bottom:4px;">
+        <div id="ss-g1" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
+        <div id="ss-g2" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
+        <div id="ss-g3" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
+        <div id="ss-g4" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
+      </div>
+      <div id="ss-guc-txt" style="font-size:11px;"></div>
+    </div>
+    <!-- Şifre tekrar -->
+    <div style="margin-bottom:8px;">
+      <label style="font-size:10.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px;">Şifre Tekrar</label>
+      <div style="position:relative;">
+        <input id="ss-pass2" type="password" placeholder="••••••••" autocomplete="new-password"
+          style="background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;padding:12px 44px 12px 13px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:15px;outline:none;width:100%;"
+          oninput="ssGoster()" onkeydown="if(event.key==='Enter')ssKaydet()">
+        <button onclick="ssSifreGoster('ss-pass2','ss-eye2')" id="ss-eye2-btn"
+          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--mu);">👁️</button>
+      </div>
+    </div>
+    <!-- Eşleşme -->
+    <div id="ss-eslesme" style="font-size:12px;margin-bottom:16px;display:none;"></div>
+    <!-- Buton -->
+    <button onclick="ssKaydet()" id="ss-btn"
+      style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(26,122,74,.3);">
+      ✅ Şifremi Güncelle
+    </button>
+    <div id="ss-loading" style="display:none;text-align:center;margin-top:12px;font-size:13px;color:var(--mu);">⏳ Güncelleniyor...</div>
+  </div>
+</div>
+
+<script>
+// PASSWORD_RECOVERY event'ini yakala
+// (Supabase auth listener'a ek olarak URL hash kontrolü)
+(function checkRecovery() {
+  const hash = window.location.hash;
+  if (hash && hash.includes('type=recovery')) {
+    // Sayfa yüklenince şifre sıfırlama ekranını göster
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('ls')?.classList.add('hide');
+        document.getElementById('sifre-sifirla-ekran').style.display = 'flex';
+      }, 800);
+    });
+  }
+})();
+
+// onAuthStateChange'e PASSWORD_RECOVERY ekle
+// Mevcut listener'ın üzerine yaz
+const _origListener = sb.auth.onAuthStateChange.bind(sb.auth);
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    document.getElementById('ls')?.classList.add('hide');
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('sifre-sifirla-ekran').style.display = 'flex';
+  }
+});
 </script>
 </body>
 </html>
