@@ -38,7 +38,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);transition:background .3s,color .3s;}
-body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-size:15px;}
+body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 
 /* LOADING */
 #ls{position:fixed;inset:0;background:var(--gr);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s;}
@@ -90,7 +90,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
 .plan-free{background:var(--aml);color:var(--am);}
 .plan-esnaf{background:var(--grl);color:var(--gr);}
 .plan-pro{background:var(--pul);color:var(--pu);}
-.tb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer;}
+.tb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(102,126,234,.4);user-select:none;}
 .dark-toggle{width:38px;height:22px;border-radius:99px;background:var(--bd);border:none;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
 .dark-toggle.on{background:var(--gr);}
 .dark-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .3s;}
@@ -473,7 +473,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
   <div class="tb-right">
     <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()"></button>
     <div class="tb-plan plan-free" id="tb-plan">🆓</div>
-    <div class="tb-avatar" id="tb-avatar" onclick="go('profil')">?</div>
+    <div class="tb-avatar" id="tb-avatar" onclick="go('profil')"></div>
   </div>
 </div>
 
@@ -1057,7 +1057,6 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
   <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
-  <div class="bni" onclick="go('davet',this)" data-pg="davet"><div class="bni-ico">🎁</div><div class="bni-lbl">Davet</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
 </div><!-- /dmain -->
@@ -1226,7 +1225,7 @@ async function _appBaslat(){
     const savedFont = localStorage.getItem('sd-font') || 'orta';
     document.documentElement.style.fontSize = (savedFont==='kucuk'?13:savedFont==='buyuk'?17:15) + 'px';
     // Font buton durumunu da güncelle (profil sayfası açık olursa)
-    try { fontUygula(savedFont); } catch(e){}
+    fontUygula(savedFont);
   } catch(e){}
 
   // 5sn'de hâlâ yüklenmezse direkt giriş ekranına at
@@ -1290,7 +1289,9 @@ async function _appBaslat(){
 async function init(){
   await profilYukle();
   await verileriYukle();
-  go('ana');        // sayfayı aktif et
+  guncelleUI();     // UI'yi hemen güncelle
+  go('ana');
+  rAna();           // ana sayfayı render et
   vadeBildirim();
   rSiri();
 }
@@ -1405,6 +1406,14 @@ async function profilYukle(){
       };
     }
   } catch(e) {
+    console.error('profilYukle hata:', e);
+    // Fallback: Supabase'e erişilemese bile uygulama çalışsın
+    if(!PROFIL) PROFIL = {
+      isim: USER?.email?.split('@')[0] || 'Kullanıcı',
+      isletme: 'İşletmem', sehir:'', sektor:'', paket:'free',
+      email: USER?.email||'', emailVerified: false,
+      davetKodu:'', davetSayisi:0, kredi:0,
+    };
     PROFIL={
       isim:meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
       isletme:meta.isletme||'İşletmem',
@@ -2058,15 +2067,21 @@ function go(pg,el){
   if(pg==='kayitlar') rKayitlar();
   if(pg==='alacak') rAlacak();
   if(pg==='rapor') rRapor();
+  if(pg==='davet'){
+    // Davet kodu hâlâ boşsa profili yeniden yükle
+    if(!PROFIL?.davetKodu){
+      profilYukle().then(()=>{ guncelleUI(); }).catch(()=>{});
+    } else {
+      guncelleUI();
+    }
+  }
   if(pg==='profil'){
-    // Karanlık mod durumu güncelle
+    guncelleUI(); // davet kodu, isim, plan vs güncelle
     const dd = document.getElementById('dark-durum');
     if(dd) dd.textContent = darkMode ? 'Karanlık tema' : 'Açık tema';
     const dt2 = document.getElementById('dark-toggle2');
     if(dt2) dt2.classList.toggle('on', darkMode);
-    // Font buton durumu
-    const savedFont = localStorage.getItem('sd-font')||'orta';
-    fontUygula(savedFont);
+    fontUygula(localStorage.getItem('sd-font')||'orta');
   }
 }
 
@@ -2466,32 +2481,33 @@ document.addEventListener('DOMContentLoaded',()=>{
 function toggleDark(){setDark(!darkMode);}
 
 // ── YAZI BOYUTU ──────────────────────────────────────────────────────
-const FONT_SIZES = {kucuk:13, orta:15, buyuk:17};
+const FONT_SIZES = {kucuk:14, orta:16, buyuk:18};
 let fontBoy = localStorage.getItem('sd-font') || 'orta';
 
 function fontUygula(boy){
+  if(!FONT_SIZES[boy]) boy = 'orta';
   fontBoy = boy;
   localStorage.setItem('sd-font', boy);
-  document.documentElement.style.fontSize = FONT_SIZES[boy] + 'px';
+  const size = FONT_SIZES[boy];
+  document.documentElement.style.setProperty('font-size', size + 'px', 'important');
+  document.body.style.setProperty('font-size', size + 'px', 'important');
+  // Butonları güncelle
   ['kucuk','orta','buyuk'].forEach(b=>{
     const el = document.getElementById('fb-'+b);
     if(!el) return;
-    if(b===boy){
-      el.style.background = 'var(--gr)';
-      el.style.color = '#fff';
-    } else {
-      el.style.background = 'var(--bg)';
-      el.style.color = 'var(--ink)';
-    }
+    el.style.background = b===boy ? 'var(--gr)' : 'var(--bg)';
+    el.style.color      = b===boy ? '#fff'       : 'var(--ink)';
+    el.style.border     = b===boy ? 'none'        : '1.5px solid var(--bd)';
   });
-
 }
 function setDark(on){
   darkMode=on;
   document.documentElement.setAttribute('data-theme',on?'dark':'light');
   localStorage.setItem('sd-dark',on?'1':'0');
-  document.querySelectorAll('.dtoggle').forEach(t=>t.classList.toggle('on',on));
-  setText('dark-sub',on?'Şu an: Karanlık tema':'Şu an: Açık tema');
+  // Tüm toggle butonlarını güncelle
+  document.querySelectorAll('.dark-toggle,.dtoggle').forEach(t=>t.classList.toggle('on',on));
+  const dd=document.getElementById('dark-durum');
+  if(dd) dd.textContent = on?'Karanlık tema':'Açık tema';
 }
 
 // ══════════════════════════════════════════════
