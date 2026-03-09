@@ -1224,7 +1224,7 @@ async function _appBaslat(){
     const savedFont = localStorage.getItem('sd-font') || 'orta';
     document.documentElement.style.fontSize = (savedFont==='kucuk'?13:savedFont==='buyuk'?17:15) + 'px';
     // Font buton durumunu da güncelle (profil sayfası açık olursa)
-    setTimeout(()=>fontUygula(savedFont), 100);
+    try { fontUygula(savedFont); } catch(e){}
   } catch(e){}
 
   // 5sn'de hâlâ yüklenmezse direkt giriş ekranına at
@@ -1498,7 +1498,6 @@ async function verileriYukle(){
     if(kr.data)KAYITLAR=kr.data;
     if(ar.data)ALACAKLAR=ar.data;
     if(vr.data)VERECEKLER=vr.data;
-    console.log('Veriler yüklendi:', {kayitlar:KAYITLAR.length, alacaklar:ALACAKLAR.length, verecekler:VERECEKLER.length});
   }catch(e){console.error('Veri yükleme hatası:',e);toast('Veri yükleme hatası!','err');}
   lb(false);
 }
@@ -2185,7 +2184,6 @@ function authGizle(){document.getElementById('auth').style.display='none';}
 function lsGizle(){
   const el=document.getElementById('ls');
   if(!el)return;
-  console.log('🙈 lsGizle çağrıldı');
   el.style.opacity='0';
   el.style.pointerEvents='none';
   setTimeout(()=>{ el.style.display='none'; },500);
@@ -2635,17 +2633,28 @@ async function ssKaydet() {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-try {
-  if(typeof supabase === 'undefined') throw new Error('CDN yuklenemedi');
-  sb = supabase.createClient(
-    'https://wxvbvxrjvktavshtdidu.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k'
-  );
-  _appBaslat();
-} catch(e) {
-  console.error('Baslama hatasi:', e);
-  try { lsGizle(); authGoster(); } catch(e2){}
-}
+// Supabase CDN yüklenince başlat
+(function _bekleVeBaslat(deneme){
+  deneme = deneme || 0;
+  if(typeof supabase !== 'undefined'){
+    try {
+      sb = supabase.createClient(
+        'https://wxvbvxrjvktavshtdidu.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k'
+      );
+      _appBaslat();
+    } catch(e) {
+      console.error('Başlama hatası:', e);
+      try { lsGizle(); authGoster(); } catch(e2){}
+    }
+  } else if(deneme < 20) {
+    // 100ms bekle, tekrar dene (max 2sn)
+    setTimeout(()=>_bekleVeBaslat(deneme+1), 100);
+  } else {
+    console.error('Supabase CDN yüklenemedi');
+    try { lsGizle(); authGoster(); } catch(e){}
+  }
+})();
 </script>
 </body>
 </html>
