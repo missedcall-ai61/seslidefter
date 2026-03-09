@@ -1054,7 +1054,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
   <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
-  <div class="bni-lbl">Rapor</div></div>
+  <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
   <div class="bni" onclick="go('davet',this)" data-pg="davet"><div class="bni-ico">🎁</div><div class="bni-lbl">Davet</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
@@ -1792,19 +1792,19 @@ async function kayitKaydet(){
   const vade = document.getElementById('mk-vade')?.value || null;
   lb(true);
   if(aktifTur==='alacak'){
-    const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,created_at:new Date().toISOString()};
-    console.log('Alacak insert:', y);
+    const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,sehir:PROFIL?.sehir||'',sektor:PROFIL?.sektor||''};
+
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
-    console.log('Alacak result:', {data,error});
+
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     // Veriyi yeniden çek — en güvenilir yöntem
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('🤝 Alacak eklendi!','ok');
   }else if(aktifTur==='verecek'){
-    const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,created_at:new Date().toISOString()};
-    console.log('Verecek insert:', y);
+    const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id};
+
     const{data,error}=await sb.from('verecekler').insert([y]).select();
-    console.log('Verecek result:', {data,error});
+
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
@@ -1814,9 +1814,9 @@ async function kayitKaydet(){
              sehir:PROFIL?.sehir||'', ilce:PROFIL?.ilce||'', sektor:PROFIL?.sektor||'',
              giris_tipi:'manuel'};
     if(secilenKat) y.kategori = secilenKat;
-    console.log('Kayit insert:', y);
+
     const{data,error}=await sb.from('kayitlar').insert([y]).select();
-    console.log('Kayit result:', {data,error});
+
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();
@@ -2473,12 +2473,17 @@ function fontUygula(boy){
   fontBoy = boy;
   localStorage.setItem('sd-font', boy);
   document.documentElement.style.fontSize = FONT_SIZES[boy] + 'px';
-  // Aktif buton vurgula
   ['kucuk','orta','buyuk'].forEach(b=>{
     const el = document.getElementById('fb-'+b);
-    if(el) el.style.background = b===boy ? 'var(--gr)' : 'var(--bg)';
-    if(el) el.style.color = b===boy ? '#fff' : 'var(--ink)';
-  });
+    if(!el) return;
+    if(b===boy){
+      el.style.background = 'var(--gr)';
+      el.style.color = '#fff';
+    } else {
+      el.style.background = 'var(--bg)';
+      el.style.color = 'var(--ink)';
+    }
+  }););
 }
 function setDark(on){
   darkMode=on;
