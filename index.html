@@ -340,9 +340,18 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 }
 @media(max-width:859px){.dskbar{display:none;}.dmain{flex:1;display:flex;flex-direction:column;min-height:0;}}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── YAZI BOYUTU ── */
+html, html body { font-size: 15px; }
+html.font-kucuk, html.font-kucuk body { font-size: 13px !important; }
+html.font-orta,  html.font-orta  body { font-size: 15px !important; }
+html.font-buyuk, html.font-buyuk body { font-size: 18px !important; }
+html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- Google AdSense - Yayıncı ID'nizi girin -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -450,6 +459,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <div class="dsk-item" onclick="go('kayitlar',this)">📋 Tüm Kayıtlar</div>
     <div class="dsk-item" onclick="go('alacak',this)">💰 Alacak / Verecek</div>
     <div class="dsk-item" onclick="go('rapor',this)">📊 Raporlar</div>
+<div class="dsk-item" onclick="go('fatura',this)" data-pg="fatura">🧾 Ödeme Planlayıcı</div>
     <div class="dsk-sec">Araçlar</div>
     <div class="dsk-item" onclick="go('siri',this)">🎙️ Sesli Komutlar</div>
     <div class="dsk-item" onclick="go('davet',this)">🎁 Davet Et</div>
@@ -457,7 +467,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <div class="dsk-item" onclick="go('profil',this)">👤 Profil & Ayarlar</div>
     <div class="dsk-item" onclick="go('hakkinda',this)">ℹ️ Hakkımızda</div>
   </div>
-  <button class="dsk-mic" onclick="sesBaşlat()">
+  <button class="dsk-mic" onclick="sesBaslat()">
     <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.8);animation:mpulse 1.5s infinite"></div>
     Sesle Kayıt Ekle
   </button>
@@ -501,7 +511,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
         <button class="ses-btn sb-alacak" onclick="hizliKayit('alacak')"><div class="ses-btn-ico">🤝</div>Alacak Ekle</button>
         <button class="ses-btn sb-rapor" onclick="go('rapor')"><div class="ses-btn-ico">📊</div>Rapor Gör</button>
       </div>
-      <button class="mic-btn" id="mic-btn" onclick="sesBaşlat()">
+      <button class="mic-btn" id="mic-btn" onclick="sesBaslat()">
         <span id="mic-ico">🎙️</span>
         <span id="mic-txt">Sesle Kayıt Ekle</span>
         <div class="mic-waves" id="mic-waves" style="display:none">
@@ -516,6 +526,28 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   <div id="limit-wrap"></div>
   <div id="vade-uyari-wrap"></div>
 
+  <!-- REKLAM: sadece ücretsiz kullanıcılara göster -->
+  <div class="adsense-wrap" id="ad-wrap" style="display:none">
+    <div class="adsense-label">Reklam</div>
+    <ins class="adsbygoogle"
+         style="display:block;width:100%;height:90px"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+  <!-- Google AdSense Banner - Sadece free paket -->
+  <div id="adsense-wrap" style="display:none;margin:0 14px 14px;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bd)">
+    <div style="font-size:10px;color:var(--mu);text-align:center;padding:4px 0 2px;font-weight:600;letter-spacing:.5px">REKLAM</div>
+    <ins class="adsbygoogle"
+         style="display:block;width:100%;height:90px"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="banner"
+         data-full-width-responsive="false"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
   <div class="sec-hdr"><div class="sec-title">Son Kayıtlar</div><div class="sec-link" onclick="go('kayitlar')">Tümü →</div></div>
   <div class="kayit-list" id="ana-kayitlar"></div>
   <div style="height:10px"></div>
@@ -723,6 +755,10 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
         <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div></div>
         <div class="pr-arr">›</div>
       </div>
+      <div class="profil-row" onclick="go('fatura')">
+        <div class="pr-left"><div class="pr-ico" style="background:#fff3cd">🧾</div><div><div class="pr-label">Ödeme Planlayıcı</div><div class="pr-sub">Fatura ve ödeme takibi</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
       <div class="profil-row" onclick="go('davet')">
         <div class="pr-left"><div class="pr-ico" style="background:#fff8e8">🎁</div><div><div class="pr-label">Davet Et & Kazan</div><div class="pr-sub" id="davet-kredi-txt">Her davet = 30 gün bonus</div></div></div>
         <div class="pr-arr">›</div>
@@ -737,11 +773,11 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
         <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px"></button>
       </div>
       <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub">Okuma konforunu ayarla</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub" id="font-durum">Şu an: Normal</div></div></div>
         <div style="display:flex;gap:6px;align-items:center">
-          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
-          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:none;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--gr);color:#fff">A</button>
-          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:17px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
+          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .2s">A</button>
+          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:2px solid var(--gr);border-radius:10px;padding:7px 12px;font-size:15px;font-weight:700;cursor:pointer;background:var(--gr);color:#fff;transition:all .2s">A</button>
+          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:18px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--gr);color:#fff">A</button>
         </div>
       </div>
     </div>
@@ -1050,6 +1086,32 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   </div>
 </div>
 
+
+<!-- FATURA / ÖDEME PLANLAYICI -->
+<div class="pg" id="pg-fatura">
+  <div class="pg-hd"><div class="pg-hd-title">🧾 Ödeme Planlayıcı</div></div>
+  <div style="padding:14px 14px 40px">
+
+    <!-- Yeni Fatura Ekle Butonu -->
+    <button onclick="openM('m-fatura-ekle')" style="width:100%;background:var(--gr);color:#fff;border:none;border-radius:16px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px">
+      ➕ Fatura / Ödeme Ekle
+    </button>
+
+    <!-- Yaklaşan Ödemeler -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Yaklaşan Ödemeler</div>
+    <div id="fatura-list-yaklasan" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <div class="empty-state" style="text-align:center;padding:30px;color:var(--mu);font-size:14px">
+        📋 Henüz fatura eklenmedi
+      </div>
+    </div>
+
+    <!-- Tüm Faturalar -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Tüm Faturalar</div>
+    <div id="fatura-list-tum" style="display:flex;flex-direction:column;gap:10px"></div>
+
+  </div>
+</div>
+
 </div><!-- /scroll -->
 
 <nav class="bnav">
@@ -1057,6 +1119,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
   <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
+  <div class="bni" onclick="go('fatura',this)" data-pg="fatura"><div class="bni-ico">🧾</div><div class="bni-lbl">Faturalar</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
 </div><!-- /dmain -->
@@ -1121,6 +1184,60 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     </div>
   </div>
 </div>
+
+<!-- FATURA EKLE MODAL -->
+<div class="mover" id="m-fatura-ekle">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">🧾 Fatura / Ödeme Ekle</div>
+    <div class="fg">
+      <label class="fl">Fatura Adı *</label>
+      <input class="fi" id="ft-ad" placeholder="Kira, Elektrik, İnternet..." type="text">
+    </div>
+    <div class="fg">
+      <label class="fl">Tutar ₺</label>
+      <input class="fi" id="ft-tutar" placeholder="0" type="number" inputmode="decimal">
+    </div>
+    <div class="fg">
+      <label class="fl">Tür</label>
+      <select class="fsel" id="ft-tur" onchange="ftTurDegis()">
+        <option value="aylik">📅 Aylık (sabit gün)</option>
+        <option value="tek">📌 Tek seferlik</option>
+      </select>
+    </div>
+    <div class="fg" id="ft-gun-wrap">
+      <label class="fl">Ayın kaçında? (1-31)</label>
+      <input class="fi" id="ft-gun" placeholder="1" type="number" min="1" max="31" value="1">
+    </div>
+    <div class="fg" id="ft-tarih-wrap" style="display:none">
+      <label class="fl">Ödeme Tarihi</label>
+      <input class="fi" id="ft-tarih" type="date">
+    </div>
+    <div class="fg">
+      <label class="fl">Kategori</label>
+      <select class="fsel" id="ft-kat">
+        <option value="kira">🏠 Kira</option>
+        <option value="elektrik">⚡ Elektrik</option>
+        <option value="su">💧 Su</option>
+        <option value="dogalgaz">🔥 Doğalgaz</option>
+        <option value="internet">🌐 İnternet</option>
+        <option value="telefon">📱 Telefon</option>
+        <option value="sigorta">🛡️ Sigorta</option>
+        <option value="vergi">🏛️ Vergi / SGK</option>
+        <option value="diger">📦 Diğer</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">Not (opsiyonel)</label>
+      <input class="fi" id="ft-not" placeholder="İsteğe bağlı not..." type="text">
+    </div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-gh" onclick="closeM('m-fatura-ekle')">İptal</button>
+      <button class="mbtn mbtn-p" onclick="faturaEkle()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 // ══════════════════════════════════════════════
@@ -1225,8 +1342,6 @@ async function _appBaslat(){
     if(darkMode) document.documentElement.setAttribute('data-theme','dark');
     // Font boyutu
     const savedFont = localStorage.getItem('sd-font') || 'orta';
-    document.documentElement.style.fontSize = (savedFont==='kucuk'?13:savedFont==='buyuk'?17:15) + 'px';
-    // Font buton durumunu da güncelle (profil sayfası açık olursa)
     fontUygula(savedFont);
   } catch(e){}
 
@@ -1291,10 +1406,12 @@ async function _appBaslat(){
 async function init(){
   await profilYukle();
   await verileriYukle();
-  guncelleUI();     // UI'yi hemen güncelle
+  guncelleUI();
   go('ana');
-  rAna();           // ana sayfayı render et
+  rAna();
   vadeBildirim();
+  faturaBildirim();
+  adSenseGoster();
   rSiri();
 }
 
@@ -1780,7 +1897,7 @@ function rRapor(){
 function rSiri(){
   const el=document.getElementById('siri-list'); if(!el)return;
   el.innerHTML=SIRI_CMDS.map(c=>`
-    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--sh)" onclick="sesBaşlat()">
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--sh)" onclick="sesBaslat()">
       <div style="width:36px;height:36px;border-radius:10px;background:var(--grl);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">${c.ico}</div>
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--gr);font-style:italic">${c.cmd}</div>
@@ -1889,6 +2006,198 @@ async function kayitSil(id){
 // ══════════════════════════════════════════════
 // VADE BİLDİRİMİ
 // ══════════════════════════════════════════════
+
+// ══════════════════════════════════════════════
+// FATURA / ÖDEME PLANLANICI
+// ══════════════════════════════════════════════
+let FATURALAR = []; // localStorage'da saklanır
+
+function faturalariYukle(){
+  try {
+    const raw = localStorage.getItem('sd-faturalar');
+    FATURALAR = raw ? JSON.parse(raw) : [];
+  } catch(e){ FATURALAR = []; }
+  rFatura();
+  faturaHatirlatici();
+}
+
+function faturalariKaydet(){
+  localStorage.setItem('sd-faturalar', JSON.stringify(FATURALAR));
+}
+
+function faturaEkle(){
+  const ad    = document.getElementById('ft-ad')?.value.trim();
+  const tutar = parseFloat(document.getElementById('ft-tutar')?.value || 0);
+  const tur   = document.getElementById('ft-tur')?.value || 'aylik';
+  const gun   = parseInt(document.getElementById('ft-gun')?.value || 1);
+  const tarih = document.getElementById('ft-tarih')?.value || '';
+  const kat   = document.getElementById('ft-kat')?.value || 'diger';
+
+  if(!ad){ toast('⚠️ Fatura adı zorunlu!','err'); return; }
+  if(tur === 'tek' && !tarih){ toast('⚠️ Ödeme tarihi seçin!','err'); return; }
+
+  const yeni = {
+    id: Date.now().toString(),
+    ad, tutar, tur, gun, tarih, kat,
+    olusturma: new Date().toISOString()
+  };
+  FATURALAR.push(yeni);
+  faturalariKaydet();
+  closeM('m-fatura-ekle');
+  // Formu temizle
+  ['ft-ad','ft-tutar','ft-gun','ft-tarih'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('ft-gun')?.setAttribute('value','1');
+  rFatura();
+  toast('✅ Fatura eklendi!','ok');
+}
+
+function faturaSil(id){
+  if(!confirm('Bu faturayı silmek istediğinize emin misiniz?')) return;
+  FATURALAR = FATURALAR.filter(f=>ft.id!==id);
+  faturalariKaydet();
+  rFatura();
+  toast('🗑️ Fatura silindi','ok');
+}
+
+function faturaOdendi(id){
+  const f = FATURALAR.find(x=>x.id===id);
+  if(!f) return;
+  // Ödeme kaydını kayıtlara ekle
+  const tarihStr = new Date().toISOString().split('T')[0];
+  const y = {
+    tur:'gider', tutar:ft.tutar||0,
+    aciklama: ft.ad + ' ödemesi',
+    kisi:'', tarih:tarihStr,
+    user_id: USER?.id,
+    sehir: PROFIL?.sehir||'',
+    sektor: PROFIL?.sektor||'',
+    giris_tipi:'manuel', kategori: ft.kat||'fatura'
+  };
+  sb.from('kayitlar').insert([y]).select().then(({data,error})=>{
+    if(error){ toast('❌ Kayıt eklenemedi: '+error.message,'err'); return; }
+    if(data) KAYITLAR.unshift(data[0]);
+    // Tek seferlikse sil, aylıksa bırak
+    if(ft.tur === 'tek'){
+      FATURALAR = FATURALAR.filter(x=>x.id!==id);
+      faturalariKaydet();
+    }
+    rAna(); rFatura();
+    toast('✅ Ödeme kaydedildi!','ok');
+  });
+}
+
+function rFatura(){
+  const bugun = new Date();
+  const bugAy = bugun.getDate();
+  const yaklasanEl = document.getElementById('fatura-list-yaklasan');
+  const tumEl = document.getElementById('fatura-list-tum');
+  if(!yaklasanEl || !tumEl) return;
+
+  // Yaklaşan (7 gün içinde veya geçmiş aylık)
+  const yaklasan = FATURALAR.filter(f=>{
+    if(ft.tur==='aylik'){
+      const kalan = ft.gun >= bugAy ? ft.gun - bugAy : (31 - bugAy + ft.gun);
+      return kalan <= 7;
+    } else {
+      if(!ft.tarih) return false;
+      const vade = new Date(ft.tarih);
+      const diff = Math.ceil((vade - bugun)/(1000*60*60*24));
+      return diff >= 0 && diff <= 7;
+    }
+  });
+
+  const katIco = {kira:'🏠',elektrik:'⚡',su:'💧',dogalgaz:'🔥',internet:'🌐',
+                  kredi:'💳',vergi:'📋',maas:'👷',diger:'📌'};
+
+  function faturaKart(ft, acil){
+    const ico = katIco[ft.kat]||'📌';
+    const renkCls = acil ? 'background:#fff3cd;border:1.5px solid #ffc107;' : 'background:var(--card);border:1.5px solid var(--bd);';
+    let zamanStr = '';
+    if(ft.tur==='aylik'){
+      const kalan = ft.gun >= bugAy ? ft.gun - bugAy : (31-bugAy+ft.gun);
+      zamanStr = kalan===0 ? '🔴 Bugün!' : kalan<=3 ? `🟠 ${kalan} gün` : `📅 Ayın ${ft.gun}i`;
+    } else {
+      if(ft.tarih){
+        const vade = new Date(ft.tarih);
+        const diff = Math.ceil((vade-bugun)/(1000*60*60*24));
+        zamanStr = diff<0?'🔴 Geçti':diff===0?'🔴 Bugün!':diff<=3?`🟠 ${diff} gün`:`📅 ${vade.toLocaleDateString('tr-TR')}`;
+      }
+    }
+    return `<div style="${renkCls}border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:28px">${ico}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:15px">${ft.ad}</div>
+        <div style="font-size:13px;color:var(--mu);margin-top:2px">${zamanStr}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        ${ft.tutar ? `<div style="font-weight:800;font-size:16px;font-family:'Bricolage Grotesque',sans-serif">₺${f(ft.tutar)}</div>` : ''}
+        <div style="display:flex;gap:6px;margin-top:6px">
+          ${ft.tutar ? `<button onclick="faturaOdendi('${ft.id}')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer">✅ Ödedim</button>` : ''}
+          <button onclick="faturaSil('${ft.id}')" style="background:var(--rdl);color:var(--rd);border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  yaklasanEl.innerHTML = yaklasan.length
+    ? yaklasan.map(f=>faturaKart(f,true)).join('')
+    : '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">✅ Yaklaşan ödeme yok</div>';
+
+  tumEl.innerHTML = FATURALAR.length
+    ? FATURALAR.map(f=>faturaKart(f,false)).join('')
+    : '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">📋 Henüz fatura eklenmedi</div>';
+}
+
+function faturaHatirlatici(){
+  const bugun = new Date().getDate();
+  const acil = FATURALAR.filter(f=>{
+    if(ft.tur==='aylik'){ return ft.gun===bugun || ft.gun===bugun+1 || ft.gun===bugun+2; }
+    if(ft.tarih){
+      const vade = new Date(ft.tarih);
+      const diff = Math.ceil((vade-new Date())/(1000*60*60*24));
+      return diff>=0 && diff<=2;
+    }
+    return false;
+  });
+  if(acil.length){
+    const wrap = document.getElementById('vade-uyari-wrap');
+    if(wrap){
+      const extra = acil.map(f=>`<b>${ft.ad}</b>`).join(', ');
+      wrap.insertAdjacentHTML('beforeend',
+        `<div style="background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:13px;cursor:pointer" onclick="go('fatura')">
+          🔔 Yaklaşan ödeme: ${extra} — <span style="color:var(--gr);font-weight:700">Görüntüle →</span>
+        </div>`
+      );
+    }
+  }
+}
+
+// Modal: Aylık/Tek seçimine göre alanları göster/gizle
+function ftTurDegis(){
+  const tur = document.getElementById('ft-tur')?.value;
+  const gunW = document.getElementById('ft-gun-wrap');
+  const tarW = document.getElementById('ft-tarih-wrap');
+  if(gunW) gunW.style.display = tur==='aylik' ? '' : 'none';
+  if(tarW) tarW.style.display = tur==='tek'   ? '' : 'none';
+}
+
+// ── ADSENSE AKTİVASYONU ────────────────────────────────────
+function adSenseGoster(){
+  const wrap = document.getElementById('ad-wrap');
+  if(!wrap) return;
+  // Sadece ücretsiz kullanıcılara göster
+  if(PAKET === 'free'){
+    wrap.style.display = '';
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch(e){}
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
 function vadeBildirim(){
   const bugun=new Date();bugun.setHours(0,0,0,0);
   const gecmis=ALACAKLAR.filter(a=>{if(!a.vade)return false;const v=new Date(a.vade);return v<bugun;});
@@ -1904,34 +2213,183 @@ function vadeBildirim(){
 // ══════════════════════════════════════════════
 // SES TANIMA
 // ══════════════════════════════════════════════
-function sesBaşlat(){
-  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
-    toast('⚠️ Ses tanıma için Chrome kullan!','err');return;
-  }
-  if(sesAktif){sesDurdur();return;}
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recognition=new SR();
-  recognition.lang='tr-TR';recognition.continuous=false;recognition.interimResults=true;
-  recognition.onstart=()=>{
-    sesAktif=true;
-    document.getElementById('mic-btn').classList.add('on');
-    document.getElementById('mic-ico').textContent='⏹️';
-    document.getElementById('mic-txt').textContent='Dinleniyor...';
-    document.getElementById('mic-waves').style.display='flex';
-    document.getElementById('mic-result').style.display='none';
+// sesBaşlat → sesBaslat olarak yeniden adlandırıldı
+
+
+
+// ══════════════════════════════════════════════
+// FATURA / ÖDEME PLANLAYICI
+// ══════════════════════════════════════════════
+let FATURALAR = JSON.parse(localStorage.getItem('sd-faturalar') || '[]');
+
+function faturaKaydet(){
+  const ad = document.getElementById('ft-ad')?.value.trim();
+  const tutar = parseFloat(document.getElementById('ft-tutar')?.value || 0);
+  const tur = document.getElementById('ft-tur')?.value || 'aylik';
+  const gun = parseInt(document.getElementById('ft-gun')?.value || 1);
+  const tarih = document.getElementById('ft-tarih')?.value || '';
+  const kat = document.getElementById('ft-kat')?.value || 'diger';
+  const not_ = document.getElementById('ft-not')?.value.trim() || '';
+
+  if(!ad){ toast('⚠️ Fatura adı zorunlu!','err'); return; }
+
+  const fatura = {
+    id: Date.now().toString(),
+    ad, tutar, tur, gun, tarih, kat, not: not_,
+    olusturuldu: new Date().toISOString(),
+    odendi: false
   };
-  recognition.onresult=(e)=>{
-    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
-    document.getElementById('mic-result').style.display='block';
-    document.getElementById('mic-result').textContent='🎙️ "'+t+'"';
-    if(e.results[0].isFinal)sesIsle(t);
-  };
-  recognition.onerror=(e)=>{sesDurdur();if(e.error==='not-allowed')toast('⚠️ Mikrofon izni gerekli!','err');else toast('Ses hatası: '+e.error,'err');};
-  recognition.onend=()=>sesDurdur();
-  recognition.start();
+  FATURALAR.unshift(fatura);
+  localStorage.setItem('sd-faturalar', JSON.stringify(FATURALAR));
+  closeM('m-fatura-ekle');
+  // Formu temizle
+  ['ft-ad','ft-tutar','ft-gun','ft-not'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  rFatura();
+  toast('🧾 Fatura eklendi!','ok');
 }
 
+function faturaOdendi(id){
+  const f = FATURALAR.find(x=>x.id===id);
+  if(!f) return;
+  f.odendi = !f.odendi;
+  f.odendiTarih = f.odendi ? new Date().toISOString() : null;
+  localStorage.setItem('sd-faturalar', JSON.stringify(FATURALAR));
+  rFatura();
+  toast(f.odendi ? '✅ Ödendi olarak işaretlendi' : '↩️ Geri alındı', 'ok');
+}
 
+function faturaSil(id){
+  if(!confirm('Bu faturayı silmek istediğinizden emin misiniz?')) return;
+  FATURALAR = FATURALAR.filter(x=>x.id!==id);
+  localStorage.setItem('sd-faturalar', JSON.stringify(FATURALAR));
+  rFatura();
+  toast('🗑️ Fatura silindi','ok');
+}
+
+function getFaturaGun(f){
+  if(ft.tur==='aylik') return ft.gun || 1;
+  if(ft.tarih) return new Date(ft.tarih).getDate();
+  return 1;
+}
+
+function getFaturaBugunKalan(f){
+  const bugun = new Date();
+  const gun = bugun.getDate();
+  if(ft.tur === 'tek'){
+    if(!ft.tarih) return null;
+    const hedef = new Date(ft.tarih);
+    hedef.setHours(0,0,0,0);
+    bugun.setHours(0,0,0,0);
+    return Math.ceil((hedef - bugun) / 86400000);
+  }
+  // Aylık
+  const hedefGun = ft.gun || 1;
+  let kalan = hedefGun - gun;
+  if(kalan < 0) kalan += new Date(bugun.getFullYear(), bugun.getMonth()+1, 0).getDate();
+  return kalan;
+}
+
+function rFatura(){
+  const listY = document.getElementById('fatura-list-yaklasan');
+  const listT = document.getElementById('fatura-list-tum');
+  if(!listY || !listT) return;
+
+  const kat_ico = {kira:'🏠',elektrik:'⚡',su:'💧',dogalgaz:'🔥',internet:'🌐',
+                   telefon:'📱',sigorta:'🛡️',vergi:'🏛️',diger:'📦'};
+
+  // Sırala: kalan güne göre
+  const sorted = [...FATURALAR].sort((a,b)=>{
+    const ka = getFaturaBugunKalan(a) ?? 999;
+    const kb = getFaturaBugunKalan(b) ?? 999;
+    return ka - kb;
+  });
+
+  // Yaklaşanlar (7 gün içinde veya geçmiş)
+  const yaklasan = sorted.filter(f=>{
+    const k = getFaturaBugunKalan(f);
+    return k !== null && k <= 7 && !f.odendi;
+  });
+
+  if(yaklasan.length === 0){
+    listY.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">✅ Yaklaşan ödeme yok</div>';
+  } else {
+    listY.innerHTML = yaklasan.map(f => faturaKart(f, kat_ico, true)).join('');
+  }
+
+  if(FATURALAR.length === 0){
+    listT.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">📋 Henüz fatura eklenmedi</div>';
+  } else {
+    listT.innerHTML = sorted.map(f => faturaKart(f, kat_ico, false)).join('');
+  }
+}
+
+function faturaKart(f, kat_ico, vurgula){
+  const kalan = getFaturaBugunKalan(f);
+  const ico = kat_ico[ft.kat] || '📦';
+  const tutar = ft.tutar > 0 ? `₺${Number(ft.tutar).toLocaleString('tr-TR')}` : '';
+  let kalanTxt = '';
+  let kalanRenk = 'var(--mu)';
+  if(kalan === null) kalanTxt = '';
+  else if(kalan < 0){ kalanTxt = `${Math.abs(kalan)} gün geçti`; kalanRenk = 'var(--rd,#e74c3c)'; }
+  else if(kalan === 0){ kalanTxt = 'Bugün!'; kalanRenk = '#e67e22'; }
+  else if(kalan <= 3){ kalanTxt = `${kalan} gün kaldı`; kalanRenk = '#e67e22'; }
+  else { kalanTxt = `${kalan} gün kaldı`; }
+
+  const periyot = ft.tur === 'aylik' ? `Her ayın ${ft.gun}. günü` : (ft.tarih ? new Date(ft.tarih).toLocaleDateString('tr-TR') : '');
+  const odendiStyle = f.odendi ? 'opacity:.5;text-decoration:line-through' : '';
+
+  return `<div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1.5px solid ${vurgula && !f.odendi ? '#f39c12' : 'var(--bd)'};display:flex;align-items:center;gap:12px">
+    <div style="font-size:26px;flex-shrink:0">${ico}</div>
+    <div style="flex:1;min-width:0;${odendiStyle}">
+      <div style="font-weight:700;font-size:15px">${ft.ad}</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:2px">${periyot}${f.not ? ' · '+f.not : ''}</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+        ${tutar ? `<span style="font-weight:700;color:var(--gr)">${tutar}</span>` : ''}
+        ${kalanTxt ? `<span style="font-size:12px;color:${kalanRenk};font-weight:600">${kalanTxt}</span>` : ''}
+        ${f.odendi ? '<span style="font-size:11px;color:var(--gr);font-weight:700">✅ Ödendi</span>' : ''}
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button onclick="faturaOdendi('${ft.id}')" style="background:${f.odendi ? 'var(--bg)' : 'var(--gr)'};color:${f.odendi ? 'var(--ink)' : '#fff'};border:1.5px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
+        ${f.odendi ? '↩️' : '✅'}</button>
+      <button onclick="faturaSil('${ft.id}')" style="background:var(--bg);color:var(--rd,#e74c3c);border:1.5px solid #fdd;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer">🗑️</button>
+    </div>
+  </div>`;
+}
+
+// Modal: tür değişince gun/tarih alanını göster/gizle
+document.addEventListener('DOMContentLoaded', ()=>{
+  const turSel = document.getElementById('ft-tur');
+  if(turSel) turSel.addEventListener('change', ()=>{
+    const isAylik = turSel.value === 'aylik';
+    const gunW = document.getElementById('ft-gun-wrap');
+    const tarihW = document.getElementById('ft-tarih-wrap');
+    if(gunW) gunW.style.display = isAylik ? '' : 'none';
+    if(tarihW) tarihW.style.display = isAylik ? 'none' : '';
+  });
+});
+
+// Fatura hatırlatıcı - giriş yapınca çalışır
+function faturaBildirim(){
+  const bugun = new Date().getDate();
+  const yaklasan = FATURALAR.filter(f=>{
+    if(f.odendi) return false;
+    const k = getFaturaBugunKalan(f);
+    return k !== null && k <= 3;
+  });
+  if(yaklasan.length > 0){
+    const isimler = yaklasan.map(f=>`${ft.ad}${getFaturaBugunKalan(f)===0?' (bugün!)':' ('+getFaturaBugunKalan(f)+' gün)'}`).join(', ');
+    toast(`🧾 Yaklaşan ödeme: ${isimler}`, 'ok');
+  }
+}
+
+// ── GOOGLE ADSENSE GÖSTER/GİZLE ─────────────────────
+function adSenseGoster(){
+  const wrap = document.getElementById('adsense-wrap');
+  if(wrap) wrap.style.display = (PAKET === 'free') ? 'block' : 'none';
+}
 
 // ══════════════════════════════════════════════
 // EXPORT
@@ -2071,10 +2529,12 @@ function go(pg,el){
   const _s=document.getElementById('scroll');
   if(_s){ _s.scrollTop=0; }
   // Sayfa bazlı işlemler
-  if(pg==='ana') rAna();
+  if(pg==='ana'){ rAna(); adSenseGoster(); }
   if(pg==='kayitlar') rKayitlar();
   if(pg==='alacak') rAlacak();
   if(pg==='rapor') rRapor();
+  if(pg==='fatura') rFatura();
+  if(pg==='fatura') rFatura();
   if(pg==='davet'){
     // Davet kodu hâlâ boşsa profili yeniden yükle
     if(!PROFIL?.davetKodu){
@@ -2351,6 +2811,15 @@ async function yedegiOku(input) {
 
 // ── SES TAMAMEN YENİDEN ───────────────────────
 
+function sesDurdur(){
+  if(recognition){try{recognition.stop();}catch(e){}}
+  sesAktif=false;
+  const btn=document.getElementById('mic-btn'); if(btn) btn.classList.remove('on');
+  const ico=document.getElementById('mic-ico'); if(ico) ico.textContent='🎙️';
+  const txt=document.getElementById('mic-txt'); if(txt) txt.textContent='Sesle Kayıt Ekle';
+  const wav=document.getElementById('mic-waves'); if(wav) wav.style.display='none';
+}
+
 function sesBaslat() {
   const SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechAPI) { toast('⚠️ Ses için Chrome veya Safari kullan!', 'err'); return; }
@@ -2414,6 +2883,28 @@ async function sesIsle(metin) {
     return;
   }
   if (tutar > 0) {
+    // Alacak komutu → alacaklar tablosuna
+    if (tur === 'alacak') {
+      const yeniA = {
+        user_id: USER.id,
+        kisi: kisi || 'Bilinmiyor',
+        tutar: tutar,
+        aciklama: metin,
+        tarih: new Date().toISOString().split('T')[0],
+        durum: 'acik',
+        sehir: PROFIL?.sehir||'',
+        sektor: PROFIL?.sektor||'',
+        giris_tipi: 'ses'
+      };
+      const {data:aData, error:aErr} = await sb.from('alacaklar').insert([yeniA]).select();
+      if(aErr){toast('⚠️ Alacak eklenemedi: '+aErr.message,'err');return;}
+      if(aData) ALACAKLAR.unshift(aData[0]);
+      rAna();
+      toast('🤝 ₺'+f(tutar)+' alacak eklendi'+(kisi?' ('+kisi+')':'')+'!','ok');
+      if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(f(tutar)+' lira alacak eklendi');u.lang='tr-TR';speechSynthesis.speak(u);}
+      return;
+    }
+    // Gelir/gider → kayitlar tablosuna
     const yeni={tur,tutar,aciklama:metin,kisi,tarih:new Date().toISOString().split('T')[0],
     user_id:USER.id, sehir:PROFIL?.sehir||'', sektor:PROFIL?.sektor||'', giris_tipi:'ses'};
     if(kat) yeni.kategori = kat;
@@ -2421,7 +2912,7 @@ async function sesIsle(metin) {
     if(error){toast('⚠️ Kayıt eklenemedi: '+error.message,'err');return;}
     if(data) KAYITLAR.unshift(data[0]);
     rAna();
-    const emoji=tur==='gelir'?'💵':tur==='gider'?'💸':'🤝';
+    const emoji=tur==='gelir'?'💵':'💸';
     toast(emoji+' ₺'+f(tutar)+' '+tur+' kaydedildi!','ok');
     if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(f(tutar)+' lira '+tur+' kaydedildi');u.lang='tr-TR';speechSynthesis.speak(u);}
   } else {
@@ -2495,20 +2986,34 @@ const FONT_SIZES = {kucuk:14, orta:16, buyuk:18};
 let fontBoy = localStorage.getItem('sd-font') || 'orta';
 
 function fontUygula(boy){
-  if(!FONT_SIZES[boy]) boy = 'orta';
+  if(!['kucuk','orta','buyuk'].includes(boy)) boy = 'orta';
   fontBoy = boy;
   localStorage.setItem('sd-font', boy);
-  const size = FONT_SIZES[boy];
-  document.documentElement.style.setProperty('font-size', size + 'px', 'important');
-  document.body.style.setProperty('font-size', size + 'px', 'important');
+  // class-based: html'e font-kucuk / font-orta / font-buyuk ekle
+  ['kucuk','orta','buyuk'].forEach(b=>document.documentElement.classList.remove('font-'+b));
+  document.documentElement.classList.add('font-'+boy);
   // Butonları güncelle
   ['kucuk','orta','buyuk'].forEach(b=>{
-    const el = document.getElementById('fb-'+b);
-    if(!el) return;
-    el.style.background = b===boy ? 'var(--gr)' : 'var(--bg)';
-    el.style.color      = b===boy ? '#fff'       : 'var(--ink)';
-    el.style.border     = b===boy ? 'none'        : '1.5px solid var(--bd)';
+    const el=document.getElementById('fb-'+b);
+    if(!el)return;
+    const aktif = b===boy;
+    el.style.background = aktif ? 'var(--gr)' : 'var(--bg)';
+    el.style.color      = aktif ? '#fff'       : 'var(--ink)';
+    el.style.borderColor= aktif ? 'var(--gr)'  : 'var(--bd)';
   });
+  const fd=document.getElementById('font-durum');
+  if(fd) fd.textContent='Şu an: '+(boy==='kucuk'?'Küçük':boy==='buyuk'?'Büyük':'Normal');
+}
+// ESKİ fontUygula override - KALDIRILDI
+function _fontUygula_REMOVED(boy){  // eski versiyon - kullanılmıyor
+  if(!['kucuk','orta','buyuk'].includes(boy)) boy = 'orta';
+  const bK = document.getElementById('fb-kucuk');
+  const bB = document.getElementById('fb-buyuk');
+  if(bK){ bK.style.background = boy==='kucuk' ? 'var(--gr)' : 'var(--bg)'; bK.style.color = boy==='kucuk' ? '#fff' : 'var(--ink)'; }
+  if(bB){ bB.style.background = boy==='buyuk' ? 'var(--gr)' : 'var(--bg)'; bB.style.color = boy==='buyuk' ? '#fff' : 'var(--ink)'; }
+  // Durum metni
+  const fd = document.getElementById('font-durum');
+  if(fd) fd.textContent = boy==='buyuk' ? 'Şu an: Büyük' : 'Şu an: Normal';
 }
 function setDark(on){
   darkMode=on;
