@@ -1141,6 +1141,8 @@ let sesAktif=false, recognition=null;
 let darkMode=false;
 
 const PAKET_ADI={free:'🆓 Ücretsiz',esnaf:'⚡ Esnaf',pro:'🚀 Pro'};
+
+// ── YARDIMCI FONKSİYONLAR: setText/f/show/hide zaten UTILS'te tanımlı ──
 const PAKET_LİMİT={free:100,esnaf:Infinity,pro:Infinity};
 
 // KATEGORİLER — localStorage'dan yükle veya varsayılanı kullan
@@ -2217,6 +2219,8 @@ function lsGizle(){
 // ══════════════════════════════════════════════
 const f=n=>Number(n||0).toLocaleString('tr-TR');
 const setText=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+const setHTML=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v??'';};
+
 const empty=(ico,txt)=>`<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-txt">${txt}</div></div>`;
 function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast toast-${type} show`;clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
 function lb(on){const el=document.getElementById('lbar');el.style.width=on?'72%':'100%';if(!on)setTimeout(()=>el.style.width='0',300);}
