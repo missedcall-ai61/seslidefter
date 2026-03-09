@@ -1932,7 +1932,7 @@ function sesBaşlat(){
 }
 
 
-async 
+
 // ══════════════════════════════════════════════
 // EXPORT
 // ══════════════════════════════════════════════
@@ -2217,11 +2217,11 @@ function lsGizle(){
 // ══════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════
-const f=n=>Number(n||0).toLocaleString('tr-TR');
-const setText=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-const setHTML=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v??'';};
+function f(n){return Number(n||0).toLocaleString('tr-TR',{minimumFractionDigits:0,maximumFractionDigits:2});}
+function setText(id,v){const el=document.getElementById(id);if(el)el.textContent=String(v??'');}
+function setHTML(id,v){const el=document.getElementById(id);if(el)el.innerHTML=v??'';}
 
-const empty=(ico,txt)=>`<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-txt">${txt}</div></div>`;
+function empty(ico,txt){return `<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-txt">${txt}</div></div>`;}
 function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast toast-${type} show`;clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
 function lb(on){const el=document.getElementById('lbar');el.style.width=on?'72%':'100%';if(!on)setTimeout(()=>el.style.width='0',300);}
 
