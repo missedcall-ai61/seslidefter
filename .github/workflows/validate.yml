@@ -18,18 +18,64 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Python kur
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: index.html doğrula
+        run: |
+          python3 - << 'PYEOF'
+          import re, collections, subprocess, sys
 
-      - name: Doğrulama çalıştır
-        run: python3 validate.py
+          try:
+              with open('index.html', 'r', encoding='utf-8') as f:
+                  content = f.read()
+          except FileNotFoundError:
+              print("❌ index.html bulunamadı!")
+              sys.exit(1)
 
-      - name: ✅ Başarılı
-        if: success()
-        run: echo "index.html doğrulandı, deploy edilebilir!"
+          errors = []
 
-      - name: ❌ Başarısız
-        if: failure()
-        run: echo "Hata var! Yukarıdaki çıktıya bak, düzelt ve tekrar push et."
+          # Ana script'i bul
+          scripts = list(re.finditer(r'<script>(.+?)</script>', content, re.DOTALL))
+          main_js = next((s.group(1) for s in scripts if 'async function _appBaslat' in s.group(1)), None)
+
+          if not main_js:
+              errors.append("Ana script (_appBaslat) bulunamadı!")
+          else:
+              # 1. Syntax kontrol
+              with open('/tmp/sd_check.js', 'w') as f:
+                  f.write(main_js)
+              r = subprocess.run(['node', '--check', '/tmp/sd_check.js'], capture_output=True, text=True)
+              if r.returncode != 0:
+                  errors.append(f"SYNTAX HATASI:\n{r.stderr}")
+
+              # 2. Duplicate let kontrolü
+              lets = re.findall(r'(?:^|\n)\s*let\s+(\w+)', main_js)
+              dupes = {k:v for k,v in collections.Counter(lets).items() if v > 1}
+              if dupes:
+                  errors.append(f"Duplicate let tanımı: {dupes}")
+
+              # 3. Kritik fonksiyonlar
+              defined = set(re.findall(r'(?:async\s+)?function\s+(\w+)\s*\(', main_js))
+              critical = ['_appBaslat','init','profilYukle','verileriYukle',
+                          'guncelleUI','go','rAna','sesBaslat','sesDurdur',
+                          'kayitKaydet','lsGizle','authGoster']
+              for fn in critical:
+                  if fn not in defined:
+                      errors.append(f"KRİTİK FONKSİYON EKSİK: {fn}()")
+
+              # 4. Brace dengesi
+              opens, closes = main_js.count('{'), main_js.count('}')
+              if opens != closes:
+                  errors.append(f"Parantez dengesi bozuk: {{ {opens} vs }} {closes}")
+
+              # 5. Backtick dengesi
+              if main_js.count('`') % 2 != 0:
+                  errors.append("Template literal kapanmamış (backtick tek sayıda)!")
+
+          print("\n=== SesliDefter Doğrulama ===")
+          if errors:
+              print(f"❌ {len(errors)} HATA BULUNDU:")
+              for e in errors:
+                  print(f"  • {e}")
+              sys.exit(1)
+          else:
+              print("✅ Tüm kontroller geçti - deploy edilebilir!")
+          PYEOF
