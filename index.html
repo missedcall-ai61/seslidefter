@@ -596,6 +596,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 <!-- ALACAK/VERECEK -->
 <div class="pg" id="pg-alacak">
   <div style="padding:14px 14px 0">
+    <!-- Özet -->
     <div class="ozet-card" style="margin-bottom:14px">
       <div class="ozet-title">Alacak / Verecek Özeti</div>
       <div class="ozet-row">
@@ -605,6 +606,25 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
         <div class="ozet-div"></div>
         <div class="ozet-item"><div class="ozet-v" id="av-net">₺0</div><div class="ozet-l">Net</div></div>
       </div>
+    </div>
+    <!-- Takvim -->
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <button onclick="takvimAy(-1)" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink);padding:4px 8px">‹</button>
+        <div id="takvim-baslik" style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink)"></div>
+        <button onclick="takvimAy(1)" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink);padding:4px 8px">›</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-bottom:6px">
+        <div style="font-size:10px;font-weight:700;color:var(--mu)">Pt</div>
+        <div style="font-size:10px;font-weight:700;color:var(--mu)">Sa</div>
+        <div style="font-size:10px;font-weight:700;color:var(--mu)">Ça</div>
+        <div style="font-size:10px;font-weight:700;color:var(--mu)">Pe</div>
+        <div style="font-size:10px;font-weight:700;color:var(--mu)">Cu</div>
+        <div style="font-size:10px;font-weight:700;color:var(--mu);color:#e74c3c">Ct</div>
+        <div style="font-size:10px;font-weight:700;color:#e74c3c">Pz</div>
+      </div>
+      <div id="takvim-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"></div>
+      <div id="takvim-detay" style="margin-top:10px;display:none;background:var(--bg);border-radius:10px;padding:10px;font-size:13px"></div>
     </div>
   </div>
   <div class="sec-hdr"><div class="sec-title">Alacaklarım</div><div class="sec-link" onclick="hizliKayit('alacak')">+ Ekle</div></div>
@@ -1781,7 +1801,7 @@ function rAlacak(){
     const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${a.vade})</div>`:vade.getTime()-bugun.getTime()<7*86400000?`<div style="font-size:13px;color:var(--am);font-weight:600;margin-top:3px">⏰ ${a.vade} vadeli</div>`:`<div style="font-size:13px;color:var(--mu);margin-top:3px">📅 ${a.vade}</div>`):''
     return`<div class="avc">
       <div class="avc-top">
-        <div><div class="avc-name">${a.isim}</div><div class="avc-desc">${a.aciklama||''}</div>${vadeDurum}</div>
+        <div><div class="avc-name">${a.isim||a.kisi||"İsimsiz"}</div><div class="avc-desc">${a.aciklama||''}</div>${vadeDurum}</div>
       </div>
       <div class="avc-bot">
         <div class="avc-amt-g">₺${f(a.tutar)}</div>
@@ -1793,6 +1813,7 @@ function rAlacak(){
       </div>
     </div>`;
   }).join('')||empty('📥','Alacak yok! 🎉');
+  try{rTakvim();}catch(e){}
 
   document.getElementById('verecek-liste').innerHTML=VERECEKLER.map(v=>{
     const vade=v.vade?new Date(v.vade):null;
@@ -1800,7 +1821,7 @@ function rAlacak(){
     const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${v.vade})</div>`:''): '';
     return`<div class="avc" style="border-color:var(--rdm)">
       <div class="avc-top">
-        <div><div class="avc-name">${v.isim}</div><div class="avc-desc">${v.aciklama||''}</div>${vadeDurum}</div>
+        <div><div class="avc-name">${v.isim||v.kisi||"İsimsiz"}</div><div class="avc-desc">${v.aciklama||''}</div>${vadeDurum}</div>
       </div>
       <div class="avc-bot">
         <div class="avc-amt-r">₺${f(v.tutar)}</div>
@@ -1939,7 +1960,7 @@ async function kayitKaydet(){
 
     if(error){ toast('❌ '+(error.message||JSON.stringify(error)),'err'); lb(false); return; }
     await verileriYukle();
-    closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
+    closeM('m-kayit');formTemizle();rAna();rAlacak();rKayitlar();toast('📤 Verecek eklendi!','ok');
   }else{
     const tarihStr = new Date().toISOString().split('T')[0];
     const y={tur:aktifTur,tutar,aciklama,kisi,tarih:tarihStr,user_id:USER.id,
@@ -1957,7 +1978,7 @@ async function kayitKaydet(){
       toast('❌ '+msg,'err'); lb(false); return;
     }
     await verileriYukle();
-    closeM('m-kayit');formTemizle();rAna();
+    closeM('m-kayit');formTemizle();rAna();rKayitlar();
     toast(`${aktifTur==='gelir'?'💵':'💸'} ₺${f(tutar)} kaydedildi!`,'ok');
   }
   lb(false);
@@ -2009,6 +2030,96 @@ async function kayitSil(id){
 // ══════════════════════════════════════════════
 // VADE BİLDİRİMİ
 // ══════════════════════════════════════════════
+
+
+// ══════════════════════════════════════════════
+// TAKVİM - Alacak vade takibi
+// ══════════════════════════════════════════════
+let takvimYil = new Date().getFullYear();
+let takvimAy_ = new Date().getMonth();
+
+function takvimAy(delta){
+  takvimAy_ += delta;
+  if(takvimAy_ > 11){ takvimAy_ = 0; takvimYil++; }
+  if(takvimAy_ < 0) { takvimAy_ = 11; takvimYil--; }
+  rTakvim();
+}
+
+function rTakvim(){
+  const baslik = document.getElementById('takvim-baslik');
+  const grid   = document.getElementById('takvim-grid');
+  if(!baslik || !grid) return;
+
+  const aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
+                 'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  baslik.textContent = aylar[takvimAy_] + ' ' + takvimYil;
+
+  // Bu aydaki vadeleri haritala
+  const vadeMap = {}; // 'YYYY-MM-DD' → [{kisi, tutar}]
+  [...ALACAKLAR, ...VERECEKLER].forEach(a => {
+    if(!a.vade) return;
+    const d = a.vade.split('T')[0];
+    const [y,mo] = d.split('-').map(Number);
+    if(y === takvimYil && mo-1 === takvimAy_){
+      if(!vadeMap[d]) vadeMap[d] = [];
+      vadeMap[d].push({kisi: a.isim||a.kisi||'?', tutar: a.tutar, tip: ALACAKLAR.includes(a)?'alacak':'verecek'});
+    }
+  });
+
+  // Ayın ilk günü hangi gün? (Pazartesi=0)
+  const ilkGun = new Date(takvimYil, takvimAy_, 1);
+  const ilkHafta = (ilkGun.getDay() + 6) % 7; // 0=Pt
+  const sonGun = new Date(takvimYil, takvimAy_+1, 0).getDate();
+  const bugun = new Date();
+
+  let html = '';
+  // Boş hücreler
+  for(let i=0; i<ilkHafta; i++) html += '<div></div>';
+
+  for(let gun=1; gun<=sonGun; gun++){
+    const tarihStr = takvimYil+'-'+String(takvimAy_+1).padStart(2,'0')+'-'+String(gun).padStart(2,'0');
+    const vadeler  = vadeMap[tarihStr] || [];
+    const eBugun   = bugun.getFullYear()===takvimYil && bugun.getMonth()===takvimAy_ && bugun.getDate()===gun;
+    const gecmis   = new Date(tarihStr) < new Date(bugun.toDateString());
+
+    let bg = 'transparent', color = 'var(--ink)', border = 'none';
+    if(eBugun){ bg='var(--gr)'; color='#fff'; }
+    else if(vadeler.length > 0 && gecmis){ bg='var(--rdl)'; color='var(--rd)'; border='1px solid var(--rdm)'; }
+    else if(vadeler.length > 0){ bg='var(--grl)'; color='var(--gr)'; border='1px solid var(--grm)'; }
+
+    html += `<div onclick="takvimGunTikla('${tarihStr}')" style="
+      position:relative;padding:5px 2px;border-radius:7px;cursor:pointer;
+      background:${bg};color:${color};border:${border};
+      font-size:12px;font-weight:${vadeler.length>0||eBugun?700:400};
+      min-height:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    ">
+      ${gun}
+      ${vadeler.length>0 ? `<div style="font-size:9px;font-weight:800;background:${gecmis?'var(--rd)':'var(--gr)'};color:#fff;border-radius:999px;padding:0 4px;margin-top:1px;line-height:16px">${vadeler.length}</div>` : ''}
+    </div>`;
+  }
+  grid.innerHTML = html;
+
+  // Detay paneli kapat
+  const det = document.getElementById('takvim-detay');
+  if(det) det.style.display = 'none';
+}
+
+function takvimGunTikla(tarih){
+  const det = document.getElementById('takvim-detay');
+  if(!det) return;
+  const vadeler = [...ALACAKLAR, ...VERECEKLER].filter(a => a.vade && a.vade.split('T')[0] === tarih);
+  if(vadeler.length === 0){ det.style.display='none'; return; }
+  const tarihG = new Date(tarih).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  det.style.display = 'block';
+  det.innerHTML = `<div style="font-weight:700;margin-bottom:6px;color:var(--ink)">📅 ${tarihG}</div>` +
+    vadeler.map(a => {
+      const tip = ALACAKLAR.includes(a) ? '🟢 Alacak' : '🔴 Verecek';
+      return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd)">
+        <span>${tip} — ${a.isim||a.kisi||'?'}</span>
+        <span style="font-weight:700">₺${f(a.tutar)}</span>
+      </div>`;
+    }).join('');
+}
 
 // ══════════════════════════════════════════════
 // FATURA / ÖDEME PLANLANICI
@@ -2432,7 +2543,7 @@ function go(pg,el){
   // Sayfa bazlı işlemler
   if(pg==='ana'){ rAna(); adSenseGoster(); }
   if(pg==='kayitlar') rKayitlar();
-  if(pg==='alacak') rAlacak();
+  if(pg==='alacak'){ rAlacak(); rTakvim(); }
   if(pg==='rapor') rRapor();
   if(pg==='fatura'){ rFatura(); faturalariYukle(); }
   if(pg==='profil') guncelleUI();
@@ -2757,18 +2868,41 @@ function sesBaslat() {
 async function sesIsle(metin) {
   if (!metin) return;
   const m = metin.toLowerCase().trim();
-  // Tutar
+  // Tutar - "10 bin", "5 milyon", "200 bin 500" desteği
   let tutar = 0;
-  const tm = m.match(/(\d+(?:[.,]\d+)?)\s*(?:lira|tl)?/);
-  if (tm) tutar = parseFloat(tm[1].replace(',','.'));
+  const tutarStr = m.replace(/[,]/g, '.');
+  // Önce bileşik ifadeler: "10 bin 500", "2 milyon 300 bin"
+  const binM = tutarStr.match(/(\d+(?:\.\d+)?)\s*milyon(?:\s*(\d+(?:\.\d+)?)\s*bin)?(?:\s*(\d+(?:\.\d+)?))?/);
+  const binK = tutarStr.match(/(\d+(?:\.\d+)?)\s*bin(?:\s*(\d+(?:\.\d+)?))?/);
+  const sadece = tutarStr.match(/(\d+(?:\.\d+)?)\s*(?:lira|tl|₺)?/);
+  if (binM) {
+    tutar = parseFloat(binM[1]) * 1000000;
+    if (binM[2]) tutar += parseFloat(binM[2]) * 1000;
+    if (binM[3]) tutar += parseFloat(binM[3]);
+  } else if (binK) {
+    tutar = parseFloat(binK[1]) * 1000;
+    if (binK[2]) tutar += parseFloat(binK[2]);
+  } else if (sadece) {
+    tutar = parseFloat(sadece[1]);
+  }
   // Tür
   let tur = 'gelir';
   if (['borç verdim','ödünç verdim','veresiye','alacak'].some(k=>m.includes(k))) tur='alacak';
   else if (['ödedim','harcadım','gider','kira ödedim','fatura','vergi','maaş','malzeme aldım'].some(k=>m.includes(k))) tur='gider';
-  // Kişi (Türkçe apostrof destekli)
+  // Kişi adı - "ahmet bey", "mehmet'e", "ali'den", isim sonda
   let kisi = '';
-  const km = m.match(/([a-z\u00e7\u011f\u0131\u00f6\u015f\u00fc\u00e2\u00ee\u00fb]{2,})['\u2019][ae]/i);
-  if (km) kisi = km[1].charAt(0).toUpperCase()+km[1].slice(1);
+  // Apostrof: "ahmet'e", "mehmet'ten"
+  const km1 = m.match(/([a-zçğıöşüÇĞİÖŞÜ]{2,})['’][a-z]/i);
+  // "bey/hanım/hanim" öncesi isim: "ahmet bey", "ayşe hanım"
+  const km2 = m.match(/([a-zçğıöşü]{2,})\s+(?:bey|han[ıi]m|abla|abi|hoca)/i);
+  // Son kelime eğer sayı/keyword değilse isim say
+  const keywords = ['gelir','gider','alacak','verecek','ekle','tl','lira','bin','milyon','ödedim','aldım','sattım'];
+  const kelimeler = m.split(/\s+/).filter(k=>k.length>2 && !keywords.includes(k) && !/^\d/.test(k));
+  const km3 = kelimeler.length > 0 ? kelimeler[kelimeler.length-1] : null;
+  
+  if (km1) kisi = km1[1].charAt(0).toUpperCase() + km1[1].slice(1);
+  else if (km2) kisi = km2[1].charAt(0).toUpperCase() + km2[1].slice(1);
+  else if (km3 && tur === 'alacak') kisi = km3.charAt(0).toUpperCase() + km3.slice(1);
   // Kategori
   let kat = null;
   const katMap = {kira:['kira'],malzeme:['malzeme','hammadde'],hizmet:['hizmet','tamir','servis'],satis:['sattım','satış'],maas:['maaş'],fatura:['fatura','elektrik','su'],vergi:['vergi'],tahsilat:['tahsil','ödedi']};
