@@ -795,7 +795,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
     </div>
   </div>
   <div style="height:8px"></div>
-</div>
+
 
 <!-- KVKK -->
 <div class="pg" id="pg-kvkk">
@@ -1143,6 +1143,19 @@ async function _appBaslat(){
   // Her koşulda çalışacak güvenli fallback
   function _girisCik(){ lsGizle(); authGoster(); }
 
+  // URL'den davet kodu oku (örn: ?ref=SD1234)
+  try {
+    const _ref = new URLSearchParams(window.location.search).get('ref');
+    if(_ref) {
+      setTimeout(()=>{
+        const inp = document.getElementById('k-davet');
+        if(inp){ inp.value = _ref.toUpperCase(); davetKoduKontrol(_ref); }
+        // Kayıt sekmesini aç
+        const kb = document.querySelector('[onclick*="kayit"]');
+      }, 800);
+    }
+  } catch(e){}
+
   // Dark mode
   try {
     darkMode = localStorage.getItem('sd-dark') === '1';
@@ -1150,6 +1163,8 @@ async function _appBaslat(){
     // Font boyutu
     const savedFont = localStorage.getItem('sd-font') || 'orta';
     document.documentElement.style.fontSize = (savedFont==='kucuk'?13:savedFont==='buyuk'?17:15) + 'px';
+    // Font buton durumunu da güncelle (profil sayfası açık olursa)
+    setTimeout(()=>fontUygula(savedFont), 100);
   } catch(e){}
 
   // 5sn'de hâlâ yüklenmezse direkt giriş ekranına at
@@ -1719,7 +1734,8 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
     console.log('Alacak result:', {data,error});
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
-    if(data)ALACAKLAR.unshift(data[0]);
+    // Veriyi yeniden çek — en güvenilir yöntem
+    await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('🤝 Alacak eklendi!','ok');
   }else if(aktifTur==='verecek'){
     const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id,created_at:new Date().toISOString()};
@@ -1727,7 +1743,7 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('verecekler').insert([y]).select();
     console.log('Verecek result:', {data,error});
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
-    if(data)VERECEKLER.unshift(data[0]);
+    await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
   }else{
     const tarihStr = new Date().toISOString().split('T')[0];
@@ -1739,7 +1755,7 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('kayitlar').insert([y]).select();
     console.log('Kayit result:', {data,error});
     if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
-    if(data)KAYITLAR.unshift(data[0]);
+    await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();
     toast(`${aktifTur==='gelir'?'💵':'💸'} ₺${f(tutar)} kaydedildi!`,'ok');
   }
