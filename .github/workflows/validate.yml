@@ -1,0 +1,35 @@
+name: SesliDefter Doğrulama
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu indir
+        uses: actions/checkout@v4
+
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Doğrulama çalıştır
+        run: python3 validate.py
+
+      - name: ✅ Başarılı
+        if: success()
+        run: echo "index.html doğrulandı, deploy edilebilir!"
+
+      - name: ❌ Başarısız
+        if: failure()
+        run: echo "Hata var! Yukarıdaki çıktıya bak, düzelt ve tekrar push et."
