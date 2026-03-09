@@ -697,106 +697,98 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
 
 <!-- PROFİL -->
 <div class="pg" id="pg-profil">
-  <div style="padding:18px 14px 12px">
-    <div style="display:flex;align-items:center;gap:13px;margin-bottom:18px">
-      <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0" id="profil-av">?</div>
-      <div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800" id="profil-isim">—</div>
-        <div style="font-size:12.5px;color:var(--mu);margin-top:2px" id="profil-email">—</div>
-        <div class="tb-plan plan-free" style="display:inline-block;margin-top:4px" id="profil-plan">—</div>
+  <div class="pg-hd"><div class="pg-hd-title">👤 Profil & Ayarlar</div></div>
+  <div style="padding:14px 14px 40px">
+
+    <!-- Kullanıcı Bilgisi -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--bd)">
+      <div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;flex-shrink:0" id="profil-av">?</div>
+      <div style="min-width:0">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="profil-isim">—</div>
+        <div style="font-size:13px;color:var(--mu);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="profil-email">—</div>
+        <div class="tb-plan plan-free" style="display:inline-block;margin-top:5px" id="profil-plan">—</div>
       </div>
     </div>
-    <div class="profil-card" style="margin-bottom:11px">
+
+    <!-- Hesap -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Hesap</div>
+    <div class="profil-card" style="margin-bottom:16px">
       <div class="profil-row" onclick="openM('m-profil-edit')">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--bll)">👤</div><div><div class="pr-label">Profil Bilgileri</div><div class="pr-sub">Ad, işletme adı düzenle</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">👤</div><div><div class="pr-label">Profil Bilgileri</div><div class="pr-sub">Ad, işletme adı düzenle</div></div></div>
         <div class="pr-arr">›</div>
       </div>
       <div class="profil-row" onclick="go('paket')">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div>
-      <!-- DAVET ET KISAYOLU -->
+        <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
       <div class="profil-row" onclick="go('davet')">
-        <div class="pr-left">
-          <div class="pr-ico" style="background:#fff8e8">🎁</div>
-          <div>
-            <div class="pr-label">Davet Et & Kazan</div>
-            <div class="pr-sub" id="davet-kredi-txt">Her davet = 30 gün bonus</div>
-          </div>
-        </div>
+        <div class="pr-left"><div class="pr-ico" style="background:#fff8e8">🎁</div><div><div class="pr-label">Davet Et & Kazan</div><div class="pr-sub" id="davet-kredi-txt">Her davet = 30 gün bonus</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-        </div>
-        <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
-          <div>
-            <div style="font-size:11px;color:rgba(255,255,255,.7);font-weight:600;text-transform:uppercase;letter-spacing:1px">Senin Kodun</div>
-            <div id="profil-davet-kodu" style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:3px">—</div>
-          </div>
-          <button onclick="davetKopyala()" style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
-            📋 Kopyala
-          </button>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
-            <div id="profil-davet-sayisi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--gr)">0</div>
-            <div style="font-size:11px;color:var(--mu);font-weight:600">Davet Ettiğin</div>
-          </div>
-          <div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
-            <div id="profil-kredi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#f59e0b">0</div>
-            <div style="font-size:11px;color:var(--mu);font-weight:600">Bonus Gün</div>
-          </div>
-        </div>
-        <button onclick="davetPaylasWhatsapp()" style="width:100%;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px">
-          📱 WhatsApp ile Davet Et
-        </button>
-      </div></div>
-        <div class="pr-arr">›</div>
-      </div>
+    </div>
+
+    <!-- Görünüm -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Görünüm</div>
+    <div class="profil-card" style="margin-bottom:16px">
       <div class="profil-row" onclick="toggleDark()">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--card2)">🌙</div><div><div class="pr-label">Karanlık Mod</div><div class="pr-sub" id="dark-sub">Şu an: Açık tema</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:var(--card2)">🌙</div><div><div class="pr-label">Karanlık Mod</div><div class="pr-sub">Şu an: <span id="dark-durum">Açık tema</span></div></div></div>
         <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px"></button>
       </div>
-      <!-- Yazı Boyutu -->
       <div class="profil-row" style="cursor:default">
-        <div class="pr-left">
-          <div class="pr-ico" style="background:#fff8e8">🔤</div>
-          <div>
-            <div class="pr-title">Yazı Boyutu</div>
-            <div class="pr-sub">Okuma konforunu ayarla</div>
-          </div>
-        </div>
+        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub">Okuma konforunu ayarla</div></div></div>
         <div style="display:flex;gap:6px;align-items:center">
           <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
           <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:none;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--gr);color:#fff">A</button>
           <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:17px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
         </div>
       </div>
-      <div class="profil-row" onclick="go('hakkinda')">
-      <div class="pr-left"><div class="pr-ico" style="background:#f0f0ff">ℹ️</div><div><div class="pr-title">Hakkımızda</div><div class="pr-sub">Ekip ve uygulama hakkında</div></div></div>
-      <div class="pr-arr">›</div>
     </div>
-    <div class="profil-row" onclick="go('kvkk')">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--pul)">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
+
+    <!-- Veri & Gizlilik -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Veri & Gizlilik</div>
+    <div class="profil-card" style="margin-bottom:16px">
       <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--bll)">📊</div><div>
-          <div class="pr-label">Veri Yedekle</div>
-          <div class="pr-sub">Excel veya JSON formatında</div>
-        </div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:#e8fff4">📊</div><div><div class="pr-label">Veri Yedekle</div><div class="pr-sub">Excel veya JSON formatında indir</div></div></div>
         <div style="display:flex;gap:6px">
           <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📊 Excel</button>
           <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
         </div>
-      </div></div>
+      </div>
+      <div class="profil-row" onclick="go('kvkk')">
+        <div class="pr-left"><div class="pr-ico" style="background:#fff0f0">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
         <div class="pr-arr">›</div>
       </div>
     </div>
-    <div class="danger-zone">
-      <div class="dz-title">⚠️ Tehlikeli Bölge</div>
-      <div class="dz-btn" onclick="hesapCikis()">🚪 Çıkış Yap</div>
-      <div class="dz-btn" onclick="openM('m-hesap-sil')">🗑️ Hesabımı Sil (KVKK)</div>
+
+    <!-- Uygulama -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Uygulama</div>
+    <div class="profil-card" style="margin-bottom:20px">
+      <div class="profil-row" onclick="go('hakkinda')">
+        <div class="pr-left"><div class="pr-ico" style="background:#f0f0ff">ℹ️</div><div><div class="pr-label">Hakkımızda</div><div class="pr-sub">Ekip ve uygulama hakkında</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
     </div>
+
+    <!-- Hesap İşlemleri -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Hesap İşlemleri</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <button onclick="hesapCikis()" style="width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+        🚪 Çıkış Yap
+      </button>
+      <button onclick="openM('m-hesap-sil')" style="width:100%;background:var(--card);color:#e74c3c;border:1.5px solid #fdd;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+        🗑️ Hesabımı Sil
+      </button>
+    </div>
+
+    <!-- Hidden IDs for JS -->
+    <div style="display:none">
+      <div id="profil-davet-kodu"></div>
+      <div id="profil-davet-sayisi"></div>
+      <div id="profil-kredi"></div>
+    </div>
+
   </div>
-  <div style="height:8px"></div>
+</div>
 
 
 <!-- KVKK -->
@@ -2053,15 +2045,28 @@ function authKvkkAc(tip){
 function go(pg,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.bni,.dsk-item').forEach(x=>x.classList.remove('on'));
-  document.getElementById('pg-'+pg)?.classList.add('on');
-  if(el)el.classList.add('on');
+  const target = document.getElementById('pg-'+pg);
+  if(target) target.classList.add('on');
+  if(el) el.classList.add('on');
   document.querySelectorAll(`[data-pg="${pg}"]`).forEach(x=>x.classList.add('on'));
-  const _s=document.getElementById('scroll'); if(_s)_s.scrollTop=0;
-  if(pg==='ana')rAna();
-  if(pg==='kayitlar')rKayitlar();
-  if(pg==='alacak')rAlacak();
-  if(pg==='rapor')rRapor();
-  if(pg==='profil'){document.getElementById('pe-isim').value=PROFIL?.isim||'';document.getElementById('pe-isletme').value=PROFIL?.isletme||'';}
+  // Scroll'u her zaman sıfırla
+  const _s=document.getElementById('scroll');
+  if(_s){ _s.scrollTop=0; }
+  // Sayfa bazlı işlemler
+  if(pg==='ana') rAna();
+  if(pg==='kayitlar') rKayitlar();
+  if(pg==='alacak') rAlacak();
+  if(pg==='rapor') rRapor();
+  if(pg==='profil'){
+    // Karanlık mod durumu güncelle
+    const dd = document.getElementById('dark-durum');
+    if(dd) dd.textContent = darkMode ? 'Karanlık tema' : 'Açık tema';
+    const dt2 = document.getElementById('dark-toggle2');
+    if(dt2) dt2.classList.toggle('on', darkMode);
+    // Font buton durumu
+    const savedFont = localStorage.getItem('sd-font')||'orta';
+    fontUygula(savedFont);
+  }
 }
 
 
