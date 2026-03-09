@@ -14,6 +14,7 @@
 <!-- CDN scripts moved to body -->
 <style>
 :root{
+  --fs-xs:12px;--fs-sm:13.5px;--fs-md:15px;--fs-lg:17px;
   --bg:#f5f3ee;--card:#fff;--card2:#faf9f6;--bd:#e8e4dc;
   --ink:#1a1814;--ink2:#3d3a34;--mu:#9b9488;
   --gr:#1a7a4a;--grl:#e8f5ee;--grm:#c3e8d3;
@@ -37,7 +38,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);transition:background .3s,color .3s;}
-body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
+body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-size:15px;}
 
 /* LOADING */
 #ls{position:fixed;inset:0;background:var(--gr);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s;}
@@ -123,12 +124,12 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .kpi{background:rgba(255,255,255,.13);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:12px;}
 .kpi-l{font-size:10.5px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:2px;}
 .kpi-v{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;}
-.kpi-d{font-size:10px;color:rgba(255,255,255,.55);margin-top:1px;}
+.kpi-d{font-size:13px;color:rgba(255,255,255,.55);margin-top:1px;}
 
 /* SES KARTI */
 .ses-wrap{margin:-38px 14px 12px;position:relative;z-index:10;}
 .ses-card{background:var(--card);border-radius:18px;box-shadow:var(--shl);padding:18px;border:1px solid var(--bd);}
-.ses-card-title{font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;text-align:center;}
+.ses-card-title{font-size:13px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;text-align:center;}
 .ses-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px;}
 .ses-btn{border:none;border-radius:12px;padding:13px 8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .18s;}
 .ses-btn:active{transform:scale(.95);}
@@ -159,7 +160,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .kayit-info{flex:1;min-width:0;}
 .kayit-desc{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .kayit-meta{font-size:10.5px;color:var(--mu);margin-top:2px;}
-.kayit-kat{display:inline-block;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:600;margin-top:3px;}
+.kayit-kat{display:inline-block;padding:2px 7px;border-radius:99px;font-size:13px;font-weight:600;margin-top:3px;}
 .kayit-amt{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;flex-shrink:0;}
 .amt-g{color:var(--gr);}.amt-r{color:var(--rd);}.amt-a{color:var(--am);}
 
@@ -177,8 +178,8 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .avb-ok{background:var(--grl);color:var(--gr);border:1px solid var(--grm);}
 .avb-wa{background:#e7f9ee;color:#25d366;border:1px solid #b7f0cd;}
 .avb-del{background:var(--rdl);color:var(--rd);border:1px solid var(--rdm);}
-.vade-warn{font-size:11px;color:var(--rd);font-weight:600;margin-top:3px;}
-.vade-ok{font-size:11px;color:var(--mu);margin-top:3px;}
+.vade-warn{font-size:13px;color:var(--rd);font-weight:600;margin-top:3px;}
+.vade-ok{font-size:13px;color:var(--mu);margin-top:3px;}
 
 /* RAPOR */
 .ozet-card{background:linear-gradient(135deg,#1a7a4a,#145f38);border-radius:17px;padding:17px;box-shadow:0 6px 30px rgba(26,122,74,.25);}
@@ -186,11 +187,11 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .ozet-row{display:flex;gap:2px;margin-bottom:10px;}
 .ozet-item{flex:1;text-align:center;}
 .ozet-v{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff;}
-.ozet-l{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;}
+.ozet-l{font-size:13px;color:rgba(255,255,255,.65);margin-top:1px;}
 .ozet-div{width:1px;background:rgba(255,255,255,.18);}
 .ozet-net{text-align:center;padding-top:11px;border-top:1px solid rgba(255,255,255,.15);}
 .ozet-net-v{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;}
-.ozet-net-l{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:3px;}
+.ozet-net-l{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:3px;}
 .chart-card{background:var(--card);border:1px solid var(--bd);border-radius:15px;padding:15px;box-shadow:var(--sh);}
 .chart-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;margin-bottom:10px;}
 .chart-bars{display:flex;gap:4px;align-items:flex-end;height:80px;position:relative;}
@@ -198,8 +199,8 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .chart-bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;gap:2px;}
 .chart-bar{flex:1;border-radius:4px 4px 0 0;min-height:2px;transition:opacity .2s;}
 .chart-bar:hover{opacity:.8;}
-.chart-day{font-size:9px;color:var(--mu);font-weight:500;}
-.chart-val{font-size:9px;color:var(--mu);font-weight:600;}
+.chart-day{font-size:12px;color:var(--mu);font-weight:500;}
+.chart-val{font-size:12px;color:var(--mu);font-weight:600;}
 .cat-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
 .cat-lbl{font-size:12px;color:var(--mu);width:100px;text-align:right;flex-shrink:0;}
 .cat-bar-wrap{flex:1;height:7px;background:var(--bd);border-radius:99px;overflow:hidden;}
@@ -210,7 +211,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .paket-grid{padding:14px;display:flex;flex-direction:column;gap:11px;}
 .paket-card{background:var(--card);border:2px solid var(--bd);border-radius:17px;padding:17px;position:relative;box-shadow:var(--sh);}
 .paket-card.popular{border-color:var(--gr);}
-.paket-card.popular::before{content:'⭐ En Popüler';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gr);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap;}
+.paket-card.popular::before{content:'⭐ En Popüler';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gr);color:#fff;font-size:13px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap;}
 .paket-name{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;}
 .paket-fiyat{display:flex;align-items:baseline;gap:3px;margin-bottom:12px;}
 .paket-tutar{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;}
@@ -218,7 +219,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .paket-donem{font-size:13px;color:var(--mu);}
 .paket-ozs{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
 .paket-oz{display:flex;align-items:center;gap:7px;font-size:12.5px;}
-.oz-ico{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.oz-ico{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
 .oz-ok{background:var(--grl);color:var(--gr);}.oz-no{background:var(--rdl);color:var(--rd);}
 .paket-btn{width:100%;padding:12px;border-radius:11px;font-size:13.5px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;}
 .pb-gr{background:linear-gradient(135deg,#1a7a4a,#2ecc71);color:#fff;box-shadow:0 4px 16px rgba(26,122,74,.3);}
@@ -233,10 +234,10 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .pr-left{display:flex;align-items:center;gap:10px;}
 .pr-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
 .pr-label{font-size:13.5px;font-weight:500;}
-.pr-sub{font-size:11px;color:var(--mu);margin-top:1px;}
+.pr-sub{font-size:13px;color:var(--mu);margin-top:1px;}
 .pr-arr{color:var(--mu);font-size:17px;}
 .danger-zone{background:var(--rdl);border:1px solid var(--rdm);border-radius:13px;overflow:hidden;}
-.dz-title{font-size:11px;font-weight:700;color:var(--rd);text-transform:uppercase;letter-spacing:.6px;padding:9px 13px 5px;}
+.dz-title{font-size:13px;font-weight:700;color:var(--rd);text-transform:uppercase;letter-spacing:.6px;padding:9px 13px 5px;}
 .dz-btn{display:flex;align-items:center;gap:9px;padding:11px 13px;cursor:pointer;border-bottom:1px solid var(--rdm);font-size:13px;font-weight:500;color:var(--rd);}
 .dz-btn:last-child{border-bottom:none;}
 .dz-btn:active{background:var(--rdm);}
@@ -250,7 +251,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .mtitle{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;margin-bottom:3px;}
 .msub{font-size:12.5px;color:var(--mu);margin-bottom:16px;}
 .fg{margin-bottom:12px;}
-.fl{font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;display:block;}
+.fl{font-size:13px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;display:block;}
 .fi{background:var(--bg);border:1.5px solid var(--bd);border-radius:11px;padding:12px 14px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .2s;width:100%;}
 .fi:focus{border-color:var(--gr);}
 .fsel{background:var(--bg);border:1.5px solid var(--bd);border-radius:11px;padding:12px 14px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:15px;outline:none;width:100%;-webkit-appearance:none;}
@@ -403,17 +404,29 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
       <div class="fg"><label class="fl">Ad Soyad</label><input class="fi" type="text" id="k-isim" placeholder="Ahmet Yılmaz" autocomplete="name"></div>
       <div class="fg"><label class="fl">İşletme Adı</label><input class="fi" type="text" id="k-isletme" placeholder="Ahmet Usta'nın Tamircisi"></div>
       <div class="fg"><label class="fl">E-posta</label><input class="fi" type="email" id="k-email" placeholder="ornek@gmail.com"></div>
-      <div class="fg"><label class="fl">Şifre (min 6 karakter)</label><input class="fi" type="password" id="k-pass" placeholder="••••••••"></div>
+      <div class="fg"><label class="fl">Şifre (min 6 karakter)</label><input class="fi" type="password" id="k-pass" placeholder="••••••••" oninput="passTeyitKontrol()"></div>
+      <div class="fg"><label class="fl">Şifre Tekrar</label><input class="fi" type="password" id="k-pass2" placeholder="••••••••" oninput="passTeyitKontrol()"></div>
+      <div id="k-pass-match" style="font-size:12px;margin:-6px 0 6px;padding:4px 8px;border-radius:6px;display:none"></div>
+      <div class="fg">
+        <label class="fl">Davet Kodu <span style="color:var(--mu);font-weight:400">(opsiyonel)</span></label>
+        <div style="position:relative">
+          <input class="fi" type="text" id="k-davet" placeholder="SD1234" maxlength="6"
+            oninput="this.value=this.value.toUpperCase();davetKoduKontrol(this.value)"
+            style="padding-right:80px;letter-spacing:2px;font-weight:700">
+          <div id="k-davet-durum" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600"></div>
+        </div>
+        <div id="k-davet-bilgi" style="font-size:12px;margin-top:4px;color:var(--mu)">🎁 Davet koduyla kayıt olursan 7 gün bonus kazanırsın!</div>
+      </div>
       <div style="background:var(--aml);border:1px solid var(--amm);border-radius:9px;padding:10px 12px;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start">
         <input type="checkbox" id="kvkk-check" style="margin-top:2px;accent-color:var(--gr);width:14px;height:14px;flex-shrink:0">
         <label for="kvkk-check" style="font-size:12px;color:var(--am);line-height:1.5;cursor:pointer">
-          <a href="#" onclick="go('kvkk');return false" style="color:var(--gr);font-weight:600;text-decoration:none">KVKK Metni</a>'ni ve <a href="#" onclick="go('gizlilik');return false" style="color:var(--gr);font-weight:600;text-decoration:none">Gizlilik Politikası</a>'nı okudum, kabul ediyorum.
+          <a href="#" onclick="authKvkkAc('kvkk');return false" style="color:var(--gr);font-weight:600;text-decoration:none">KVKK Metni</a>'ni ve <a href="#" onclick="authKvkkAc('gizlilik');return false" style="color:var(--gr);font-weight:600;text-decoration:none">Gizlilik Politikası</a>'nı okudum, kabul ediyorum.
         </label>
       </div>
       <button class="btn btn-gr" onclick="emailKayit()">🚀 Hesap Oluştur</button>
     </div>
 
-    <div class="auth-kvkk">Devam ederek <a href="#" onclick="go('kvkk')">KVKK</a> ve <a href="#" onclick="go('kullanim')">Kullanım Şartları</a>'nı kabul etmiş sayılırsınız.</div>
+    <div class="auth-kvkk">Devam ederek <a href="#" onclick="authKvkkAc('kvkk');return false">KVKK</a> ve <a href="#" onclick="authKvkkAc('gizlilik');return false">Gizlilik Politikası</a>'nı kabul etmiş sayılırsınız.</div>
   </div>
 </div>
 
@@ -439,6 +452,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <div class="dsk-item" onclick="go('siri',this)">🎙️ Sesli Komutlar</div>
     <div class="dsk-item" onclick="go('paket',this)">⚡ Paketler</div>
     <div class="dsk-item" onclick="go('profil',this)">👤 Profil & Ayarlar</div>
+    <div class="dsk-item" onclick="go('hakkinda',this)">ℹ️ Hakkımızda</div>
   </div>
   <button class="dsk-mic" onclick="sesBaşlat()">
     <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.8);animation:mpulse 1.5s infinite"></div>
@@ -591,8 +605,8 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <div class="chart-card" style="margin-bottom:10px">
       <div class="chart-title">📊 Günlük Dağılım</div>
       <div style="display:flex;gap:10px;margin-bottom:9px">
-        <div style="display:flex;align-items:center;gap:4px;font-size:11px"><div style="width:8px;height:8px;border-radius:2px;background:#1a7a4a"></div>Gelir</div>
-        <div style="display:flex;align-items:center;gap:4px;font-size:11px"><div style="width:8px;height:8px;border-radius:2px;background:#e74c3c"></div>Gider</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:13px"><div style="width:8px;height:8px;border-radius:2px;background:#1a7a4a"></div>Gelir</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:13px"><div style="width:8px;height:8px;border-radius:2px;background:#e74c3c"></div>Gider</div>
       </div>
       <div class="chart-bars" id="chart-main" style="height:90px"></div>
     </div>
@@ -697,19 +711,80 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
         <div class="pr-arr">›</div>
       </div>
       <div class="profil-row" onclick="go('paket')">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div>
+      <!-- DAVET KODU KARTI -->
+      <div class="profil-row" style="cursor:default;flex-direction:column;align-items:stretch;gap:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="pr-left">
+            <div class="pr-ico" style="background:#fff8e8">🎁</div>
+            <div>
+              <div class="pr-label">Davet Kodun</div>
+              <div class="pr-sub" id="davet-kredi-txt">Arkadaşlarını davet et, kredi kazan</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:11px;color:rgba(255,255,255,.7);font-weight:600;text-transform:uppercase;letter-spacing:1px">Senin Kodun</div>
+            <div id="profil-davet-kodu" style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:3px">—</div>
+          </div>
+          <button onclick="davetKopyala()" style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
+            📋 Kopyala
+          </button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
+            <div id="profil-davet-sayisi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--gr)">0</div>
+            <div style="font-size:11px;color:var(--mu);font-weight:600">Davet Ettiğin</div>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
+            <div id="profil-kredi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#f59e0b">0</div>
+            <div style="font-size:11px;color:var(--mu);font-weight:600">Bonus Gün</div>
+          </div>
+        </div>
+        <button onclick="davetPaylasWhatsapp()" style="width:100%;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px">
+          📱 WhatsApp ile Davet Et
+        </button>
+      </div></div>
         <div class="pr-arr">›</div>
       </div>
       <div class="profil-row" onclick="toggleDark()">
         <div class="pr-left"><div class="pr-ico" style="background:var(--card2)">🌙</div><div><div class="pr-label">Karanlık Mod</div><div class="pr-sub" id="dark-sub">Şu an: Açık tema</div></div></div>
         <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px"></button>
       </div>
-      <div class="profil-row" onclick="go('kvkk')">
+      <!-- Yazı Boyutu -->
+      <div class="profil-row" style="cursor:default">
+        <div class="pr-left">
+          <div class="pr-ico" style="background:#fff8e8">🔤</div>
+          <div>
+            <div class="pr-title">Yazı Boyutu</div>
+            <div class="pr-sub">Okuma konforunu ayarla</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
+          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:none;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--gr);color:#fff">A</button>
+          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:none;border-radius:8px;padding:6px 10px;font-size:17px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--bg);color:var(--ink)">A</button>
+        </div>
+      </div>
+      <div class="profil-row" onclick="go('hakkinda')">
+      <div class="pr-left"><div class="pr-ico" style="background:#f0f0ff">ℹ️</div><div><div class="pr-title">Hakkımızda</div><div class="pr-sub">Ekip ve uygulama hakkında</div></div></div>
+      <div class="pr-arr">›</div>
+    </div>
+    <div class="profil-row" onclick="go('kvkk')">
         <div class="pr-left"><div class="pr-ico" style="background:var(--pul)">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-      <div class="profil-row" onclick="verileriIndir()">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--bll)">📥</div><div><div class="pr-label">Verilerimi İndir</div><div class="pr-sub">KVKK gereği tüm veriler</div></div></div>
+      <div class="profil-row" style="cursor:default">
+        <div class="pr-left"><div class="pr-ico" style="background:var(--bll)">📊</div><div>
+          <div class="pr-label">Veri Yedekle</div>
+          <div class="pr-sub">Excel veya JSON formatında</div>
+        </div></div>
+        <div style="display:flex;gap:6px">
+          <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📊 Excel</button>
+          <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
+        </div>
+      </div></div>
         <div class="pr-arr">›</div>
       </div>
     </div>
@@ -738,6 +813,179 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <h3>5. İletişim</h3>
     <p>kvkk@seslidefter.com</p>
     <div style="height:20px"></div>
+  </div>
+</div>
+
+<div class="pg" id="pg-gizlilik">
+  <div class="kvkk-content">
+    <h2>🔐 Gizlilik Politikası</h2>
+    <p>Son güncelleme: Mart 2025</p>
+    <h3>1. Toplanan Veriler</h3>
+    <p>SesliDefter yalnızca uygulamanın çalışması için zorunlu verileri toplar: e-posta adresi, ad soyad, işletme adı ve finansal kayıt girişleri.</p>
+    <h3>2. Verilerin Kullanımı</h3>
+    <p>Verileriniz yalnızca size hizmet sunmak amacıyla kullanılır. Hiçbir koşulda üçüncü taraflarla paylaşılmaz veya satılmaz.</p>
+    <h3>3. Veri Saklama</h3>
+    <p>Tüm veriler Supabase (EU-Frankfurt) sunucularında AES-256 şifreleme ile saklanır. Hesabınızı sildiğinizde tüm verileriniz kalıcı olarak silinir.</p>
+    <h3>4. Çerezler</h3>
+    <p>Uygulama yalnızca oturum yönetimi için zorunlu çerezler kullanır. Pazarlama veya takip çerezi kullanılmaz.</p>
+    <h3>5. Haklarınız</h3>
+    <ul><li>Verilerinizi indirme (Profil → Verilerimi İndir)</li><li>Hesap ve veri silme (Profil → Hesabı Sil)</li><li>Bilgi talebi: gizlilik@seslidefter.com</li></ul>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+
+<div class="pg" id="pg-hakkinda">
+  <div class="pg-hd"><div class="pg-hd-title">ℹ️ Hakkımızda</div></div>
+  <div style="padding:0 14px 40px">
+
+    <!-- HERO -->
+    <div style="background:linear-gradient(135deg,#1a7a4a 0%,#2ecc71 100%);border-radius:20px;padding:28px 24px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%"></div>
+      <div style="position:absolute;bottom:-30px;left:-10px;width:80px;height:80px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+      <div style="font-size:40px;margin-bottom:10px">📒</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:6px">SesliDefter</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.85);font-weight:500;letter-spacing:.5px">Konuş, kaydet. Esnaf için yapay zeka.</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+        <span style="background:rgba(255,255,255,.2);color:#fff;border-radius:99px;padding:5px 14px;font-size:11.5px;font-weight:600">🎙️ Sesli Komut</span>
+        <span style="background:rgba(255,255,255,.2);color:#fff;border-radius:99px;padding:5px 14px;font-size:11.5px;font-weight:600">💰 Kasa Takibi</span>
+        <span style="background:rgba(255,255,255,.2);color:#fff;border-radius:99px;padding:5px 14px;font-size:11.5px;font-weight:600">📊 Raporlar</span>
+      </div>
+    </div>
+
+    <!-- MİSYON -->
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <span style="width:32px;height:32px;background:var(--grl);border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:16px">🎯</span>
+        Misyonumuz
+      </div>
+      <p style="font-size:13.5px;color:var(--ink2);line-height:1.8;margin:0">
+        Türkiye'nin milyonlarca esnafına, bakkalından tamircisine, berberinden kasabına — 
+        defter kalemden dijital çağa geçişi <strong style="color:var(--gr)">sesli komutla</strong> 
+        kolaylaştırmak. Muhasebe bilgisi gerektirmeden, saniyeler içinde kayıt tutmak artık 
+        herkesin hakkı.
+      </p>
+    </div>
+
+    <!-- TEMEL DEĞERLER -->
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+        <span style="width:32px;height:32px;background:#fef3f2;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:16px">💎</span>
+        Temel Değerler
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🔒</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px">Güvenlik</div>
+          <div style="font-size:13px;color:var(--mu)">Verileriniz şifreli,<br>sadece sizin</div>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">⚡</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px">Hız</div>
+          <div style="font-size:13px;color:var(--mu)">3 saniyede<br>kayıt ekle</div>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🤝</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px">Sadelik</div>
+          <div style="font-size:13px;color:var(--mu)">Muhasebe bilgisi<br>gerekmez</div>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🇹🇷</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px">Yerli</div>
+          <div style="font-size:13px;color:var(--mu)">Türk esnafı için<br>Türkçe yapay zeka</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GELİŞTİRİCİLER -->
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px">
+        <span style="width:32px;height:32px;background:#f0f0ff;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:16px">👨‍💻</span>
+        Geliştirici Ekibi
+      </div>
+
+      <!-- Aykut AKGÜN -->
+      <div style="display:flex;align-items:center;gap:14px;padding:16px;background:linear-gradient(135deg,#f0f7ff,#e8f5ee);border:1px solid #c3dafe;border-radius:14px;margin-bottom:12px">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 14px rgba(26,122,74,.35)">
+          AA
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink)">Aykut AKGÜN</div>
+          <div style="font-size:11.5px;color:var(--gr);font-weight:700;margin:2px 0 6px;text-transform:uppercase;letter-spacing:.5px">Kurucu & Baş Geliştirici</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#e8f5ee;color:#1a7a4a;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">Ürün Vizyonu</span>
+            <span style="background:#e8f5ee;color:#1a7a4a;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">Full-Stack</span>
+            <span style="background:#e8f5ee;color:#1a7a4a;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">AI Mimarisi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tayfun AKYASAN -->
+      <div style="display:flex;align-items:center;gap:14px;padding:16px;background:linear-gradient(135deg,#fdf4ff,#f0f7ff);border:1px solid #d8b4fe;border-radius:14px">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 14px rgba(124,58,237,.35)">
+          TA
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink)">Tayfun AKYASAN</div>
+          <div style="font-size:11.5px;color:#7c3aed;font-weight:700;margin:2px 0 6px;text-transform:uppercase;letter-spacing:.5px">Kurucu & Teknik Mimar</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#f5f0ff;color:#7c3aed;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">Backend</span>
+            <span style="background:#f5f0ff;color:#7c3aed;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">Veritabanı</span>
+            <span style="background:#f5f0ff;color:#7c3aed;border-radius:6px;padding:3px 8px;font-size:10.5px;font-weight:600">Güvenlik</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEKNOLOJİ STACK -->
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+        <span style="width:32px;height:32px;background:#fff8e8;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:16px">⚙️</span>
+        Teknoloji Altyapısı
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--bg);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:9px">
+          <span style="font-size:18px">🧠</span>
+          <div>
+            <div style="font-size:11.5px;font-weight:700">Web Speech API</div>
+            <div style="font-size:10.5px;color:var(--mu)">Sesli tanıma</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:9px">
+          <span style="font-size:18px">🛡️</span>
+          <div>
+            <div style="font-size:11.5px;font-weight:700">Supabase</div>
+            <div style="font-size:10.5px;color:var(--mu)">Güvenli veritabanı</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:9px">
+          <span style="font-size:18px">⚡</span>
+          <div>
+            <div style="font-size:11.5px;font-weight:700">Vercel</div>
+            <div style="font-size:10.5px;color:var(--mu)">Küresel CDN</div>
+          </div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:9px">
+          <span style="font-size:18px">📱</span>
+          <div>
+            <div style="font-size:11.5px;font-weight:700">PWA</div>
+            <div style="font-size:10.5px;color:var(--mu)">Offline çalışır</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- İLETİŞİM -->
+    <div style="background:linear-gradient(135deg,#1a1814,#2d2a24);border-radius:16px;padding:20px;text-align:center">
+      <div style="font-size:24px;margin-bottom:8px">✉️</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:4px">İletişim</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px">Sorularınız için bize ulaşın</div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;display:inline-block">
+        <span style="color:#2ecc71;font-size:13px;font-weight:600">destek@seslidefter.com</span>
+      </div>
+      <div style="margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.35)">© 2025 SesliDefter — Tüm hakları saklıdır.</div>
+    </div>
+
   </div>
 </div>
 
@@ -780,10 +1028,17 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
     <div class="mtitle">👤 Profil Düzenle</div>
     <div class="fg"><label class="fl">Ad Soyad</label><input class="fi" id="pe-isim" placeholder="Ad Soyad"></div>
     <div class="fg"><label class="fl">İşletme Adı</label><input class="fi" id="pe-isletme" placeholder="İşletme adı"></div>
+    <div class="fg"><label class="fl">Şehir</label>
+      <input class="fi" id="pe-sehir" placeholder="İstanbul" type="text">
+    </div>
     <div class="fg"><label class="fl">Sektör</label>
       <select class="fsel" id="pe-sektor">
-        <option>Tamirci</option><option>Berber / Kuaför</option><option>Market</option>
-        <option>Kafe / Restoran</option><option>Kasap / Manav</option><option>Diğer</option>
+        <option value="">Seçin...</option>
+        <option>Tamirci</option><option>Berber / Kuaför</option><option>Market / Bakkal</option>
+        <option>Kafe / Restoran</option><option>Kasap / Manav</option>
+        <option>Eczane</option><option>Tekstil / Giyim</option>
+        <option>İnşaat / Yapı</option><option>Nakliye</option>
+        <option>Serbest Meslek</option><option>Diğer</option>
       </select>
     </div>
     <div class="mbtns">
@@ -892,6 +1147,9 @@ async function _appBaslat(){
   try {
     darkMode = localStorage.getItem('sd-dark') === '1';
     if(darkMode) document.documentElement.setAttribute('data-theme','dark');
+    // Font boyutu
+    const savedFont = localStorage.getItem('sd-font') || 'orta';
+    document.documentElement.style.fontSize = (savedFont==='kucuk'?13:savedFont==='buyuk'?17:15) + 'px';
   } catch(e){}
 
   // 5sn'de hâlâ yüklenmezse direkt giriş ekranına at
@@ -989,15 +1247,36 @@ async function emailKayit(){
   const isletme=document.getElementById('k-isletme').value.trim();
   const email=document.getElementById('k-email').value.trim();
   const pass=document.getElementById('k-pass').value;
-  if(!isim||!email||!pass){authErr('kayit','Tüm alanları doldurun!');return;}
+  const pass2=document.getElementById('k-pass2').value;
+  const davetKodu=(document.getElementById('k-davet')?.value||'').trim().toUpperCase();
+  if(!isim||!email||!pass||!pass2){authErr('kayit','Tüm alanları doldurun!');return;}
   if(pass.length<6){authErr('kayit','Şifre en az 6 karakter!');return;}
+  if(pass!==pass2){authErr('kayit','Şifreler eşleşmiyor!');document.getElementById('k-pass2').focus();return;}
   lb(true);
-  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{isim,isletme,paket:'free'},emailRedirectTo:window.location.origin}});
+
+  // Davet kodu varsa doğrula
+  let davetEdenId = null;
+  if(davetKodu){
+    const {data:dv} = await sb.rpc('davet_kodu_dogrula', {p_kod: davetKodu});
+    if(dv?.[0]?.gecerli) {
+      davetEdenId = dv[0].davet_eden_id;
+    } else {
+      authErr('kayit','❌ Geçersiz davet kodu!'); lb(false); return;
+    }
+  }
+
+  const meta = {isim, isletme, paket:'free'};
+  if(davetEdenId) meta.davet_eden_id = davetEdenId;
+
+  const{data,error}=await sb.auth.signUp({
+    email, password:pass,
+    options:{data:meta, emailRedirectTo:window.location.origin}
+  });
   if(error){authErr('kayit',trErr(error.message));lb(false);return;}
   lb(false);
-  // Email doğrulama gerekiyorsa
+  const bonusMsg = davetEdenId ? ' 🎁 7 gün bonus eklendi!' : '';
   if(data.user&&!data.session){
-    authSucc('kayit','📧 Kayıt başarılı! E-postanı kontrol et ve doğrulama linkine tıkla.');
+    authSucc('kayit','📧 Kayıt başarılı! E-postanı kontrol et ve doğrulama linkine tıkla.'+bonusMsg);
   }
 }
 
@@ -1022,13 +1301,41 @@ function authSucc(f,msg){const el=document.getElementById(f+'-ok');el.textConten
 async function profilYukle(){
   if(!USER)return;
   const meta=USER.user_metadata||{};
-  PROFIL={
-    isim:meta.isim||meta.full_name||USER.email?.split('@')[0]||'Kullanıcı',
-    isletme:meta.isletme||'İşletmem',
-    paket:meta.paket||'free',
-    email:USER.email||'',
-    emailVerified:USER.email_confirmed_at!=null,
-  };
+  // Önce profiller tablosundan çek (güncel veri)
+  try {
+    const {data:pr} = await sb.from('profiller').select('*').eq('id',USER.id).single();
+    if(pr){
+      PROFIL={
+        isim:pr.isim||meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
+        isletme:pr.isletme_adi||meta.isletme||'İşletmem',
+        sehir:pr.sehir||'',
+        sektor:pr.sektor||'',
+        paket:pr.paket||'free',
+        email:USER.email||'',
+        emailVerified:USER.email_confirmed_at!=null,
+        davetKodu:pr.davet_kodu||'',
+        davetSayisi:pr.davet_sayisi||0,
+        kredi:pr.kredi||0,
+      };
+    } else {
+      // Profil henüz oluşmadıysa (trigger geciktiyse) meta'dan al
+      PROFIL={
+        isim:meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
+        isletme:meta.isletme||'İşletmem',
+        sehir:'', sektor:'', paket:'free',
+        email:USER.email||'', emailVerified:USER.email_confirmed_at!=null,
+        davetKodu:'', davetSayisi:0, kredi:0,
+      };
+    }
+  } catch(e) {
+    PROFIL={
+      isim:meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
+      isletme:meta.isletme||'İşletmem',
+      sehir:'', sektor:'', paket:'free',
+      email:USER.email||'', emailVerified:USER.email_confirmed_at!=null,
+      davetKodu:'', davetSayisi:0, kredi:0,
+    };
+  }
   PAKET=PROFIL.paket;
   guncelleUI();
 }
@@ -1052,6 +1359,15 @@ function guncelleUI(){
   const pp=document.getElementById('profil-plan');
   if(pp){pp.textContent=PAKET_ADI[PAKET]||'';pp.className='tb-plan plan-'+PAKET;}
 
+  // Davet kodu & kredi
+  setText('profil-davet-kodu', PROFIL.davetKodu||'—');
+  setText('profil-davet-sayisi', PROFIL.davetSayisi||0);
+  setText('profil-kredi', PROFIL.kredi||0);
+  const kreditxt = document.getElementById('davet-kredi-txt');
+  if(kreditxt) kreditxt.textContent = (PROFIL.kredi||0) > 0
+    ? `${PROFIL.kredi} gün bonus kazandın 🎉`
+    : 'Arkadaşlarını davet et, 30 gün bonus kazan';
+
   // Email doğrulama banner
   const evb=document.getElementById('evb-wrap');
   if(evb&&!PROFIL.emailVerified&&PROFIL.email){
@@ -1068,9 +1384,19 @@ async function dogrulamaGonder(){
 async function profilGuncelle(){
   const isim=document.getElementById('pe-isim').value.trim();
   const isletme=document.getElementById('pe-isletme').value.trim();
+  const sehir=(document.getElementById('pe-sehir')?.value||'').trim();
+  const sektor=document.getElementById('pe-sektor')?.value||'';
   if(!isim){toast('Ad zorunlu!','err');return;}
   lb(true);
-  const{error}=await sb.auth.updateUser({data:{isim,isletme}});
+  // Auth metadata güncelle
+  await sb.auth.updateUser({data:{isim,isletme}});
+  // profiller tablosunu güncelle (analitik için)
+  const{error}=await sb.from('profiller').update({
+    isim, isletme_adi:isletme,
+    sehir:sehir||PROFIL?.sehir||'',
+    sektor:sektor||PROFIL?.sektor||'',
+    updated_at:new Date().toISOString()
+  }).eq('id',USER.id);
   if(error){toast(error.message,'err');lb(false);return;}
   PROFIL.isim=isim;PROFIL.isletme=isletme;
   guncelleUI();closeM('m-profil-edit');toast('✅ Profil güncellendi!','ok');lb(false);
@@ -1088,10 +1414,14 @@ async function verileriYukle(){
       sb.from('alacaklar').select('*').eq('user_id',USER.id).order('created_at',{ascending:false}),
       sb.from('verecekler').select('*').eq('user_id',USER.id).order('created_at',{ascending:false}),
     ]);
+    if(kr.error) console.error('kayitlar RLS hatası:', kr.error);
+    if(ar.error) console.error('alacaklar RLS hatası:', ar.error);
+    if(vr.error) console.error('verecekler RLS hatası:', vr.error);
     if(kr.data)KAYITLAR=kr.data;
     if(ar.data)ALACAKLAR=ar.data;
     if(vr.data)VERECEKLER=vr.data;
-  }catch(e){toast('Veri yükleme hatası!','err');}
+    console.log('Veriler yüklendi:', {kayitlar:KAYITLAR.length, alacaklar:ALACAKLAR.length, verecekler:VERECEKLER.length});
+  }catch(e){console.error('Veri yükleme hatası:',e);toast('Veri yükleme hatası!','err');}
   lb(false);
 }
 
@@ -1189,15 +1519,15 @@ function rKayitlar(){
   if(oz){
     oz.innerHTML=`
       <div style="flex:1;background:var(--grl);border:1px solid var(--grm);border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:11px;color:var(--mu);font-weight:500">Gelir</div>
+        <div style="font-size:13px;color:var(--mu);font-weight:500">Gelir</div>
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--gr)">₺${f(gel)}</div>
       </div>
       <div style="flex:1;background:var(--rdl);border:1px solid var(--rdm);border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:11px;color:var(--mu);font-weight:500">Gider</div>
+        <div style="font-size:13px;color:var(--mu);font-weight:500">Gider</div>
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--rd)">₺${f(gid)}</div>
       </div>
       <div style="flex:1;background:${gel-gid>=0?'var(--grl)':'var(--rdl)'};border:1px solid ${gel-gid>=0?'var(--grm)':'var(--rdm)'};border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:11px;color:var(--mu);font-weight:500">Net</div>
+        <div style="font-size:13px;color:var(--mu);font-weight:500">Net</div>
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:${gel-gid>=0?'var(--gr)':'var(--rd)'}">₺${f(gel-gid)}</div>
       </div>
     `;
@@ -1212,7 +1542,7 @@ function kayitHTML(k,sil=false){
   const prefix=k.tur==='gelir'?'+':'-';
   const tarih=new Date(k.tarih).toLocaleDateString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
   const katObj=k.kategori?Object.values(KATEGORİLER).flat().find(x=>x.id===k.kategori):null;
-  const katBadge=katObj?`<span style="display:inline-block;background:${KAT_RENKLERİ[k.kategori]||'#888'}22;color:${KAT_RENKLERİ[k.kategori]||'#888'};padding:1px 7px;border-radius:99px;font-size:10px;font-weight:600;margin-top:3px">${katObj.ico} ${katObj.ad}</span>`:'';
+  const katBadge=katObj?`<span style="display:inline-block;background:${KAT_RENKLERİ[k.kategori]||'#888'}22;color:${KAT_RENKLERİ[k.kategori]||'#888'};padding:1px 7px;border-radius:99px;font-size:13px;font-weight:600;margin-top:3px">${katObj.ico} ${katObj.ad}</span>`:'';
   return`<div class="kayit-card">
     <div class="kayit-ico ${cls}">${ico}</div>
     <div class="kayit-info">
@@ -1238,7 +1568,7 @@ function rAlacak(){
   document.getElementById('alacak-liste').innerHTML=ALACAKLAR.map(a=>{
     const vade=a.vade?new Date(a.vade):null;
     const bugun=new Date(); bugun.setHours(0,0,0,0);
-    const vadeDurum=vade?(vade<bugun?`<div style="font-size:11px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${a.vade})</div>`:vade.getTime()-bugun.getTime()<7*86400000?`<div style="font-size:11px;color:var(--am);font-weight:600;margin-top:3px">⏰ ${a.vade} vadeli</div>`:`<div style="font-size:11px;color:var(--mu);margin-top:3px">📅 ${a.vade}</div>`):''
+    const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${a.vade})</div>`:vade.getTime()-bugun.getTime()<7*86400000?`<div style="font-size:13px;color:var(--am);font-weight:600;margin-top:3px">⏰ ${a.vade} vadeli</div>`:`<div style="font-size:13px;color:var(--mu);margin-top:3px">📅 ${a.vade}</div>`):''
     return`<div class="avc">
       <div class="avc-top">
         <div><div class="avc-name">${a.isim}</div><div class="avc-desc">${a.aciklama||''}</div>${vadeDurum}</div>
@@ -1257,7 +1587,7 @@ function rAlacak(){
   document.getElementById('verecek-liste').innerHTML=VERECEKLER.map(v=>{
     const vade=v.vade?new Date(v.vade):null;
     const bugun=new Date(); bugun.setHours(0,0,0,0);
-    const vadeDurum=vade?(vade<bugun?`<div style="font-size:11px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${v.vade})</div>`:''): '';
+    const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${v.vade})</div>`:''): '';
     return`<div class="avc" style="border-color:var(--rdm)">
       <div class="avc-top">
         <div><div class="avc-name">${v.isim}</div><div class="avc-desc">${v.aciklama||''}</div>${vadeDurum}</div>
@@ -1400,8 +1730,11 @@ async function kayitKaydet(){
     if(data)VERECEKLER.unshift(data[0]);
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
   }else{
-    const tarihStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    const y={tur:aktifTur,tutar,aciklama,kisi,kategori:secilenKat||null,tarih:tarihStr,user_id:USER.id};
+    const tarihStr = new Date().toISOString().split('T')[0];
+    const y={tur:aktifTur,tutar,aciklama,kisi,tarih:tarihStr,user_id:USER.id,
+             sehir:PROFIL?.sehir||'', ilce:PROFIL?.ilce||'', sektor:PROFIL?.sektor||'',
+             giris_tipi:'manuel'};
+    if(secilenKat) y.kategori = secilenKat;
     console.log('Kayit insert:', y);
     const{data,error}=await sb.from('kayitlar').insert([y]).select();
     console.log('Kayit result:', {data,error});
@@ -1545,6 +1878,91 @@ function csvExport(){
 // ══════════════════════════════════════════════
 // MODAL & NAV
 // ══════════════════════════════════════════════
+// ── DAVET SİSTEMİ ───────────────────────────────────────────────────
+let _davetTimer = null;
+
+async function davetKoduKontrol(kod){
+  const el = document.getElementById('k-davet-durum');
+  const bilgi = document.getElementById('k-davet-bilgi');
+  if(!el) return;
+  if(kod.length < 6){ el.textContent=''; return; }
+  el.textContent = '⏳';
+  clearTimeout(_davetTimer);
+  _davetTimer = setTimeout(async()=>{
+    try {
+      const {data} = await sb.rpc('davet_kodu_dogrula', {p_kod: kod});
+      if(data?.[0]?.gecerli){
+        el.textContent = '✅';
+        el.style.color = 'var(--gr)';
+        if(bilgi) bilgi.innerHTML = `🎁 <strong>${data[0].davet_eden_isim}</strong> seni davet etti! 7 gün bonus kazanacaksın.`;
+        if(bilgi) bilgi.style.color = 'var(--gr)';
+      } else {
+        el.textContent = '❌';
+        el.style.color = '#e74c3c';
+        if(bilgi){ bilgi.textContent = 'Geçersiz davet kodu'; bilgi.style.color='#e74c3c'; }
+      }
+    } catch(e){ el.textContent=''; }
+  }, 600);
+}
+
+function davetKopyala(){
+  const kod = PROFIL?.davetKodu;
+  if(!kod || kod==='—') return;
+  const metin = `SesliDefter'e katıl! Davet kodun: ${kod}\nhttps://seslidefter.vercel.app`;
+  if(navigator.clipboard){ navigator.clipboard.writeText(metin).then(()=>toast('📋 Kopyalandı!','ok')); }
+  else { const ta=document.createElement('textarea');ta.value=metin;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 Kopyalandı!','ok'); }
+}
+
+function davetPaylasWhatsapp(){
+  const kod = PROFIL?.davetKodu;
+  if(!kod || kod==='—') return;
+  const metin = encodeURIComponent(`Merhaba! SesliDefter uygulamasını kullanıyorum, çok işime yarıyor. Sesle gelir-gider takibi yapıyorum. Sen de dene! Davet kodun: *${kod}* → https://seslidefter.vercel.app`);
+  window.open('https://wa.me/?text='+metin, '_blank');
+}
+
+// Şifre teyit görsel kontrolü
+function passTeyitKontrol(){
+  const p1=document.getElementById('k-pass').value;
+  const p2=document.getElementById('k-pass2').value;
+  const el=document.getElementById('k-pass-match');
+  if(!el||!p2)return;
+  el.style.display='block';
+  if(p1===p2){
+    el.style.background='#e8f5ee';el.style.color='#1a7a4a';el.style.border='1px solid #c3e8d3';
+    el.textContent='✅ Şifreler eşleşiyor';
+  } else {
+    el.style.background='#fef3f2';el.style.color='#e74c3c';el.style.border='1px solid #fecdd3';
+    el.textContent='❌ Şifreler eşleşmiyor';
+  }
+}
+
+// Auth ekranından KVKK/Gizlilik açma — login gerektirmez
+function authKvkkAc(tip){
+  // Auth'u geçici gizle, sayfayı göster
+  const authEl = document.getElementById('auth');
+  authEl.style.display='none';
+  // Tüm sayfaları gizle
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const pg = document.getElementById('pg-'+tip);
+  if(pg){
+    pg.classList.add('on');
+    // Geri butonu ekle
+    if(!document.getElementById('kvkk-geri-btn')){
+      const btn=document.createElement('button');
+      btn.id='kvkk-geri-btn';
+      btn.innerHTML='← Geri Dön';
+      btn.style.cssText='position:fixed;top:16px;left:16px;z-index:9999;background:var(--gr);color:#fff;border:none;border-radius:99px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:Outfit,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.2)';
+      btn.onclick=function(){
+        pg.classList.remove('on');
+        btn.remove();
+        authEl.style.display='flex';
+        authEl.style.flexDirection='column';
+      };
+      document.body.appendChild(btn);
+    }
+  }
+}
+
 function go(pg,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.bni,.dsk-item').forEach(x=>x.classList.remove('on'));
@@ -1585,12 +2003,79 @@ async function hesapSil(){
   closeM('m-hesap-sil');lb(false);
 }
 
-function verileriIndir(){
-  const data={profil:PROFIL,kayitlar:KAYITLAR,alacaklar:ALACAKLAR,verecekler:VERECEKLER,tarih:new Date().toISOString()};
+function verileriIndir(format){
+  if(format==='excel' || !format) _excelIndir();
+  else _jsonIndir();
+}
+
+function _excelIndir(){
+  try {
+    if(typeof XLSX === 'undefined'){toast('⚠️ Excel kütüphanesi yükleniyor...','err');return;}
+    const wb = XLSX.utils.book_new();
+
+    // Kayıtlar sayfası
+    const kayitRows = KAYITLAR.map(k=>({
+      'Tarih': k.tarih ? new Date(k.tarih).toLocaleDateString('tr-TR') : '',
+      'Tür': k.tur==='gelir'?'Gelir':k.tur==='gider'?'Gider':'Alacak',
+      'Tutar (₺)': Number(k.tutar),
+      'Açıklama': k.aciklama||'',
+      'Kişi': k.kisi||'',
+      'Kategori': k.kategori||'',
+    }));
+    if(kayitRows.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(kayitRows), 'Kayıtlar');
+
+    // Alacaklar sayfası
+    const alaRows = ALACAKLAR.map(a=>({
+      'Kişi': a.isim||'',
+      'Tutar (₺)': Number(a.tutar),
+      'Açıklama': a.aciklama||'',
+      'Vade': a.vade||'',
+      'Durum': a.odendi?'Ödendi':'Bekliyor',
+      'Tarih': a.created_at ? new Date(a.created_at).toLocaleDateString('tr-TR') : '',
+    }));
+    if(alaRows.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(alaRows), 'Alacaklar');
+
+    // Verecekler sayfası
+    const verRows = VERECEKLER.map(v=>({
+      'Kişi': v.isim||'',
+      'Tutar (₺)': Number(v.tutar),
+      'Açıklama': v.aciklama||'',
+      'Vade': v.vade||'',
+      'Durum': v.odendi?'Ödendi':'Bekliyor',
+      'Tarih': v.created_at ? new Date(v.created_at).toLocaleDateString('tr-TR') : '',
+    }));
+    if(verRows.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(verRows), 'Verecekler');
+
+    // Özet sayfası
+    const gel = KAYITLAR.filter(k=>k.tur==='gelir').reduce((a,b)=>a+Number(b.tutar),0);
+    const gid = KAYITLAR.filter(k=>k.tur==='gider').reduce((a,b)=>a+Number(b.tutar),0);
+    const ozetRows = [
+      {'Bilgi':'Toplam Gelir','Değer (₺)':gel},
+      {'Bilgi':'Toplam Gider','Değer (₺)':gid},
+      {'Bilgi':'Net Kâr/Zarar','Değer (₺)':gel-gid},
+      {'Bilgi':'Açık Alacak','Değer (₺)':ALACAKLAR.filter(a=>!a.odendi).reduce((a,b)=>a+Number(b.tutar),0)},
+      {'Bilgi':'Açık Verecek','Değer (₺)':VERECEKLER.filter(v=>!v.odendi).reduce((a,b)=>a+Number(b.tutar),0)},
+      {'Bilgi':'Toplam Kayıt Sayısı','Değer (₺)':KAYITLAR.length},
+      {'Bilgi':'İndirme Tarihi','Değer (₺)':new Date().toLocaleString('tr-TR')},
+    ];
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(ozetRows), 'Özet');
+
+    const tarih = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `SesliDefter_${PROFIL?.isim||'Veriler'}_${tarih}.xlsx`);
+    toast('📊 Excel dosyası indirildi!','ok');
+  } catch(e) {
+    console.error('Excel hatası:', e);
+    toast('⚠️ Excel oluşturulamadı: '+e.message,'err');
+    _jsonIndir(); // fallback
+  }
+}
+
+function _jsonIndir(){
+  const data={versiyon:'2.0',tarih:new Date().toISOString(),profil:PROFIL,kayitlar:KAYITLAR,alacaklar:ALACAKLAR,verecekler:VERECEKLER};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='seslidefter-verilerim.json';a.click();
-  toast('📥 Veriler indirildi (KVKK)','ok');
+  const a=document.createElement('a');a.href=url;a.download='seslidefter-yedek.json';a.click();
+  toast('💾 JSON yedeği indirildi','ok');
 }
 
 function waHatirla(isim,tutar){
@@ -1660,7 +2145,7 @@ function rKatListe() {
   el.innerHTML = '<div class="kat-yonetim" style="margin-bottom:10px">' +
     '<div class="kat-yonetim-hdr"><div class="kat-yonetim-title">' +
     (katTurAktif==='gelir'?'💵 Gelir':katTurAktif==='gider'?'💸 Gider':'🤝 Alacak') +
-    ' Kategorileri</div><div style="font-size:11px;color:var(--mu)">'+kats.length+' kategori</div></div>' +
+    ' Kategorileri</div><div style="font-size:13px;color:var(--mu)">'+kats.length+' kategori</div></div>' +
     kats.map((k,i) =>
       '<div class="kat-item-row">' +
       '<div class="kat-item-ico" style="background:'+k.renk+'20">'+k.ico+'</div>' +
@@ -1812,7 +2297,9 @@ async function sesIsle(metin) {
     return;
   }
   if (tutar > 0) {
-    const yeni={tur,tutar,aciklama:metin,kisi,kategori:kat,tarih:new Date().toISOString().split('T')[0],user_id:USER.id};
+    const yeni={tur,tutar,aciklama:metin,kisi,tarih:new Date().toISOString().split('T')[0],
+    user_id:USER.id, sehir:PROFIL?.sehir||'', sektor:PROFIL?.sektor||'', giris_tipi:'ses'};
+    if(kat) yeni.kategori = kat;
     const{data,error}=await sb.from('kayitlar').insert([yeni]).select();
     if(error){toast('⚠️ Kayıt eklenemedi: '+error.message,'err');return;}
     if(data) KAYITLAR.unshift(data[0]);
@@ -1864,13 +2351,43 @@ function seciKat(id) {
   if(secilenKat) document.getElementById('ksg-'+id)?.classList.add('on');
 }
 
-function openM(id){const el=document.getElementById(id);if(el)el.classList.add('on');}
+function openM(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('on');
+  if(id==='m-profil-edit'){
+    const ei=document.getElementById('pe-isim');
+    const ee=document.getElementById('pe-isletme');
+    const es=document.getElementById('pe-sehir');
+    const ek=document.getElementById('pe-sektor');
+    if(ei) ei.value=PROFIL?.isim||'';
+    if(ee) ee.value=PROFIL?.isletme||'';
+    if(es) es.value=PROFIL?.sehir||'';
+    if(ek) ek.value=PROFIL?.sektor||'';
+  }
+}
 function closeM(id){const el=document.getElementById(id);if(el)el.classList.remove('on');}
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.mover').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
 });
 
 function toggleDark(){setDark(!darkMode);}
+
+// ── YAZI BOYUTU ──────────────────────────────────────────────────────
+const FONT_SIZES = {kucuk:13, orta:15, buyuk:17};
+let fontBoy = localStorage.getItem('sd-font') || 'orta';
+
+function fontUygula(boy){
+  fontBoy = boy;
+  localStorage.setItem('sd-font', boy);
+  document.documentElement.style.fontSize = FONT_SIZES[boy] + 'px';
+  // Aktif buton vurgula
+  ['kucuk','orta','buyuk'].forEach(b=>{
+    const el = document.getElementById('fb-'+b);
+    if(el) el.style.background = b===boy ? 'var(--gr)' : 'var(--bg)';
+    if(el) el.style.color = b===boy ? '#fff' : 'var(--ink)';
+  });
+}
 function setDark(on){
   darkMode=on;
   document.documentElement.setAttribute('data-theme',on?'dark':'light');
@@ -1994,7 +2511,7 @@ async function ssKaydet() {
         <div id="ss-g3" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
         <div id="ss-g4" style="flex:1;height:4px;border-radius:99px;background:var(--bd);transition:background .2s;"></div>
       </div>
-      <div id="ss-guc-txt" style="font-size:11px;"></div>
+      <div id="ss-guc-txt" style="font-size:13px;"></div>
     </div>
     <!-- Şifre tekrar -->
     <div style="margin-bottom:8px;">
