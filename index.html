@@ -1815,7 +1815,7 @@ async function kayitKaydet(){
 
     const{data,error}=await sb.from('verecekler').insert([y]).select();
 
-    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
+    if(error){ toast('❌ '+(error.message||JSON.stringify(error)),'err'); lb(false); return; }
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('📤 Verecek eklendi!','ok');
   }else{
@@ -1825,9 +1825,15 @@ async function kayitKaydet(){
              giris_tipi:'manuel'};
     if(secilenKat) y.kategori = secilenKat;
 
+    console.log('INSERT kayitlar:', y);
     const{data,error}=await sb.from('kayitlar').insert([y]).select();
-
-    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
+    console.log('INSERT result:', {data, error});
+    if(error){
+      const msg = error.code === '42501' ? 'İzin hatası - lütfen tekrar giriş yapın' 
+                : error.code === 'PGRST301' ? 'Oturum süresi doldu'
+                : (error.message || JSON.stringify(error));
+      toast('❌ '+msg,'err'); lb(false); return;
+    }
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();
     toast(`${aktifTur==='gelir'?'💵':'💸'} ₺${f(tutar)} kaydedildi!`,'ok');
