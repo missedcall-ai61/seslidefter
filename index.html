@@ -97,7 +97,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
 .dark-toggle.on::after{transform:translateX(16px);}
 
 /* SCROLL & NAV */
-.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(68px + var(--safe-b));}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(68px + var(--safe-b));height:100%;}
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:6px 0;padding-bottom:calc(6px + var(--safe-b));z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06);}
 .bni{display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 10px;border-radius:10px;cursor:pointer;min-width:48px;}
 .bni-ico{font-size:21px;line-height:1;}
@@ -106,7 +106,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
 .bni.on .bni-ico{filter:drop-shadow(0 0 5px rgba(26,122,74,.4));}
 
 /* PAGE */
-.pg{display:none;}.pg.on{display:block;}
+.pg{display:none;}.pg.on{display:block;min-height:100%;}
 
 /* DATE FILTER PILLS */
 .tarih-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 2px;}
@@ -333,7 +333,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
   .dsk-item:hover{background:var(--bg);}
   .dsk-item.on{background:var(--grl);color:var(--gr);border-color:var(--grm);font-weight:600;}
   .dsk-mic{margin:9px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);border:none;border-radius:11px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(26,122,74,.3);}
-  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:0;}
   .bnav{display:none;}
   .pg{max-width:620px;margin:0 auto;width:100%;}
   .scroll{padding-bottom:20px;}
@@ -450,7 +450,8 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
     <div class="dsk-item" onclick="go('rapor',this)">📊 Raporlar</div>
     <div class="dsk-sec">Araçlar</div>
     <div class="dsk-item" onclick="go('siri',this)">🎙️ Sesli Komutlar</div>
-    <div class="dsk-item" onclick="go('paket',this)">⚡ Paketler</div>
+    <div class="dsk-item" onclick="go('davet',this)">🎁 Davet Et</div>
+<div class="dsk-item" onclick="go('paket',this)">⚡ Paketler</div>
     <div class="dsk-item" onclick="go('profil',this)">👤 Profil & Ayarlar</div>
     <div class="dsk-item" onclick="go('hakkinda',this)">ℹ️ Hakkımızda</div>
   </div>
@@ -712,16 +713,17 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
       </div>
       <div class="profil-row" onclick="go('paket')">
         <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div>
-      <!-- DAVET KODU KARTI -->
-      <div class="profil-row" style="cursor:default;flex-direction:column;align-items:stretch;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div class="pr-left">
-            <div class="pr-ico" style="background:#fff8e8">🎁</div>
-            <div>
-              <div class="pr-label">Davet Kodun</div>
-              <div class="pr-sub" id="davet-kredi-txt">Arkadaşlarını davet et, kredi kazan</div>
-            </div>
+      <!-- DAVET ET KISAYOLU -->
+      <div class="profil-row" onclick="go('davet')">
+        <div class="pr-left">
+          <div class="pr-ico" style="background:#fff8e8">🎁</div>
+          <div>
+            <div class="pr-label">Davet Et & Kazan</div>
+            <div class="pr-sub" id="davet-kredi-txt">Her davet = 30 gün bonus</div>
           </div>
+        </div>
+        <div class="pr-arr">›</div>
+      </div>
         </div>
         <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
           <div>
@@ -831,6 +833,71 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
     <h3>5. Haklarınız</h3>
     <ul><li>Verilerinizi indirme (Profil → Verilerimi İndir)</li><li>Hesap ve veri silme (Profil → Hesabı Sil)</li><li>Bilgi talebi: gizlilik@seslidefter.com</li></ul>
     <div style="height:20px"></div>
+  </div>
+</div>
+
+
+
+<!-- DAVET ET SAYFASI -->
+<div class="pg" id="pg-davet">
+  <div class="pg-hd"><div class="pg-hd-title">🎁 Davet Et</div></div>
+  <div style="padding:14px 14px 40px">
+
+    <!-- Kendi davet kodu kartı -->
+    <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:20px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%"></div>
+      <div style="font-size:13px;color:rgba(255,255,255,.75);font-weight:600;margin-bottom:4px">Senin Davet Kodun</div>
+      <div id="davet-pg-kod" style="font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;color:#fff;letter-spacing:4px;margin-bottom:16px">—</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="davetKopyala()" style="flex:1;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:#fff;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
+          📋 Kopyala
+        </button>
+        <button onclick="davetPaylasWhatsapp()" style="flex:1;background:#25D366;border:none;color:#fff;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
+          📱 WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- İstatistikler -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:var(--card);border-radius:16px;padding:16px;text-align:center;border:1px solid var(--bd)">
+        <div id="davet-pg-sayi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--gr)">0</div>
+        <div style="font-size:12px;color:var(--mu);font-weight:600;margin-top:2px">Davet Ettiğin</div>
+      </div>
+      <div style="background:var(--card);border-radius:16px;padding:16px;text-align:center;border:1px solid var(--bd)">
+        <div id="davet-pg-kredi" style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:#f59e0b">0</div>
+        <div style="font-size:12px;color:var(--mu);font-weight:600;margin-top:2px">Bonus Gün</div>
+      </div>
+    </div>
+
+    <!-- Nasıl çalışır -->
+    <div style="background:var(--card);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid var(--bd)">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;margin-bottom:14px">🤔 Nasıl Çalışır?</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--grl);color:var(--gr);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">1</div>
+          <div><div style="font-weight:700;font-size:14px">Kodunu paylaş</div><div style="font-size:13px;color:var(--mu);margin-top:2px">Arkadaşına davet kodunu WhatsApp veya başka yollarla gönder</div></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--grl);color:var(--gr);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">2</div>
+          <div><div style="font-weight:700;font-size:14px">Arkadaşın kayıt olsun</div><div style="font-size:13px;color:var(--mu);margin-top:2px">Kayıt sırasında senin kodunu girer, 7 gün bonus kazanır</div></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--grl);color:var(--gr);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">3</div>
+          <div><div style="font-weight:700;font-size:14px">Sen 30 gün bonus kazan</div><div style="font-size:13px;color:var(--mu);margin-top:2px">Her başarılı davet için hesabına 30 gün premium eklenir</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paylaş butonu büyük -->
+    <button onclick="davetPaylasWhatsapp()" style="width:100%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:16px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+      📱 WhatsApp ile Davet Et
+    </button>
+    <div style="height:8px"></div>
+    <button onclick="davetKopyala()" style="width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:16px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
+      📋 Linki Kopyala
+    </button>
+
   </div>
 </div>
 
@@ -995,7 +1062,8 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;font-siz
   <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
-  <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
+  <div class="bni-lbl">Rapor</div></div>
+  <div class="bni" onclick="go('davet',this)" data-pg="davet"><div class="bni-ico">🎁</div><div class="bni-lbl">Davet</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
 </div><!-- /dmain -->
@@ -1376,6 +1444,9 @@ function guncelleUI(){
 
   // Davet kodu & kredi
   setText('profil-davet-kodu', PROFIL.davetKodu||'—');
+  setText('davet-pg-kod', PROFIL.davetKodu||'—');
+  setText('davet-pg-sayi', PROFIL.davetSayisi||0);
+  setText('davet-pg-kredi', PROFIL.kredi||0);
   setText('profil-davet-sayisi', PROFIL.davetSayisi||0);
   setText('profil-kredi', PROFIL.kredi||0);
   const kreditxt = document.getElementById('davet-kredi-txt');
