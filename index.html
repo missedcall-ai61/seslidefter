@@ -843,7 +843,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
     <h3>4. KVKK Hakları</h3>
     <ul><li>Verilerinize erişim ve kopyasını alma (Profil → Verilerimi İndir)</li><li>Hatalı verilerin düzeltilmesini isteme</li><li>Verilerinizin silinmesini talep etme (Profil → Hesabımı Sil)</li></ul>
     <h3>5. İletişim</h3>
-    <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb908d9090bb889e8897929f9e9d8f9e89d5989496">[email&#160;protected]</a></p>
+    <p>kvkk@seslidefter.com</p>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -861,7 +861,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
     <h3>4. Çerezler</h3>
     <p>Uygulama yalnızca oturum yönetimi için zorunlu çerezler kullanır. Pazarlama veya takip çerezi kullanılmaz.</p>
     <h3>5. Haklarınız</h3>
-    <ul><li>Verilerinizi indirme (Profil → Verilerimi İndir)</li><li>Hesap ve veri silme (Profil → Hesabı Sil)</li><li>Bilgi talebi: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3d4dac9dfdadfdad8f3c0d6c0dfdad7d6d5c7d6c19dd0dcde">[email&#160;protected]</a></li></ul>
+    <ul><li>Verilerinizi indirme (Profil → Verilerimi İndir)</li><li>Hesap ve veri silme (Profil → Hesabı Sil)</li><li>Bilgi talebi: gizlilik@seslidefter.com</li></ul>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -1078,7 +1078,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
       <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:4px">İletişim</div>
       <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px">Sorularınız için bize ulaşın</div>
       <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;display:inline-block">
-        <span style="color:#2ecc71;font-size:13px;font-weight:600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f1f0e6e1f0fed5e6f0e6f9fcf1f0f3e1f0e7bbf6faf8">[email&#160;protected]</a></span>
+        <span style="color:#2ecc71;font-size:13px;font-weight:600">destek@seslidefter.com</span>
       </div>
       <div style="margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.35)">© 2025 SesliDefter — Tüm hakları saklıdır.</div>
     </div>
@@ -1239,7 +1239,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 </div>
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
@@ -1364,12 +1364,14 @@ async function _appBaslat(){
       USER = session.user;
       try { await init(); } catch(e){ console.error('init hatası:', e); }
     }
-    lsGizle();
-    if(!session?.user) authGoster();
+    // Her koşulda loading screen gizle
+    try { lsGizle(); } catch(e){}
+    if(!session?.user) { try { authGoster(); } catch(e){} }
   } catch(e) {
     clearTimeout(tmr);
     console.error('getSession hatası:', e);
-    _girisCik();
+    try { lsGizle(); } catch(_){}
+    try { authGoster(); } catch(_){}
   }
 
   // Auth state dinle
@@ -1406,13 +1408,14 @@ async function _appBaslat(){
 async function init(){
   await profilYukle();
   await verileriYukle();
+  try { faturalariYukle(); } catch(e){}
   guncelleUI();
   go('ana');
   rAna();
-  vadeBildirim();
-  faturaBildirim();
-  adSenseGoster();
-  rSiri();
+  try { vadeBildirim(); } catch(e){}
+  try { faturaBildirim(); } catch(e){}
+  try { adSenseGoster(); } catch(e){}
+  try { rSiri(); } catch(e){}
 }
 
 // ══════════════════════════════════════════════
@@ -2053,109 +2056,12 @@ function faturaEkle(){
   toast('✅ Fatura eklendi!','ok');
 }
 
-function faturaSil(id){
-  if(!confirm('Bu faturayı silmek istediğinize emin misiniz?')) return;
-  FATURALAR = FATURALAR.filter(f=>ft.id!==id);
-  faturalariKaydet();
-  rFatura();
-  toast('🗑️ Fatura silindi','ok');
-}
-
-function faturaOdendi(id){
-  const f = FATURALAR.find(x=>x.id===id);
-  if(!f) return;
-  // Ödeme kaydını kayıtlara ekle
-  const tarihStr = new Date().toISOString().split('T')[0];
-  const y = {
-    tur:'gider', tutar:ft.tutar||0,
-    aciklama: ft.ad + ' ödemesi',
-    kisi:'', tarih:tarihStr,
-    user_id: USER?.id,
-    sehir: PROFIL?.sehir||'',
-    sektor: PROFIL?.sektor||'',
-    giris_tipi:'manuel', kategori: ft.kat||'fatura'
-  };
-  sb.from('kayitlar').insert([y]).select().then(({data,error})=>{
-    if(error){ toast('❌ Kayıt eklenemedi: '+error.message,'err'); return; }
-    if(data) KAYITLAR.unshift(data[0]);
-    // Tek seferlikse sil, aylıksa bırak
-    if(ft.tur === 'tek'){
-      FATURALAR = FATURALAR.filter(x=>x.id!==id);
-      faturalariKaydet();
-    }
-    rAna(); rFatura();
-    toast('✅ Ödeme kaydedildi!','ok');
-  });
-}
-
-function rFatura(){
-  const bugun = new Date();
-  const bugAy = bugun.getDate();
-  const yaklasanEl = document.getElementById('fatura-list-yaklasan');
-  const tumEl = document.getElementById('fatura-list-tum');
-  if(!yaklasanEl || !tumEl) return;
-
-  // Yaklaşan (7 gün içinde veya geçmiş aylık)
-  const yaklasan = FATURALAR.filter(f=>{
-    if(ft.tur==='aylik'){
-      const kalan = ft.gun >= bugAy ? ft.gun - bugAy : (31 - bugAy + ft.gun);
-      return kalan <= 7;
-    } else {
-      if(!ft.tarih) return false;
-      const vade = new Date(ft.tarih);
-      const diff = Math.ceil((vade - bugun)/(1000*60*60*24));
-      return diff >= 0 && diff <= 7;
-    }
-  });
-
-  const katIco = {kira:'🏠',elektrik:'⚡',su:'💧',dogalgaz:'🔥',internet:'🌐',
-                  kredi:'💳',vergi:'📋',maas:'👷',diger:'📌'};
-
-  function faturaKart(ft, acil){
-    const ico = katIco[ft.kat]||'📌';
-    const renkCls = acil ? 'background:#fff3cd;border:1.5px solid #ffc107;' : 'background:var(--card);border:1.5px solid var(--bd);';
-    let zamanStr = '';
-    if(ft.tur==='aylik'){
-      const kalan = ft.gun >= bugAy ? ft.gun - bugAy : (31-bugAy+ft.gun);
-      zamanStr = kalan===0 ? '🔴 Bugün!' : kalan<=3 ? `🟠 ${kalan} gün` : `📅 Ayın ${ft.gun}i`;
-    } else {
-      if(ft.tarih){
-        const vade = new Date(ft.tarih);
-        const diff = Math.ceil((vade-bugun)/(1000*60*60*24));
-        zamanStr = diff<0?'🔴 Geçti':diff===0?'🔴 Bugün!':diff<=3?`🟠 ${diff} gün`:`📅 ${vade.toLocaleDateString('tr-TR')}`;
-      }
-    }
-    return `<div style="${renkCls}border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-      <div style="font-size:28px">${ico}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:700;font-size:15px">${ft.ad}</div>
-        <div style="font-size:13px;color:var(--mu);margin-top:2px">${zamanStr}</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        ${ft.tutar ? `<div style="font-weight:800;font-size:16px;font-family:'Bricolage Grotesque',sans-serif">₺${f(ft.tutar)}</div>` : ''}
-        <div style="display:flex;gap:6px;margin-top:6px">
-          ${ft.tutar ? `<button onclick="faturaOdendi('${ft.id}')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer">✅ Ödedim</button>` : ''}
-          <button onclick="faturaSil('${ft.id}')" style="background:var(--rdl);color:var(--rd);border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer">🗑️</button>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  yaklasanEl.innerHTML = yaklasan.length
-    ? yaklasan.map(f=>faturaKart(f,true)).join('')
-    : '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">✅ Yaklaşan ödeme yok</div>';
-
-  tumEl.innerHTML = FATURALAR.length
-    ? FATURALAR.map(f=>faturaKart(f,false)).join('')
-    : '<div style="text-align:center;padding:20px;color:var(--mu);font-size:14px">📋 Henüz fatura eklenmedi</div>';
-}
-
 function faturaHatirlatici(){
   const bugun = new Date().getDate();
   const acil = FATURALAR.filter(f=>{
-    if(ft.tur==='aylik'){ return ft.gun===bugun || ft.gun===bugun+1 || ft.gun===bugun+2; }
-    if(ft.tarih){
-      const vade = new Date(ft.tarih);
+    if(f.tur==='aylik'){ return f.gun===bugun || f.gun===bugun+1 || f.gun===bugun+2; }
+    if(f.tarih){
+      const vade = new Date(f.tarih);
       const diff = Math.ceil((vade-new Date())/(1000*60*60*24));
       return diff>=0 && diff<=2;
     }
@@ -2164,7 +2070,7 @@ function faturaHatirlatici(){
   if(acil.length){
     const wrap = document.getElementById('vade-uyari-wrap');
     if(wrap){
-      const extra = acil.map(f=>`<b>${ft.ad}</b>`).join(', ');
+      const extra = acil.map(f=>`<b>${f.ad}</b>`).join(', ');
       wrap.insertAdjacentHTML('beforeend',
         `<div style="background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:13px;cursor:pointer" onclick="go('fatura')">
           🔔 Yaklaşan ödeme: ${extra} — <span style="color:var(--gr);font-weight:700">Görüntüle →</span>
@@ -2269,23 +2175,23 @@ function faturaSil(id){
 }
 
 function getFaturaGun(f){
-  if(ft.tur==='aylik') return ft.gun || 1;
-  if(ft.tarih) return new Date(ft.tarih).getDate();
+  if(f.tur==='aylik') return f.gun || 1;
+  if(f.tarih) return new Date(f.tarih).getDate();
   return 1;
 }
 
 function getFaturaBugunKalan(f){
   const bugun = new Date();
   const gun = bugun.getDate();
-  if(ft.tur === 'tek'){
-    if(!ft.tarih) return null;
-    const hedef = new Date(ft.tarih);
+  if(f.tur === 'tek'){
+    if(!f.tarih) return null;
+    const hedef = new Date(f.tarih);
     hedef.setHours(0,0,0,0);
     bugun.setHours(0,0,0,0);
     return Math.ceil((hedef - bugun) / 86400000);
   }
   // Aylık
-  const hedefGun = ft.gun || 1;
+  const hedefGun = f.gun || 1;
   let kalan = hedefGun - gun;
   if(kalan < 0) kalan += new Date(bugun.getFullYear(), bugun.getMonth()+1, 0).getDate();
   return kalan;
@@ -2327,8 +2233,8 @@ function rFatura(){
 
 function faturaKart(f, kat_ico, vurgula){
   const kalan = getFaturaBugunKalan(f);
-  const ico = kat_ico[ft.kat] || '📦';
-  const tutar = ft.tutar > 0 ? `₺${Number(ft.tutar).toLocaleString('tr-TR')}` : '';
+  const ico = kat_ico[f.kat] || '📦';
+  const tutar = f.tutar > 0 ? `₺${Number(f.tutar).toLocaleString('tr-TR')}` : '';
   let kalanTxt = '';
   let kalanRenk = 'var(--mu)';
   if(kalan === null) kalanTxt = '';
@@ -2337,13 +2243,13 @@ function faturaKart(f, kat_ico, vurgula){
   else if(kalan <= 3){ kalanTxt = `${kalan} gün kaldı`; kalanRenk = '#e67e22'; }
   else { kalanTxt = `${kalan} gün kaldı`; }
 
-  const periyot = ft.tur === 'aylik' ? `Her ayın ${ft.gun}. günü` : (ft.tarih ? new Date(ft.tarih).toLocaleDateString('tr-TR') : '');
+  const periyot = f.tur === 'aylik' ? `Her ayın ${f.gun}. günü` : (f.tarih ? new Date(f.tarih).toLocaleDateString('tr-TR') : '');
   const odendiStyle = f.odendi ? 'opacity:.5;text-decoration:line-through' : '';
 
   return `<div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1.5px solid ${vurgula && !f.odendi ? '#f39c12' : 'var(--bd)'};display:flex;align-items:center;gap:12px">
     <div style="font-size:26px;flex-shrink:0">${ico}</div>
     <div style="flex:1;min-width:0;${odendiStyle}">
-      <div style="font-weight:700;font-size:15px">${ft.ad}</div>
+      <div style="font-weight:700;font-size:15px">${f.ad}</div>
       <div style="font-size:12px;color:var(--mu);margin-top:2px">${periyot}${f.not ? ' · '+f.not : ''}</div>
       <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
         ${tutar ? `<span style="font-weight:700;color:var(--gr)">${tutar}</span>` : ''}
@@ -2352,9 +2258,9 @@ function faturaKart(f, kat_ico, vurgula){
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:6px">
-      <button onclick="faturaOdendi('${ft.id}')" style="background:${f.odendi ? 'var(--bg)' : 'var(--gr)'};color:${f.odendi ? 'var(--ink)' : '#fff'};border:1.5px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
+      <button onclick="faturaOdendi('${f.id}')" style="background:${f.odendi ? 'var(--bg)' : 'var(--gr)'};color:${f.odendi ? 'var(--ink)' : '#fff'};border:1.5px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
         ${f.odendi ? '↩️' : '✅'}</button>
-      <button onclick="faturaSil('${ft.id}')" style="background:var(--bg);color:var(--rd,#e74c3c);border:1.5px solid #fdd;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer">🗑️</button>
+      <button onclick="faturaSil('${f.id}')" style="background:var(--bg);color:var(--rd,#e74c3c);border:1.5px solid #fdd;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer">🗑️</button>
     </div>
   </div>`;
 }
@@ -2380,17 +2286,12 @@ function faturaBildirim(){
     return k !== null && k <= 3;
   });
   if(yaklasan.length > 0){
-    const isimler = yaklasan.map(f=>`${ft.ad}${getFaturaBugunKalan(f)===0?' (bugün!)':' ('+getFaturaBugunKalan(f)+' gün)'}`).join(', ');
+    const isimler = yaklasan.map(f=>`${f.ad}${getFaturaBugunKalan(f)===0?' (bugün!)':' ('+getFaturaBugunKalan(f)+' gün)'}`).join(', ');
     toast(`🧾 Yaklaşan ödeme: ${isimler}`, 'ok');
   }
 }
 
 // ── GOOGLE ADSENSE GÖSTER/GİZLE ─────────────────────
-function adSenseGoster(){
-  const wrap = document.getElementById('adsense-wrap');
-  if(wrap) wrap.style.display = (PAKET === 'free') ? 'block' : 'none';
-}
-
 // ══════════════════════════════════════════════
 // EXPORT
 // ══════════════════════════════════════════════
@@ -2533,8 +2434,8 @@ function go(pg,el){
   if(pg==='kayitlar') rKayitlar();
   if(pg==='alacak') rAlacak();
   if(pg==='rapor') rRapor();
-  if(pg==='fatura') rFatura();
-  if(pg==='fatura') rFatura();
+  if(pg==='fatura'){ rFatura(); faturalariYukle(); }
+  if(pg==='profil') guncelleUI();
   if(pg==='davet'){
     // Davet kodu hâlâ boşsa profili yeniden yükle
     if(!PROFIL?.davetKodu){
@@ -3004,17 +2905,8 @@ function fontUygula(boy){
   const fd=document.getElementById('font-durum');
   if(fd) fd.textContent='Şu an: '+(boy==='kucuk'?'Küçük':boy==='buyuk'?'Büyük':'Normal');
 }
-// ESKİ fontUygula override - KALDIRILDI
-function _fontUygula_REMOVED(boy){  // eski versiyon - kullanılmıyor
-  if(!['kucuk','orta','buyuk'].includes(boy)) boy = 'orta';
-  const bK = document.getElementById('fb-kucuk');
-  const bB = document.getElementById('fb-buyuk');
-  if(bK){ bK.style.background = boy==='kucuk' ? 'var(--gr)' : 'var(--bg)'; bK.style.color = boy==='kucuk' ? '#fff' : 'var(--ink)'; }
-  if(bB){ bB.style.background = boy==='buyuk' ? 'var(--gr)' : 'var(--bg)'; bB.style.color = boy==='buyuk' ? '#fff' : 'var(--ink)'; }
-  // Durum metni
-  const fd = document.getElementById('font-durum');
-  if(fd) fd.textContent = boy==='buyuk' ? 'Şu an: Büyük' : 'Şu an: Normal';
-}
+
+
 function setDark(on){
   darkMode=on;
   document.documentElement.setAttribute('data-theme',on?'dark':'light');
@@ -3166,4 +3058,16 @@ async function ssKaydet() {
 
 <script>
 try {
-  sb = supabase.createC
+  sb = supabase.createClient(
+    'https://wxvbvxrjvktavshtdidu.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k'
+  );
+  _appBaslat();
+} catch(e) {
+  console.error('Başlama hatası:', e);
+  try { document.getElementById('ls').style.display='none'; } catch(e2){}
+  try { authGoster(); } catch(e3){}
+}
+</script>
+</body>
+</html>
