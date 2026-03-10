@@ -351,7 +351,6 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <!-- Google AdSense - Yayıncı ID'nizi girin -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -531,24 +530,6 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
   <!-- REKLAM: sadece ücretsiz kullanıcılara göster -->
   <div class="adsense-wrap" id="ad-wrap" style="display:none">
     <div class="adsense-label">Reklam</div>
-    <ins class="adsbygoogle"
-         style="display:block;width:100%;height:90px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-  </div>
-
-  <!-- Google AdSense Banner - Sadece free paket -->
-  <div id="adsense-wrap" style="display:none;margin:0 14px 14px;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bd)">
-    <div style="font-size:10px;color:var(--mu);text-align:center;padding:4px 0 2px;font-weight:600;letter-spacing:.5px">REKLAM</div>
-    <ins class="adsbygoogle"
-         style="display:block;width:100%;height:90px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="banner"
-         data-full-width-responsive="false"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   <div class="sec-hdr"><div class="sec-title">Son Kayıtlar</div><div class="sec-link" onclick="go('kayitlar')">Tümü →</div></div>
   <div class="kayit-list" id="ana-kayitlar"></div>
@@ -700,53 +681,130 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- PAKETLER -->
 <div class="pg" id="pg-paket">
-  <div style="background:linear-gradient(160deg,#1a7a4a,#145f38);padding:26px 18px;text-align:center">
-    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:800;color:#fff;margin-bottom:5px">Paket Seç</div>
-    <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.5">İhtiyacına göre planla,<br>istediğin zaman değiştir.</div>
+  <!-- Hero -->
+  <div style="background:linear-gradient(160deg,#1a7a4a 0%,#2ecc71 100%);padding:28px 18px 32px;text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%"></div>
+    <div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,.06);border-radius:50%"></div>
+    <div style="font-size:36px;margin-bottom:8px">🚀</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:6px">SesliDefter Premium</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;max-width:280px;margin:0 auto">Sesli kayıt, sınırsız işlem ve daha fazlası ile işini büyüt</div>
+    <!-- Sosyal kanıt -->
+    <div style="display:flex;justify-content:center;gap:20px;margin-top:16px">
+      <div style="text-align:center"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900;color:#fff">500+</div><div style="font-size:11px;color:rgba(255,255,255,.75)">Aktif Esnaf</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+      <div style="text-align:center"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900;color:#fff">4.8★</div><div style="font-size:11px;color:rgba(255,255,255,.75)">Kullanıcı Puanı</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+      <div style="text-align:center"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900;color:#fff">%100</div><div style="font-size:11px;color:rgba(255,255,255,.75)">Türk Esnafına Özel</div></div>
+    </div>
   </div>
-  <div class="paket-grid">
-    <div class="paket-card">
-      <div class="paket-name">🆓 Ücretsiz</div>
-      <div class="paket-fiyat"><div class="paket-tutar">₺0</div><div class="paket-donem">/ay</div></div>
-      <div class="paket-ozs">
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>100 kayıt/ay</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Kasa takibi</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Alacak/Verecek</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Sesli komut (10/gün)</div>
-        <div class="paket-oz"><div class="oz-ico oz-no">✗</div><span style="color:var(--mu)">Gelişmiş raporlar</span></div>
-        <div class="paket-oz"><div class="oz-ico oz-no">✗</div><span style="color:var(--mu)">Excel/CSV export</span></div>
-        <div class="paket-oz"><div class="oz-ico oz-no">✗</div><span style="color:var(--mu)">WhatsApp bildirimi</span></div>
-      </div>
-      <button class="paket-btn pb-ghost" onclick="toast('Zaten ücretsiz plandasın!','info')">Mevcut Plan</button>
+
+  <div style="padding:16px 14px">
+
+    <!-- Plan toggle: Aylık / Yıllık -->
+    <div style="display:flex;background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:3px;margin-bottom:18px">
+      <button id="toggle-aylik" onclick="planToggle('aylik')" style="flex:1;padding:9px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--gr);color:#fff;transition:all .2s">Aylık</button>
+      <button id="toggle-yillik" onclick="planToggle('yillik')" style="flex:1;padding:9px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;background:transparent;color:var(--mu);transition:all .2s">Yıllık <span style="background:#ff6b35;color:#fff;border-radius:99px;padding:2px 7px;font-size:10px;margin-left:3px">%20 İndirim</span></button>
     </div>
-    <div class="paket-card popular">
-      <div class="paket-name">⚡ Esnaf</div>
-      <div class="paket-fiyat"><div class="paket-tutar gr">₺199</div><div class="paket-donem">/ay</div></div>
-      <div class="paket-ozs">
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Sınırsız kayıt</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Sınırsız sesli komut</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Gelişmiş raporlar</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Excel/CSV export</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>WhatsApp hatırlatıcı</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Öncelikli destek</div>
-        <div class="paket-oz"><div class="oz-ico oz-no">✗</div><span style="color:var(--mu)">Çoklu kullanıcı</span></div>
+
+    <!-- Ücretsiz Plan -->
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:18px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink)">🆓 Başlangıç</div>
+          <div style="font-size:12px;color:var(--mu);margin-top:2px">Denemeye başlamak için</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:var(--ink)">₺0</div>
+          <div style="font-size:11px;color:var(--mu)">/ay sonsuza kadar</div>
+        </div>
       </div>
-      <button class="paket-btn pb-gr" onclick="paketSec('esnaf')">⚡ Hemen Başla</button>
-    </div>
-    <div class="paket-card">
-      <div class="paket-name">🚀 Pro</div>
-      <div class="paket-fiyat"><div class="paket-tutar pu">₺399</div><div class="paket-donem">/ay</div></div>
-      <div class="paket-ozs">
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Esnaf'taki her şey</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>3 çalışan hesabı</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Çoklu işletme</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>API entegrasyonu</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Muhasebe bağlantısı</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>7/24 öncelikli destek</div>
-        <div class="paket-oz"><div class="oz-ico oz-ok">✓</div>Özel onboarding</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>100 kayıt/ay</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Sesli komut</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Alacak takibi</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Temel raporlar</div>
       </div>
-      <button class="paket-btn pb-pu" onclick="paketSec('pro')">🚀 Pro'ya Geç</button>
+      <button class="paket-btn pb-ghost" onclick="toast('Zaten ücretsiz plandasın! 🎉','info')" style="width:100%;padding:12px;border-radius:11px;border:1.5px solid var(--bd);background:transparent;color:var(--mu);font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">Mevcut Planın</button>
     </div>
+
+    <!-- Esnaf Plan - ÖNERİLEN -->
+    <div style="background:linear-gradient(145deg,#f0fff6,#e8f8ef);border:2.5px solid var(--gr);border-radius:18px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;right:0;background:var(--gr);color:#fff;font-size:10px;font-weight:800;padding:5px 12px;border-radius:0 18px 0 12px">⭐ EN POPÜLER</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-right:60px">
+        <div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink)">⚡ Esnaf</div>
+          <div style="font-size:12px;color:var(--mu);margin-top:2px">Büyüyen işletmeler için</div>
+        </div>
+        <div style="text-align:right">
+          <div id="esnaf-fiyat" style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:var(--gr)">₺199</div>
+          <div id="esnaf-donem" style="font-size:11px;color:var(--mu)">/ay</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Sınırsız kayıt</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Sınırsız sesli</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Excel/PDF export</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>WhatsApp bildirim</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Gelişmiş raporlar</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gr);font-weight:700">✓</span>Öncelikli destek</div>
+      </div>
+      <!-- Müşteri yorumu -->
+      <div style="background:rgba(255,255,255,.7);border-radius:10px;padding:10px;margin:12px 0;font-size:12px;color:var(--ink2);font-style:italic;line-height:1.5">
+        💬 "Ayda 3 saatimi kurtarıyor, her kuruşuma değiyor!" — Mehmet A., Bakkal
+      </div>
+      <button onclick="paketSec('esnaf')" style="width:100%;padding:14px;border-radius:11px;border:none;background:var(--gr);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px">
+        ⚡ Esnaf'a Geç — <span id="esnaf-cta-fiyat">₺199/ay</span>
+      </button>
+      <div style="text-align:center;font-size:11px;color:var(--mu);margin-top:6px">✓ 14 gün ücretsiz dene · ✓ İstediğin zaman iptal et</div>
+    </div>
+
+    <!-- Pro Plan -->
+    <div style="background:linear-gradient(145deg,#f5f0ff,#ede8ff);border:2px solid #a78bfa;border-radius:18px;padding:18px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink)">🚀 Pro</div>
+          <div style="font-size:12px;color:var(--mu);margin-top:2px">Ekip ile çalışanlar için</div>
+        </div>
+        <div style="text-align:right">
+          <div id="pro-fiyat" style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:#7c3aed">₺399</div>
+          <div id="pro-donem" style="font-size:11px;color:var(--mu)">/ay</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>Esnaf'taki her şey</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>3 çalışan hesabı</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>Çoklu şube</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>API erişimi</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>7/24 destek</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)"><span style="color:#7c3aed;font-weight:700">✓</span>Özel onboarding</div>
+      </div>
+      <button onclick="paketSec('pro')" style="width:100%;padding:14px;border-radius:11px;border:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:'Outfit',sans-serif">
+        🚀 Pro'ya Geç — <span id="pro-cta-fiyat">₺399/ay</span>
+      </button>
+      <div style="text-align:center;font-size:11px;color:var(--mu);margin-top:6px">✓ 14 gün ücretsiz dene · ✓ İstediğin zaman iptal et</div>
+    </div>
+
+    <!-- SSS -->
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:16px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;margin-bottom:12px;color:var(--ink)">❓ Sık Sorulan Sorular</div>
+      <div style="font-size:13px;color:var(--ink2);line-height:1.7">
+        <div style="margin-bottom:10px"><b>Ödeme nasıl yapılır?</b><br>iyzico altyapısı ile güvenli ödeme. Kredi kartı, banka kartı veya havale.</div>
+        <div style="margin-bottom:10px"><b>İptal edebilir miyim?</b><br>Evet, istediğin zaman. Kalan süren aktif kalır, otomatik yenileme durur.</div>
+        <div style="margin-bottom:10px"><b>Verilerim kaybolur mu?</b><br>Hayır. Plan düşürsen bile verilerini her zaman görebilir ve indirebilirsin.</div>
+        <div><b>Fatura kesiliyor mu?</b><br>Evet, kurumsal fatura talep edebilirsin. <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3551504641505e75465046595c5150534150471b565a58">[email&#160;protected]</a></div>
+      </div>
+    </div>
+
+    <!-- Güven -->
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;padding:4px 0 16px">
+      <div style="font-size:12px;color:var(--mu);display:flex;align-items:center;gap:4px">🔒 SSL Güvenli</div>
+      <div style="font-size:12px;color:var(--mu);display:flex;align-items:center;gap:4px">🇹🇷 Türkiye'de Hizmet</div>
+      <div style="font-size:12px;color:var(--mu);display:flex;align-items:center;gap:4px">📜 KVKK Uyumlu</div>
+    </div>
+
+  </div>
+  <div style="height:8px"></div>
+</div>
   </div>
   <div style="height:8px"></div>
 </div>
@@ -814,6 +872,14 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
           <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
         </div>
       </div>
+      <div class="profil-row" onclick="siriKurulumGoster()">
+        <div class="pr-left"><div class="pr-ico" style="background:#f0fff0">🎙️</div><div><div class="pr-label">Siri / Asistan Kurulumu</div><div class="pr-sub">Sesli komut nasıl kurulur?</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
+      <div class="profil-row" onclick="go('iletisim')">
+        <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">📬</div><div><div class="pr-label">İletişim & Destek</div><div class="pr-sub">Bize ulaşın</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
       <div class="profil-row" onclick="go('kvkk')">
         <div class="pr-left"><div class="pr-ico" style="background:#fff0f0">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
         <div class="pr-arr">›</div>
@@ -872,37 +938,73 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- KVKK -->
 <div class="pg" id="pg-kvkk">
-  <div class="kvkk-content">
-    <h2>🔒 KVKK Aydınlatma Metni</h2>
-    <p>Son güncelleme: Mart 2025</p>
-    <h3>1. Veri Sorumlusu</h3>
-    <p>SesliDefter uygulaması kapsamında kişisel verileriniz, 6698 sayılı KVKK uyarınca veri sorumlusu sıfatıyla işlenmektedir.</p>
-    <h3>2. İşlenen Kişisel Veriler</h3>
-    <ul><li>Ad, soyad, e-posta adresi</li><li>İşletme bilgileri</li><li>Finansal kayıtlar (gelir, gider, alacak/verecek)</li><li>Ses kayıtları (işlem sonrası anında silinir)</li><li>Cihaz ve kullanım verileri</li></ul>
-    <h3>3. Veri Güvenliği</h3>
-    <p>Tüm verileriniz Supabase altyapısında şifrelenmiş olarak saklanır. Row Level Security ile her kullanıcı yalnızca kendi verilerine erişir. Ses kayıtları işlem sonrası silinir.</p>
-    <h3>4. KVKK Hakları</h3>
-    <ul><li>Verilerinize erişim ve kopyasını alma (Profil → Verilerimi İndir)</li><li>Hatalı verilerin düzeltilmesini isteme</li><li>Verilerinizin silinmesini talep etme (Profil → Hesabımı Sil)</li></ul>
-    <h3>5. İletişim</h3>
-    <p>kvkk@seslidefter.com</p>
+  <div class="pg-hd"><div class="pg-hd-title">🔒 KVKK Aydınlatma</div></div>
+  <div class="kvkk-content" style="padding:0 14px 40px">
+    <div style="background:var(--bll);border:1px solid var(--blm);border-radius:12px;padding:12px;margin-bottom:16px;font-size:12.5px;color:var(--bl);line-height:1.6">
+      ℹ️ Son güncelleme: Mart 2025 · 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında hazırlanmıştır.
+    </div>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">1. Veri Sorumlusu</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">SesliDefter uygulaması kapsamında kişisel verileriniz, 6698 sayılı KVKK uyarınca <strong>SesliDefter</strong> tarafından veri sorumlusu sıfatıyla işlenmektedir. İletişim: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ae1fce1e1caf9eff9e6e3eeefecfeeff8a4e9e5e7">[email&#160;protected]</a></p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">2. İşlenen Kişisel Veriler</h3>
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:16px">
+      <div style="font-size:12.5px;color:var(--ink2);line-height:2">
+        <div>👤 Ad, soyad, e-posta adresi</div>
+        <div>🏪 İşletme adı, sektör, şehir bilgisi</div>
+        <div>💰 Gelir-gider kayıtları (yalnızca sizin girdiğiniz)</div>
+        <div>🤝 Alacak/verecek bilgileri</div>
+        <div>📱 Cihaz bilgisi, IP adresi (güvenlik amaçlı)</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">3. Veri Güvenliği</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Tüm verileriniz <strong>Supabase AB (Frankfurt/Almanya)</strong> sunucularında <strong>AES-256 şifrelemesi</strong> ile saklanır. Row Level Security (RLS) ile her kullanıcı yalnızca kendi verisine erişebilir. SSL/TLS şifreli bağlantı kullanılır.</p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">4. Üçüncü Taraflarla Paylaşım</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Verileriniz <strong>hiçbir koşulda</strong> reklam amaçlı üçüncü taraflarla paylaşılmaz, satılmaz. Yalnızca ödeme işlemleri için <strong>iyzico</strong> ve altyapı için <strong>Supabase</strong> ile teknik zorunluluk kapsamında paylaşılır.</p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">5. KVKK Haklarınız</h3>
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:16px">
+      <div style="font-size:12.5px;color:var(--ink2);line-height:2">
+        <div>📥 Verilerinize erişim — <em>Profil → Verilerimi İndir</em></div>
+        <div>✏️ Hatalı verilerin düzeltilmesi</div>
+        <div>🗑️ Verilerinizin silinmesi — <em>Profil → Hesabı Sil</em></div>
+        <div>📦 Veri taşınabilirliği (JSON/Excel export)</div>
+        <div>🚫 İşlemenin kısıtlanması</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">6. İletişim</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 8px">KVKK kapsamındaki talepleriniz için: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7a110c11113a091f0916131e1f1c0e1f0854191517">[email&#160;protected]</a></strong></p>
+    <p style="font-size:12px;color:var(--mu);line-height:1.7;margin:0">Talepleriniz en geç 30 gün içinde yanıtlanır.</p>
     <div style="height:20px"></div>
   </div>
 </div>
 
 <div class="pg" id="pg-gizlilik">
-  <div class="kvkk-content">
-    <h2>🔐 Gizlilik Politikası</h2>
-    <p>Son güncelleme: Mart 2025</p>
-    <h3>1. Toplanan Veriler</h3>
-    <p>SesliDefter yalnızca uygulamanın çalışması için zorunlu verileri toplar: e-posta adresi, ad soyad, işletme adı ve finansal kayıt girişleri.</p>
-    <h3>2. Verilerin Kullanımı</h3>
-    <p>Verileriniz yalnızca size hizmet sunmak amacıyla kullanılır. Hiçbir koşulda üçüncü taraflarla paylaşılmaz veya satılmaz.</p>
-    <h3>3. Veri Saklama</h3>
-    <p>Tüm veriler Supabase (EU-Frankfurt) sunucularında AES-256 şifreleme ile saklanır. Hesabınızı sildiğinizde tüm verileriniz kalıcı olarak silinir.</p>
-    <h3>4. Çerezler</h3>
-    <p>Uygulama yalnızca oturum yönetimi için zorunlu çerezler kullanır. Pazarlama veya takip çerezi kullanılmaz.</p>
-    <h3>5. Haklarınız</h3>
-    <ul><li>Verilerinizi indirme (Profil → Verilerimi İndir)</li><li>Hesap ve veri silme (Profil → Hesabı Sil)</li><li>Bilgi talebi: gizlilik@seslidefter.com</li></ul>
+  <div class="pg-hd"><div class="pg-hd-title">🔐 Gizlilik Politikası</div></div>
+  <div class="kvkk-content" style="padding:0 14px 40px">
+    <div style="background:var(--grl);border:1px solid var(--grm);border-radius:12px;padding:12px;margin-bottom:16px;font-size:12.5px;color:var(--gr);line-height:1.6">
+      ✅ SesliDefter, verilerinizi <strong>asla satmaz</strong> ve reklam amacıyla kullanmaz.
+    </div>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">Topladığımız Veriler</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Yalnızca uygulamanın çalışması için zorunlu veriler toplanır: e-posta, ad soyad, işletme bilgileri ve sizin girdiğiniz finansal kayıtlar. Mikrofonunuz yalnızca sesli komut verdiğiniz anlarda kullanılır; ses kaydı sunucularımıza gönderilmez, doğrudan cihazınızda işlenir.</p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">Çerez Politikası</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Oturum sürdürme için localStorage kullanılır (çerez değil). Üçüncü taraf takip çerezi veya reklam çerezi kullanılmaz.</p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">Veri Saklama Süresi</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Hesabınız aktif olduğu sürece verileriniz saklanır. Hesap silme talebinde 30 gün içinde tüm veriler kalıcı olarak silinir.</p>
+
+    <h3 style="font-size:14px;font-weight:800;margin:0 0 8px;color:var(--ink)">Politika Güncellemeleri</h3>
+    <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 16px">Politika değişikliklerinde e-posta ile bildirim yapılır. Son güncelleme: <strong>Mart 2025</strong></p>
+
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:14px;text-align:center">
+      <div style="font-size:13px;color:var(--mu);margin-bottom:8px">Sorularınız için</div>
+      <a href="/cdn-cgi/l/email-protection#fa9d93809693969391ba899f8996939e9f9c8e9f88d4999597" style="color:var(--gr);font-weight:700;font-size:14px;text-decoration:none"><span class="__cf_email__" data-cfemail="9ef9f7e4f2f7f2f7f5deedfbedf2f7fafbf8eafbecb0fdf1f3">[email&#160;protected]</span></a>
+    </div>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -972,6 +1074,85 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
   </div>
 </div>
 
+
+<div class="pg" id="pg-iletisim">
+  <div class="pg-hd"><div class="pg-hd-title">📬 İletişim</div></div>
+  <div style="padding:0 14px 40px">
+
+    <!-- Kartlar -->
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+      <a href="/cdn-cgi/l/email-protection#80e4e5f3f4e5ebc0f3e5f3ece9e4e5e6f4e5f2aee3efed" style="text-decoration:none">
+        <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px">
+          <div style="width:44px;height:44px;background:var(--bll);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">✉️</div>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--ink)">E-posta Desteği</div>
+            <div style="font-size:13px;color:var(--mu);margin-top:2px"><span class="__cf_email__" data-cfemail="8febeafcfbeae4cffceafce3e6ebeae9fbeafda1ece0e2">[email&#160;protected]</span></div>
+            <div style="font-size:11px;color:var(--gr);margin-top:3px">Ort. yanıt süresi: 4-8 saat</div>
+          </div>
+        </div>
+      </a>
+      <a href="https://wa.me/905XXXXXXXXX?text=Merhaba, SesliDefter hakkında bilgi almak istiyorum." target="_blank" style="text-decoration:none">
+        <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px">
+          <div style="width:44px;height:44px;background:#e8f8ef;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">💬</div>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--ink)">WhatsApp Destek</div>
+            <div style="font-size:13px;color:var(--mu);margin-top:2px">Hızlı sorular için</div>
+            <div style="font-size:11px;color:var(--gr);margin-top:3px">Hafta içi 09:00 - 18:00</div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- İletişim Formu -->
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:16px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;margin-bottom:12px;color:var(--ink)">📝 Mesaj Gönder</div>
+      <div class="fg" style="margin-bottom:10px">
+        <label class="fl">Konu</label>
+        <select id="iletisim-konu" class="fi" style="appearance:none">
+          <option value="">Konu seçin...</option>
+          <option value="teknik">🔧 Teknik Sorun</option>
+          <option value="onerı">💡 Öneri / Geri Bildirim</option>
+          <option value="odeme">💳 Ödeme Sorunu</option>
+          <option value="kvkk">🔒 KVKK / Veri Talebi</option>
+          <option value="diger">📌 Diğer</option>
+        </select>
+      </div>
+      <div class="fg" style="margin-bottom:10px">
+        <label class="fl">Mesajınız</label>
+        <textarea id="iletisim-mesaj" class="fi" rows="4" placeholder="Nasıl yardımcı olabiliriz?" style="resize:none;line-height:1.5"></textarea>
+      </div>
+      <button onclick="iletisimGonder()" style="width:100%;padding:13px;border-radius:11px;border:none;background:var(--gr);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">
+        📤 Gönder
+      </button>
+    </div>
+
+    <!-- Sosyal -->
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;margin-bottom:12px;color:var(--ink)">🌐 Bizi Takip Edin</div>
+      <div style="display:flex;gap:10px">
+        <a href="https://instagram.com/seslidefter" target="_blank" style="flex:1;text-decoration:none">
+          <div style="background:#fff0f5;border:1px solid #ffd0e0;border-radius:12px;padding:12px;text-align:center">
+            <div style="font-size:22px">📷</div>
+            <div style="font-size:11px;font-weight:700;color:#e91e8c;margin-top:4px">Instagram</div>
+          </div>
+        </a>
+        <a href="https://twitter.com/seslidefter" target="_blank" style="flex:1;text-decoration:none">
+          <div style="background:#f0f8ff;border:1px solid #d0e8ff;border-radius:12px;padding:12px;text-align:center">
+            <div style="font-size:22px">🐦</div>
+            <div style="font-size:11px;font-weight:700;color:#1da1f2;margin-top:4px">Twitter/X</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/company/seslidefter" target="_blank" style="flex:1;text-decoration:none">
+          <div style="background:#f0f4ff;border:1px solid #d0daff;border-radius:12px;padding:12px;text-align:center">
+            <div style="font-size:22px">💼</div>
+            <div style="font-size:11px;font-weight:700;color:#0077b5;margin-top:4px">LinkedIn</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <div class="pg" id="pg-hakkinda">
   <div class="pg-hd"><div class="pg-hd-title">ℹ️ Hakkımızda</div></div>
@@ -1119,7 +1300,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
       <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:4px">İletişim</div>
       <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px">Sorularınız için bize ulaşın</div>
       <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;display:inline-block">
-        <span style="color:#2ecc71;font-size:13px;font-weight:600">destek@seslidefter.com</span>
+        <span style="color:#2ecc71;font-size:13px;font-weight:600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86e2e3f5f2e3edc6f5e3f5eaefe2e3e0f2e3f4a8e5e9eb">[email&#160;protected]</a></span>
       </div>
       <div style="margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.35)">© 2025 SesliDefter — Tüm hakları saklıdır.</div>
     </div>
@@ -1280,7 +1461,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 </div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
@@ -1457,6 +1638,7 @@ async function init(){
   try { faturaBildirim(); } catch(e){}
   try { adSenseGoster(); } catch(e){}
   try { rSiri(); } catch(e){}
+  try { siriKontrol(); } catch(e){}
 }
 
 // ══════════════════════════════════════════════
@@ -1473,6 +1655,62 @@ async function googleGiris(){
   if(error){toast('Bir hata oluştu. Lütfen tekrar deneyin.','err'); console.error('Err:',error);lb(false);}
 }
 
+
+
+// ── Paket Plan Toggle ────────────────────────────
+let aktifPlan = 'aylik';
+function planToggle(tip){
+  aktifPlan = tip;
+  const ayBtn = document.getElementById('toggle-aylik');
+  const yilBtn = document.getElementById('toggle-yillik');
+  if(!ayBtn) return;
+  if(tip==='aylik'){
+    ayBtn.style.background='var(--gr)'; ayBtn.style.color='#fff';
+    yilBtn.style.background='transparent'; yilBtn.style.color='var(--mu)';
+    document.getElementById('esnaf-fiyat').textContent='₺199';
+    document.getElementById('esnaf-donem').textContent='/ay';
+    document.getElementById('esnaf-cta-fiyat').textContent='₺199/ay';
+    document.getElementById('pro-fiyat').textContent='₺399';
+    document.getElementById('pro-donem').textContent='/ay';
+    document.getElementById('pro-cta-fiyat').textContent='₺399/ay';
+  } else {
+    yilBtn.style.background='var(--gr)'; yilBtn.style.color='#fff';
+    ayBtn.style.background='transparent'; ayBtn.style.color='var(--mu)';
+    document.getElementById('esnaf-fiyat').textContent='₺159';
+    document.getElementById('esnaf-donem').textContent='/ay · yıllık ödeme';
+    document.getElementById('esnaf-cta-fiyat').textContent='₺1.908/yıl';
+    document.getElementById('pro-fiyat').textContent='₺319';
+    document.getElementById('pro-donem').textContent='/ay · yıllık ödeme';
+    document.getElementById('pro-cta-fiyat').textContent='₺3.828/yıl';
+  }
+}
+
+// ── İletişim Formu ───────────────────────────────
+async function iletisimGonder(){
+  const konu = document.getElementById('iletisim-konu')?.value;
+  const mesaj = document.getElementById('iletisim-mesaj')?.value?.trim();
+  if(!konu){ toast('⚠️ Lütfen bir konu seçin!','err'); return; }
+  if(!mesaj || mesaj.length < 10){ toast('⚠️ Mesajınız en az 10 karakter olmalı!','err'); return; }
+  // Rate limiting
+  if(!_rl('iletisim', 3, 3600000)){ toast('⚠️ Çok fazla mesaj gönderdiniz. Lütfen bekleyin.','err'); return; }
+  lb(true);
+  // Supabase olaylar tablosuna kaydet
+  try {
+    const email = USER?.email || 'anonim';
+    await sb.from('olaylar').insert([{
+      user_id: USER?.id || null,
+      tur: 'iletisim',
+      meta: JSON.stringify({ konu, mesaj: mesaj.substring(0,500), email })
+    }]);
+    toast('✅ Mesajınız iletildi! En kısa sürede yanıt vereceğiz.','ok');
+    document.getElementById('iletisim-mesaj').value = '';
+    document.getElementById('iletisim-konu').value = '';
+  } catch(e) {
+    // Fallback: mailto
+    window.location.href = 'mailto:destek@seslidefter.com?subject='+encodeURIComponent(konu)+'&body='+encodeURIComponent(mesaj);
+  }
+  lb(false);
+}
 
 // ── Güvenlik Fonksiyonları ───────────────────────
 async function sifreDegistir(){
@@ -2002,6 +2240,52 @@ function rRapor(){
   }).join(''):`<div class="empty"><div class="empty-ico">📊</div><div class="empty-txt">Kategori verisi yok</div></div>`;
 }
 
+
+// ══════════════════════════════════════════════
+// SİRİ & GOOGLE ASSISTANT ENTEGRASYONu
+// URL scheme: seslidefter://kayit?metin=500+tl+gelir
+// ══════════════════════════════════════════════
+function siriKontrol(){
+  // URL'den sesli komut var mı? (Siri Shortcut veya Widget'tan)
+  const params = new URLSearchParams(window.location.search);
+  const sesMetin = params.get('sesli') || params.get('metin') || params.get('komut');
+  if(sesMetin && USER){
+    // Kısa gecikme - uygulama yüklensın
+    setTimeout(()=>{
+      toast('🎙️ Siri komutu alındı: '+decodeURIComponent(sesMetin),'info');
+      sesIsle(decodeURIComponent(sesMetin));
+      // URL'i temizle
+      window.history.replaceState({}, '', window.location.pathname);
+    }, 1500);
+  }
+}
+
+function siriKurulumGoster(){
+  const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const android = /Android/.test(navigator.userAgent);
+  
+  if(ios){
+    openM('m-siri-kurulum');
+  } else if(android){
+    openM('m-assistant-kurulum');
+  } else {
+    toast('Bu özellik mobil cihazlar için tasarlanmıştır.','info');
+  }
+}
+
+// Web Share API - Siri Shortcut paylaş
+function siriShortcutIndir(){
+  // iOS'ta Kısayollar uygulaması ile açılacak deep link
+  const url = 'https://www.icloud.com/shortcuts/'; // Kısayol linki buraya eklenecek
+  window.open(url, '_blank');
+}
+
+// Android App Actions deep link
+function androidAssistantKur(){
+  const intent = 'intent://seslidefter.vercel.app?komut=gelir#Intent;scheme=https;end';
+  toast('Google Asistan entegrasyonu yakında! 🤖','info');
+}
+
 function rSiri(){
   const el=document.getElementById('siri-list'); if(!el)return;
   el.innerHTML=SIRI_CMDS.map(c=>`
@@ -2287,19 +2571,7 @@ function ftTurDegis(){
 }
 
 // ── ADSENSE AKTİVASYONU ────────────────────────────────────
-function adSenseGoster(){
-  const wrap = document.getElementById('ad-wrap');
-  if(!wrap) return;
-  // Sadece ücretsiz kullanıcılara göster
-  if(PAKET === 'free'){
-    wrap.style.display = '';
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch(e){}
-  } else {
-    wrap.style.display = 'none';
-  }
-}
+function adSenseGoster(){}// reklam kaldırıldı
 
 function vadeBildirim(){
   const bugun=new Date();bugun.setHours(0,0,0,0);
@@ -3283,7 +3555,15 @@ async function ssKaydet() {
 try {
   sb = supabase.createClient(
     'https://wxvbvxrjvktavshtdidu.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4dmJ2eHJqdmt0YXZzaHRkaWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDA1NzcsImV4cCI6MjA4ODQ3NjU3N30.e3uh4RY25mB9fN-j8ImFH0gJzuh0f41LcdU1g5YQ99k',
+    {
+      auth: {
+        persistSession: true,        // Oturumu kalıcı tut
+        autoRefreshToken: true,      // Token'ı otomatik yenile
+        detectSessionInUrl: true,    // URL'den oturum algıla (email doğrulama için)
+        storage: window.localStorage // localStorage'da sakla
+      }
+    }
   );
   _appBaslat();
 } catch(e) {
@@ -3292,5 +3572,70 @@ try {
   try { authGoster(); } catch(e3){}
 }
 </script>
-</body>
-</html>
+
+<!-- SİRİ KURULUM MODAL -->
+<div class="modal" id="m-siri-kurulum">
+  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
+    <div class="modal-hd"><div class="modal-title">🍎 Siri ile Kullan</div><div class="modal-close" onclick="closeM('m-siri-kurulum')">✕</div></div>
+    <div style="padding:16px">
+      <div style="background:var(--bll);border:1px solid var(--blm);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:var(--bl);line-height:1.6">
+        💡 Siri Kısayolları ile "Hey Siri, 500 TL gelir ekle" diyerek SesliDefter'e kayıt ekleyebilirsin!
+      </div>
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--ink)">📱 Kurulum Adımları:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:var(--gr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">1</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">iPhone'unda <strong>Kısayollar</strong> uygulamasını aç</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:var(--gr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">2</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5"><strong>+</strong> butonuna bas → <strong>Yeni Kısayol</strong> oluştur</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:var(--gr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">3</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5"><strong>URL Aç</strong> eylemini ekle → şu adresi yaz:<br><code style="background:var(--bg);padding:3px 6px;border-radius:5px;font-size:11px">https://seslidefter.vercel.app?sesli={Giriş Sor}</code></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:var(--gr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">4</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">Kısayola <strong>"SesliDefter"</strong> adını ver ve kaydet</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:var(--gr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">5</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">Artık <strong>"Hey Siri, SesliDefter"</strong> diyerek kullanabilirsin! 🎉</div>
+        </div>
+      </div>
+      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:10px;padding:12px;font-size:12.5px;color:var(--gr);line-height:1.6">
+        🗣️ <strong>Komut örnekleri:</strong><br>
+        • "500 TL gelir ekle"<br>
+        • "200 TL market gideri"<br>
+        • "1000 TL alacak ekle Ahmet bey"
+      </div>
+      <button onclick="closeM('m-siri-kurulum')" style="width:100%;padding:13px;border-radius:11px;border:none;background:var(--gr);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:14px">Anladım ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ANDROID ASSISTANT MODAL -->
+<div class="modal" id="m-assistant-kurulum">
+  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
+    <div class="modal-hd"><div class="modal-title">🤖 Google Assistant ile Kullan</div><div class="modal-close" onclick="closeM('m-assistant-kurulum')">✕</div></div>
+    <div style="padding:16px">
+      <div style="background:var(--bll);border:1px solid var(--blm);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:var(--bl);line-height:1.6">
+        💡 Android'de uygulamanın içindeki 🎤 mikrofon butonu zaten Google'ın ses tanıma motorunu kullanıyor. Aşağıdaki ayarı yaparak daha da kolay kullanabilirsin.
+      </div>
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--ink)">📱 Ana Ekran Widget Kurulumu:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:#4285f4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">1</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">Chrome'da <strong>seslidefter.vercel.app</strong> adresini aç</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:#4285f4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">2</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">Sağ üst ⋮ menü → <strong>"Ana ekrana ekle"</strong> seç</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:#4285f4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">3</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.5">Ana ekrandan açınca uygulama gibi çalışır 🎉</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:24px;height:24px;background:#4285f4;color:#fff;border-radius:50%;displa
