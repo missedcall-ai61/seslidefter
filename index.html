@@ -3005,7 +3005,7 @@ function go(pg,el){
 
 
 
-document.querySelectorAll('.mover').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
+
 
 // ══════════════════════════════════════════════
 // HESAP
@@ -3680,8 +3680,8 @@ try {
 </script>
 
 <!-- SİRİ KURULUM MODAL -->
-<div class="modal" id="m-siri-kurulum">
-  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
+<div class="mover" id="m-siri-kurulum">
+  <div class="modal" style="max-height:85vh;overflow-y:auto">
     <div class="modal-hd"><div class="modal-title">🍎 Siri ile Kullan</div><div class="modal-close" onclick="closeM('m-siri-kurulum')">✕</div></div>
     <div style="padding:16px">
       <div style="background:var(--bll);border:1px solid var(--blm);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:var(--bl);line-height:1.6">
@@ -3722,8 +3722,8 @@ try {
 </div>
 
 <!-- ANDROID ASSISTANT MODAL -->
-<div class="modal" id="m-assistant-kurulum">
-  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
+<div class="mover" id="m-assistant-kurulum">
+  <div class="modal" style="max-height:85vh;overflow-y:auto">
     <div class="modal-hd"><div class="modal-title">🤖 Google Assistant ile Kullan</div><div class="modal-close" onclick="closeM('m-assistant-kurulum')">✕</div></div>
     <div style="padding:16px">
       <div style="background:var(--bll);border:1px solid var(--blm);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:var(--bl);line-height:1.6">
