@@ -333,20 +333,184 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   .dsk-item:hover{background:var(--bg);}
   .dsk-item.on{background:var(--grl);color:var(--gr);border-color:var(--grm);font-weight:600;}
   .dsk-mic{margin:9px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);border:none;border-radius:11px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(26,122,74,.3);}
-  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:0;}
+  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100vh;}
   .bnav{display:none;}
   .pg{max-width:620px;margin:0 auto;width:100%;}
   .scroll{padding-bottom:20px;}
 }
-@media(max-width:859px){.dskbar{display:none;}.dmain{flex:1;display:flex;flex-direction:column;min-height:0;}}
+@media(max-width:859px){.dskbar{display:none;}.dmain{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── YAZI BOYUTU ── */
 html, html body { font-size: 15px; }
-html.font-kucuk, html.font-kucuk body { font-size: 13px !important; }
-html.font-orta,  html.font-orta  body { font-size: 15px !important; }
-html.font-buyuk, html.font-buyuk body { font-size: 18px !important; }
-html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
+html.font-kucuk { font-size: 13px !important; }
+html.font-orta  { font-size: 15px !important; }
+html.font-buyuk { font-size: 18px !important; }
+/* Sadece metin elemanlarında inherit — icon/fixed boyutları etkilemesin */
+html.font-kucuk p, html.font-kucuk span, html.font-kucuk div,
+html.font-kucuk label, html.font-kucuk input, html.font-kucuk button,
+html.font-kucuk a, html.font-kucuk li { font-size: inherit; }
+html.font-buyuk p, html.font-buyuk span, html.font-buyuk div,
+html.font-buyuk label, html.font-buyuk input, html.font-buyuk button,
+html.font-buyuk a, html.font-buyuk li { font-size: inherit; }
+
+/* ── SAYFA BAŞLIĞI (pg-hd) ─────────────────────────── */
+.pg-hd{
+  background:var(--card);
+  border-bottom:1px solid var(--bd);
+  padding:14px 16px;
+  padding-top:calc(14px + var(--safe-t));
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  flex-shrink:0;
+}
+.pg-hd-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:17px;
+  font-weight:800;
+  flex:1;
+}
+.pg-hd-back{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--bg);border:1.5px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:17px;flex-shrink:0;
+  transition:background .15s;
+}
+.pg-hd-back:active{background:var(--bd);}
+
+/* ── RENK DEĞİŞKENLERİ EKSİK ────────────────────────── */
+:root{
+  --blm:#bfdbfe;
+  --grm2:#86efac;
+}
+
+/* ── SCROLL KAYMASI ─────────────────────────────────── */
+/* Tüm .pg sayfaları scroll container içinde olduğu için
+   position:sticky çalışması için overflow ayarı */
+.scroll{
+  position:relative;
+}
+
+/* ── MODAL OVERLAY scroll lock ──────────────────────── */
+body.modal-open{overflow:hidden;}
+
+/* ── AUTH SAYFA KAYMA DÜZELTME ───────────────────────── */
+#auth{
+  padding-bottom:env(safe-area-inset-bottom, 20px);
+}
+.auth-body{
+  padding-bottom:30px;
+}
+
+/* ── TOPBAR SAFE AREA ────────────────────────────────── */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:90;
+}
+
+/* ── SES KARTI OVERLAP DÜZELTMESİ ───────────────────── */
+.ses-wrap{
+  margin-top:-36px;
+}
+
+/* ── PAGE SECTION PADDİNG NORMALIZE ─────────────────── */
+.pg-section{
+  padding:14px 14px 0;
+}
+
+/* ── FATURA / DAVET / PROFİL SAYFA BOTTOM PAD ───────── */
+.pg > div:last-child{
+  padding-bottom:calc(20px + var(--safe-b));
+}
+
+/* ── DESKTOP: pg sticky header üst boşluk ───────────── */
+@media(min-width:860px){
+  .pg-hd{
+    padding-top:14px;
+    position:sticky;
+    top:0;
+  }
+  .topbar{ display:none; }
+}
+
+/* ── MOBILE: topbar brand gizle (dsk nav'da var) ────── */
+@media(max-width:859px){
+  .dskbar{ display:none !important; }
+}
+
+/* ── FORM INPUT FOCUS RING ───────────────────────────── */
+.fi:focus, .fsel:focus{
+  box-shadow:0 0 0 3px rgba(26,122,74,.15);
+}
+
+/* ── ALACAK TAKVİM KAYMA ─────────────────────────────── */
+.takvim-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* ── TOAST SAFE AREA ─────────────────────────────────── */
+.toast{
+  top:calc(18px + var(--safe-t));
+  max-width:calc(100vw - 32px);
+  white-space:normal;
+  text-align:center;
+}
+
+/* ── MODAL SCROLL İÇERİĞİ ───────────────────────────── */
+.modal-hd{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+  flex-shrink:0;
+}
+.modal-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:16px;
+  font-weight:800;
+}
+.modal-close{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--bg);border:1.5px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;color:var(--mu);
+  flex-shrink:0;transition:background .15s;
+}
+.modal-close:active{background:var(--bd);}
+
+/* ── KPI GRID RESPONSIVE ────────────────────────────── */
+@media(max-width:360px){
+  .kpi-v{ font-size:16px; }
+  .kpi-grid{ gap:6px; }
+}
+
+/* ── BUTON TOUCH HEDEF ──────────────────────────────── */
+.bni{ min-height:48px; justify-content:center; }
+.av-btn{ min-height:36px; }
+
+/* ── KAYIT KART UZUN METİN ──────────────────────────── */
+.kayit-desc{ max-width:180px; }
+
+/* ── SEKTÖRxŞEHİR ALACAK HEADER ────────────────────── */
+.alacak-header{
+  padding:14px 14px 0;
+  margin-bottom:4px;
+}
+
+/* ── RAPOR CHART OVERFLow ────────────────────────────── */
+.chart-bars{
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.chart-bars::-webkit-scrollbar{ display:none; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -550,6 +714,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- KAYITLAR -->
 <div class="pg" id="pg-kayitlar">
+  <div class="pg-hd"><div class="pg-hd-title">📋 Kayıtlar</div></div>
   <div style="padding:12px 14px 0">
     <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:11px;padding:9px 12px;display:flex;align-items:center;gap:7px;margin-bottom:8px">
       <span style="color:var(--mu)">🔍</span>
@@ -590,6 +755,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- ALACAK/VERECEK -->
 <div class="pg" id="pg-alacak">
+  <div class="pg-hd"><div class="pg-hd-title">🤝 Alacak / Verecek</div></div>
   <div style="padding:14px 14px 0">
     <!-- Özet -->
     <div class="ozet-card" style="margin-bottom:14px">
@@ -632,7 +798,9 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 <!-- RAPORLAR -->
 <div class="pg" id="pg-rapor">
   <!-- Tarih filtresi -->
-  <div class="tarih-pills">
+  <div style="background:var(--card);border-bottom:1px solid var(--bd);padding-bottom:2px;position:sticky;top:0;z-index:50">
+  <div class="pg-hd" style="position:relative;top:auto"><div class="pg-hd-title">📊 Rapor</div></div>
+  <div class="tarih-pills" style="padding-top:4px">
     <div class="tarih-pill on" onclick="raporTarih('ay',this)">Bu Ay</div>
     <div class="tarih-pill" onclick="raporTarih('hafta',this)">Bu Hafta</div>
     <div class="tarih-pill" onclick="raporTarih('yil',this)">Bu Yıl</div>
@@ -676,6 +844,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- SESLİ KOMUTLAR -->
 <div class="pg" id="pg-siri">
+  <div class="pg-hd"><div class="pg-hd-title">🎙️ Sesli Komutlar</div></div>
   <div style="padding:14px">
     <div style="background:linear-gradient(135deg,#1a7a4a,#145f38);border-radius:17px;padding:18px;margin-bottom:13px">
       <div style="font-size:12.5px;color:rgba(255,255,255,.7);margin-bottom:7px">🎙️ Nasıl Kullanılır?</div>
@@ -693,6 +862,7 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
 
 <!-- PAKETLER -->
 <div class="pg" id="pg-paket">
+  <div class="pg-hd"><div class="pg-hd-title">💎 Planlar</div></div>
   <!-- Hero -->
   <div style="background:linear-gradient(160deg,#1a7a4a 0%,#2ecc71 100%);padding:28px 18px 32px;text-align:center;position:relative;overflow:hidden">
     <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%"></div>
@@ -2936,9 +3106,9 @@ function authKvkkAc(tip){
   const authEl = document.getElementById('auth');
   authEl.style.display='none';
   // Navbar ve bottom nav gizle (giriş yapılmış gibi görünmesin)
-  const nav = document.getElementById('navbar');
-  const bnav = document.getElementById('bnav');
-  const dsk = document.getElementById('dsk-nav');
+  const nav = document.querySelector('.topbar');
+  const bnav = document.querySelector('.bnav');
+  const dsk = document.querySelector('.dskbar');
   if(nav) nav.style.display='none';
   if(bnav) bnav.style.display='none';
   if(dsk) dsk.style.display='none';
@@ -2960,6 +3130,9 @@ function authKvkkAc(tip){
         if(nav) nav.style.display='';
         if(bnav) bnav.style.display='';
         if(dsk) dsk.style.display='';
+        // scroll'u sıfırla
+        const sc = document.getElementById('scroll');
+        if(sc) sc.scrollTop = 0;
         authEl.style.display='flex';
         authEl.style.flexDirection='column';
       };
@@ -3465,6 +3638,7 @@ function openM(id){
   const el=document.getElementById(id);
   if(!el)return;
   el.classList.add('on');
+  document.body.classList.add('modal-open');
   if(id==='m-profil-edit'){
     const ei=document.getElementById('pe-isim');
     const ee=document.getElementById('pe-isletme');
@@ -3476,7 +3650,14 @@ function openM(id){
     if(ek) ek.value=PROFIL?.sektor||'';
   }
 }
-function closeM(id){const el=document.getElementById(id);if(el)el.classList.remove('on');}
+function closeM(id){
+  const el=document.getElementById(id);
+  if(el)el.classList.remove('on');
+  // Başka açık modal yoksa scroll lock kaldır
+  if(!document.querySelector('.mover.on')){
+    document.body.classList.remove('modal-open');
+  }
+}
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.mover').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
 });
