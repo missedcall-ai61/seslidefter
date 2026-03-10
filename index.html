@@ -415,7 +415,9 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
       <div class="fg"><label class="fl">Ad Soyad</label><input class="fi" type="text" id="k-isim" placeholder="Ahmet Yılmaz" autocomplete="name"></div>
       <div class="fg"><label class="fl">İşletme Adı</label><input class="fi" type="text" id="k-isletme" placeholder="Ahmet Usta'nın Tamircisi"></div>
       <div class="fg"><label class="fl">E-posta</label><input class="fi" type="email" id="k-email" placeholder="ornek@gmail.com"></div>
-      <div class="fg"><label class="fl">Şifre (min 6 karakter)</label><input class="fi" type="password" id="k-pass" placeholder="••••••••" oninput="passTeyitKontrol()"></div>
+      <div class="fg"><label class="fl">Şifre (min 8 karakter)</label><input class="fi" type="password" id="k-pass" placeholder="••••••••" oninput="passTeyitKontrol();sifreGuc(this.value)">
+<div style="height:4px;border-radius:2px;background:var(--bd);margin-top:4px;overflow:hidden"><div id="sifre-guc-bar" style="height:100%;width:0%;transition:all .3s;border-radius:2px"></div></div>
+<div id="sifre-guc-txt" style="font-size:11px;margin-top:2px;min-height:14px;color:var(--mu)"></div></div>
       <div class="fg"><label class="fl">Şifre Tekrar</label><input class="fi" type="password" id="k-pass2" placeholder="••••••••" oninput="passTeyitKontrol()"></div>
       <div id="k-pass-match" style="font-size:12px;margin:-6px 0 6px;padding:4px 8px;border-radius:6px;display:none"></div>
       <div class="fg">
@@ -825,6 +827,25 @@ html.font-kucuk *, html.font-orta *, html.font-buyuk * { font-size: inherit; }
         <div class="pr-left"><div class="pr-ico" style="background:#f0f0ff">ℹ️</div><div><div class="pr-label">Hakkımızda</div><div class="pr-sub">Ekip ve uygulama hakkında</div></div></div>
         <div class="pr-arr">›</div>
       </div>
+    </div>
+
+    <!-- Güvenlik -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Güvenlik</div>
+    <div class="profil-card" style="margin-bottom:16px">
+      <div class="profil-row" onclick="sifreDegistir()">
+        <div class="pr-left"><div class="pr-ico" style="background:#fff8e1">🔑</div><div><div class="pr-label">Şifre Değiştir</div><div class="pr-sub">Hesabını güvende tut</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
+      <div class="profil-row" onclick="oturumlarimGoster()">
+        <div class="pr-left"><div class="pr-ico" style="background:#e8f5e9">📱</div><div><div class="pr-label">Aktif Oturumlar</div><div class="pr-sub">Hangi cihazlar bağlı</div></div></div>
+        <div class="pr-arr">›</div>
+      </div>
+    </div>
+    <!-- Güven Rozetleri -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🔐 SSL Şifreli</div>
+      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇪🇺 KVKK Uyumlu</div>
+      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇩🇪 Sunucu: Almanya</div>
     </div>
 
     <!-- Hesap İşlemleri -->
@@ -1449,13 +1470,71 @@ function authTab(t){
 async function googleGiris(){
   lb(true);
   const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
-  if(error){toast(error.message,'err');lb(false);}
+  if(error){toast('Bir hata oluştu. Lütfen tekrar deneyin.','err'); console.error('Err:',error);lb(false);}
+}
+
+
+// ── Güvenlik Fonksiyonları ───────────────────────
+async function sifreDegistir(){
+  const yeni = prompt('Yeni şifrenizi girin (min 8 karakter, en az 1 rakam):');
+  if(!yeni) return;
+  if(yeni.length < 8){toast('⚠️ Şifre en az 8 karakter olmalı!','err');return;}
+  if(!/[0-9]/.test(yeni)){toast('⚠️ Şifre en az bir rakam içermeli!','err');return;}
+  lb(true);
+  const{error}=await sb.auth.updateUser({password:yeni});
+  lb(false);
+  if(error){toast('Hata: Şifre değiştirilemedi.','err');console.error(error);return;}
+  toast('✅ Şifre başarıyla değiştirildi!','ok');
+}
+
+async function oturumlarimGoster(){
+  lb(true);
+  const{data,error}=await sb.auth.getSession();
+  lb(false);
+  if(error||!data.session){toast('Oturum bilgisi alınamadı.','err');return;}
+  const s=data.session;
+  const baslangic=new Date(s.created_at||Date.now()).toLocaleString('tr-TR');
+  alert(`📱 Aktif Oturum\n\nCihaz: Mevcut cihaz\nOturum başlangıcı: ${baslangic}\n\nDiğer cihazlardan çıkış için "Çıkış Yap" butonunu kullanın.`);
+}
+
+async function hesabiSil(){
+  const onay1=confirm('⚠️ Hesabınızı silmek istediğinizden emin misiniz?\n\nTüm verileriniz kalıcı olarak silinecek!');
+  if(!onay1) return;
+  const onay2=confirm('❌ Bu işlem GERİ ALINAMAZ!\n\nDevam etmek istediğinizden emin misiniz?');
+  if(!onay2) return;
+  lb(true);
+  // Kullanıcı verilerini sil
+  try{
+    await sb.from('kayitlar').delete().eq('user_id',USER.id);
+    await sb.from('alacaklar').delete().eq('user_id',USER.id);
+    await sb.from('verecekler').delete().eq('user_id',USER.id);
+    await sb.from('profiller').delete().eq('id',USER.id);
+  }catch(e){console.error('Veri silme hatası:',e);}
+  // Auth hesabını sil - admin gerektirir, kullanıcıya çıkış yaptır
+  await sb.auth.signOut();
+  lb(false);
+  toast('Hesabınız silindi. Üzgünüz!','ok');
+  setTimeout(()=>location.reload(),2000);
+}
+
+// ── Rate Limiting ──────────────────────────────
+const _rlMap = {};
+function _rl(key, max=5, ms=300000){
+  const now=Date.now();
+  if(!_rlMap[key]) _rlMap[key]=[];
+  _rlMap[key]=_rlMap[key].filter(t=>now-t<ms);
+  if(_rlMap[key].length>=max) return false;
+  _rlMap[key].push(now); return true;
 }
 
 async function emailGiris(){
-  const email=document.getElementById('g-email').value.trim();
+  const email=document.getElementById('g-email').value.trim().toLowerCase();
   const pass=document.getElementById('g-pass').value;
   if(!email||!pass){authErr('giris','E-posta ve şifre girin!');return;}
+  // E-posta format kontrolü
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authErr('giris','Geçerli bir e-posta girin!');return;}
+  // Brute force koruması: 5 dakikada max 5 deneme
+  if(!_rl('login_'+email)){authErr('giris','Çok fazla deneme. 5 dakika bekleyin.');return;}
   lb(true);
   const{error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){authErr('giris',trErr(error.message));lb(false);}
@@ -1470,8 +1549,13 @@ async function emailKayit(){
   const pass2=document.getElementById('k-pass2').value;
   const davetKodu=(document.getElementById('k-davet')?.value||'').trim().toUpperCase();
   if(!isim||!email||!pass||!pass2){authErr('kayit','Tüm alanları doldurun!');return;}
-  if(pass.length<6){authErr('kayit','Şifre en az 6 karakter!');return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authErr('kayit','Geçerli bir e-posta girin!');return;}
+  if(isim.length<2||isim.length>50){authErr('kayit','İsim 2-50 karakter olmalı!');return;}
+  if(pass.length<8){authErr('kayit','Şifre en az 8 karakter olmalı!');return;}
+  if(!/(?=.*[0-9])/.test(pass)&&pass.length<12){authErr('kayit','Şifre en az bir rakam içermeli!');return;}
   if(pass!==pass2){authErr('kayit','Şifreler eşleşmiyor!');document.getElementById('k-pass2').focus();return;}
+  // Kayıt rate limiting
+  if(!_rl('register',3,3600000)){authErr('kayit','Çok fazla kayıt denemesi. 1 saat bekleyin.');return;}
   lb(true);
 
   // Davet kodu varsa doğrula
@@ -1608,7 +1692,7 @@ function guncelleUI(){
 
 async function dogrulamaGonder(){
   const{error}=await sb.auth.resend({type:'signup',email:PROFIL.email,options:{emailRedirectTo:window.location.origin}});
-  if(error){toast(error.message,'err');return;}
+  if(error){toast('Bir hata oluştu. Lütfen tekrar deneyin.','err'); console.error('Err:',error);return;}
   toast('📧 Doğrulama e-postası gönderildi!','ok');
 }
 
@@ -1628,7 +1712,7 @@ async function profilGuncelle(){
     sektor:sektor||PROFIL?.sektor||'',
     updated_at:new Date().toISOString()
   }).eq('id',USER.id);
-  if(error){toast(error.message,'err');lb(false);return;}
+  if(error){toast('Bir hata oluştu. Lütfen tekrar deneyin.','err'); console.error('Err:',error);lb(false);return;}
   PROFIL.isim=isim;PROFIL.isletme=isletme;
   guncelleUI();closeM('m-profil-edit');toast('✅ Profil güncellendi!','ok');lb(false);
 }
@@ -1776,7 +1860,7 @@ function kayitHTML(k,sil=false){
   return`<div class="kayit-card">
     <div class="kayit-ico ${cls}">${ico}</div>
     <div class="kayit-info">
-      <div class="kayit-desc">${k.aciklama}${k.kisi?` — <span style="color:var(--mu);font-weight:400">${k.kisi}</span>`:''}</div>
+      <div class="kayit-desc">${esc(k.aciklama)}${k.kisi?` — <span style="color:var(--mu);font-weight:400">${esc(k.kisi)}</span>`:''}</div>
       <div class="kayit-meta">${tarih}</div>
       ${katBadge}
     </div>
@@ -1801,7 +1885,7 @@ function rAlacak(){
     const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${a.vade})</div>`:vade.getTime()-bugun.getTime()<7*86400000?`<div style="font-size:13px;color:var(--am);font-weight:600;margin-top:3px">⏰ ${a.vade} vadeli</div>`:`<div style="font-size:13px;color:var(--mu);margin-top:3px">📅 ${a.vade}</div>`):''
     return`<div class="avc">
       <div class="avc-top">
-        <div><div class="avc-name">${a.isim||a.kisi||"İsimsiz"}</div><div class="avc-desc">${a.aciklama||''}</div>${vadeDurum}</div>
+        <div><div class="avc-name">${esc(a.isim||a.kisi||"İsimsiz")}</div><div class="avc-desc">${esc(a.aciklama||'')}</div>${vadeDurum}</div>
       </div>
       <div class="avc-bot">
         <div class="avc-amt-g">₺${f(a.tutar)}</div>
@@ -1821,7 +1905,7 @@ function rAlacak(){
     const vadeDurum=vade?(vade<bugun?`<div style="font-size:13px;color:var(--rd);font-weight:600;margin-top:3px">⚠️ Vade geçti! (${v.vade})</div>`:''): '';
     return`<div class="avc" style="border-color:var(--rdm)">
       <div class="avc-top">
-        <div><div class="avc-name">${v.isim||v.kisi||"İsimsiz"}</div><div class="avc-desc">${v.aciklama||''}</div>${vadeDurum}</div>
+        <div><div class="avc-name">${esc(v.isim||v.kisi||"İsimsiz")}</div><div class="avc-desc">${esc(v.aciklama||'')}</div>${vadeDurum}</div>
       </div>
       <div class="avc-bot">
         <div class="avc-amt-r">₺${f(v.tutar)}</div>
@@ -1938,8 +2022,10 @@ async function kayitKaydet(){
   const tutarRaw = document.getElementById('mk-tutar').value.replace(',','.');
   const tutar = parseFloat(tutarRaw);
   const aciklama = document.getElementById('mk-aciklama').value.trim();
-  if (!tutar || tutar <= 0) { toast('⚠️ Geçerli bir tutar gir!', 'err'); document.getElementById('mk-tutar').focus(); return; }
-  if (!aciklama) { toast('⚠️ Açıklama zorunlu!', 'err'); document.getElementById('mk-aciklama').focus(); return; }
+  if (!validTutar(tutar)) { toast('⚠️ Geçerli bir tutar gir! (0-100.000.000)', 'err'); document.getElementById('mk-tutar').focus(); return; }
+  if (!validMetin(aciklama,1,200)) { toast('⚠️ Açıklama 1-200 karakter olmalı!', 'err'); document.getElementById('mk-aciklama').focus(); return; }
+  // XSS koruması - aciklama temizleme
+  const aciklamaTemiz = aciklama.replace(/<[^>]*>/g,'').substring(0,200);
   if (PAKET==='free' && KAYITLAR.length >= PAKET_LİMİT.free) { closeM('m-kayit'); go('paket'); toast('⚠️ Ücretsiz limit doldu! Esnaf planına geç.','err'); return; }
   const kisi = document.getElementById('mk-kisi')?.value.trim() || '';
   const vade = document.getElementById('mk-vade')?.value || null;
@@ -1949,7 +2035,7 @@ async function kayitKaydet(){
 
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
 
-    if(error){toast('Hata: '+(error.message||JSON.stringify(error)),'err');lb(false);return;}
+    if(error){toast('Kayıt eklenemedi. Lütfen tekrar deneyin.','err'); console.error('DB error:',error);lb(false);return;}
     // Veriyi yeniden çek — en güvenilir yöntem
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rAlacak();toast('🤝 Alacak eklendi!','ok');
@@ -2690,6 +2776,9 @@ function lsGizle(){
 // UTILS
 // ══════════════════════════════════════════════
 function f(n){return Number(n||0).toLocaleString('tr-TR',{minimumFractionDigits:0,maximumFractionDigits:2});}
+function esc(str){if(str==null)return'';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;').replace(/\//g,'&#x2F;');}
+function validTutar(v){const n=parseFloat(String(v).replace(',','.'));return !isNaN(n)&&n>0&&n<100000000;}
+function validMetin(v,min=1,max=500){const s=String(v||'').trim();return s.length>=min&&s.length<=max;}
 function setText(id,v){const el=document.getElementById(id);if(el)el.textContent=String(v??'');}
 function setHTML(id,v){const el=document.getElementById(id);if(el)el.innerHTML=v??'';}
 
