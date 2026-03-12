@@ -120,7 +120,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .ana-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05);}
 .ana-greet{font-size:12.5px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:2px;}
 .ana-name{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:14px;}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;position:relative;z-index:1;}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;position:relative;z-index:1;}.kpi-v-red{color:#e74c3c!important;}
 .kpi{background:rgba(255,255,255,.13);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:12px;}
 .kpi-l{font-size:10.5px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:2px;}
 .kpi-v{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;}
@@ -555,6 +555,16 @@ body.modal-open{overflow:hidden;}
     <div class="auth-form on" id="form-giris">
       <div class="auth-err" id="giris-err"></div>
       <div class="auth-success" id="giris-ok"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+        <span style="font-size:12px;color:var(--mu);white-space:nowrap">veya</span>
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+        <span style="font-size:12px;color:var(--mu);white-space:nowrap">veya</span>
+        <div style="flex:1;height:1px;background:var(--bd)"></div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px">
         <button class="btn btn-wh" onclick="googleGiris()" style="display:flex;align-items:center;justify-content:center;gap:8px">
           <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
@@ -671,6 +681,7 @@ body.modal-open{overflow:hidden;}
     <div class="ana-name" id="ana-name">Yükleniyor...</div>
     <div class="kpi-grid">
       <div class="kpi"><div class="kpi-l">Bugün Gelir</div><div class="kpi-v" id="kpi-bug">₺0</div><div class="kpi-d" id="kpi-bug-d">0 işlem</div></div>
+      <div class="kpi"><div class="kpi-l">Bugün Gider</div><div class="kpi-v kpi-v-red" id="kpi-bug-gid">₺0</div><div class="kpi-d" id="kpi-bug-gid-d">0 işlem</div></div>
       <div class="kpi"><div class="kpi-l">Kasa Bakiyesi</div><div class="kpi-v" id="kpi-bak">₺0</div><div class="kpi-d">Güncel</div></div>
       <div class="kpi"><div class="kpi-l">Açık Alacak</div><div class="kpi-v" id="kpi-ala">₺0</div><div class="kpi-d" id="kpi-ala-d">—</div></div>
       <div class="kpi"><div class="kpi-l">Bu Ay Net</div><div class="kpi-v" id="kpi-ay">₺0</div><div class="kpi-d" id="kpi-ay-d">—</div></div>
@@ -1086,7 +1097,7 @@ body.modal-open{overflow:hidden;}
         <div class="pr-left"><div class="pr-ico" style="background:#e8f5e9">📱</div><div><div class="pr-label">Aktif Oturumlar</div><div class="pr-sub">Hangi cihazlar bağlı</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-      <div class="profil-row" onclick="biyometrikKur()" id="biometrik-row" style="display:none">
+      <div class="profil-row" onclick="biyometrikKur()" id="biometrik-row" style="display:flex">
         <div class="pr-left"><div class="pr-ico" style="background:#f3e8ff">🔒</div><div><div class="pr-label" id="biometrik-label">Face ID / Parmak İzi</div><div class="pr-sub" id="biometrik-sub">Uygulamayı kilitle</div></div></div>
         <div id="biometrik-toggle" style="width:38px;height:22px;border-radius:99px;background:var(--bd);position:relative;transition:background .3s;flex-shrink:0">
           <div style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .3s" id="biometrik-knob"></div>
@@ -1118,6 +1129,29 @@ body.modal-open{overflow:hidden;}
       <div id="profil-kredi"></div>
     </div>
 
+  </div>
+</div>
+
+<!-- ══ OFFLİNE BİLDİRİM SAYFASI ══════════════════════ -->
+<div class="pg" id="pg-offline" style="display:none">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:40px;text-align:center;gap:16px">
+    <div style="font-size:72px;animation:pulse 2s infinite">📡</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:900;color:var(--ink)">İnternet Bağlantısı Yok</div>
+    <div style="font-size:15px;color:var(--mu);line-height:1.6;max-width:280px">
+      SesliDefter'e erişmek için internet bağlantısı gerekiyor.<br>
+      Bağlantını kontrol et ve tekrar dene.
+    </div>
+    <div style="background:var(--card);border:1.5px solid var(--bd);border-radius:16px;padding:16px 20px;width:100%;max-width:300px">
+      <div style="font-size:13px;font-weight:700;color:var(--mu);margin-bottom:8px">Neler yapabilirsin?</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink)">
+        <div>📶 WiFi bağlantını kontrol et</div>
+        <div>📱 Mobil veri açık mı?</div>
+        <div>✈️ Uçak modu kapalı mı?</div>
+      </div>
+    </div>
+    <button onclick="offlineYenidenDene()" style="margin-top:8px;padding:14px 32px;border-radius:14px;border:none;background:linear-gradient(135deg,#1a7a4a,#2ecc71);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px">
+      🔄 Yeniden Dene
+    </button>
   </div>
 </div>
 
@@ -1825,6 +1859,7 @@ async function init(){
   try { adSenseGoster(); } catch(e){}
   try { rSiri(); } catch(e){}
   try { siriKontrol(); } catch(e){}
+  try { setTimeout(lockInit, 1200); } catch(e){}
 }
 
 // ══════════════════════════════════════════════
@@ -1835,6 +1870,54 @@ function authTab(t){
   document.querySelectorAll('.auth-form').forEach((x,i)=>x.classList.toggle('on',(i===0&&t==='giris')||(i===1&&t==='kayit')));
 }
 
+
+// ── OFFLİNE / ONLİNE ALGILAMA ────────────────────────
+let _offlineActive = false;
+let _lastPage = 'ana';
+
+function offlineKontrol(){
+  if(!navigator.onLine){
+    if(!_offlineActive){
+      _offlineActive = true;
+      // Hangi sayfadayız kaydet
+      const aktif = document.querySelector('.pg.aktif');
+      if(aktif) _lastPage = aktif.id.replace('pg-','');
+      go('offline');
+    }
+  } else {
+    if(_offlineActive){
+      _offlineActive = false;
+      toast('✅ Bağlantı geri geldi!','ok');
+      // Kullanıcı giriş yapmışsa son sayfaya, yapmamışsa auth'a dön
+      if(USER) go(_lastPage || 'ana');
+      else go('auth');
+    }
+  }
+}
+
+function offlineYenidenDene(){
+  if(navigator.onLine){
+    _offlineActive = false;
+    toast('✅ Bağlantı var!','ok');
+    if(USER) go(_lastPage || 'ana');
+    else { location.reload(); }
+  } else {
+    // Animasyon ver
+    const btn = document.querySelector('#pg-offline button');
+    if(btn){ btn.textContent='⏳ Kontrol ediliyor...'; btn.disabled=true; }
+    setTimeout(()=>{
+      if(btn){ btn.innerHTML='🔄 Yeniden Dene'; btn.disabled=false; }
+      if(navigator.onLine) offlineKontrol();
+      else toast('❌ Bağlantı yok, tekrar dene','err');
+    }, 2000);
+  }
+}
+
+// Event listener'lar - sayfa yüklenince başlat
+window.addEventListener('online',  offlineKontrol);
+window.addEventListener('offline', offlineKontrol);
+// Sayfa açılışında da kontrol et
+document.addEventListener('DOMContentLoaded', ()=> setTimeout(offlineKontrol, 500));
 
 // ── BİYOMETRİK / PIN KİLİDİ ──────────────────────────────────
 const SD_LOCK_KEY = 'sd-lock-enabled';
@@ -2056,8 +2139,18 @@ async function mailYenidenGonder(email){
 
 async function googleGiris(){
   lb(true);
-  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
-  if(error){toast('Bir hata oluştu. Lütfen tekrar deneyin.','err'); console.error('Err:',error);lb(false);}
+  // Google butonu metnini değiştir
+  document.querySelectorAll('[onclick="googleGiris()"]').forEach(b=>{
+    b.innerHTML = '<span style="display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Yönlendiriliyor...</span>';
+  });
+  const{error}=await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{
+      redirectTo: window.location.origin,
+      queryParams: { prompt: 'select_account' }
+    }
+  });
+  if(error){toast('Google girişi başarısız. Tekrar deneyin.','err');console.error('Google auth:',error);lb(false);}
 }
 
 
@@ -2174,13 +2267,19 @@ async function emailGiris(){
   const email=document.getElementById('g-email').value.trim().toLowerCase();
   const pass=document.getElementById('g-pass').value;
   if(!email||!pass){authErr('giris','E-posta ve şifre girin!');return;}
-  // E-posta format kontrolü
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authErr('giris','Geçerli bir e-posta girin!');return;}
-  // Brute force koruması: 5 dakikada max 5 deneme
   if(!_rl('login_'+email)){authErr('giris','Çok fazla deneme. 5 dakika bekleyin.');return;}
+  const beniHatirla = document.getElementById('beni-hatirla')?.checked !== false;
   lb(true);
-  const{error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){authErr('giris',trErr(error.message));lb(false);}
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){authErr('giris',trErr(error.message));lb(false);return;}
+  if(beniHatirla){
+    localStorage.setItem('sd-saved-email',email);
+    localStorage.setItem('sd-remember','1');
+  } else {
+    localStorage.removeItem('sd-saved-email');
+    localStorage.setItem('sd-remember','0');
+  }
 }
 
 async function emailKayit(){
@@ -2369,16 +2468,16 @@ async function verileriYukle(){
   lb(true);
   try{
     const[kr,ar,vr]=await Promise.all([
-      sb.from('kayitlar').select('*').eq('user_id',USER.id).order('tarih',{ascending:false}),
+      sb.from('kayitlar').select('*').eq('user_id',USER.id).order('id',{ascending:false}),
       sb.from('alacaklar').select('*').eq('user_id',USER.id).order('created_at',{ascending:false}),
       sb.from('verecekler').select('*').eq('user_id',USER.id).order('created_at',{ascending:false}),
     ]);
-    if(kr.error) console.error('kayitlar RLS hatası:', kr.error);
+    if(kr.error){ console.error('kayitlar RLS hatası:', kr.error); if(kr.error.code==='42501') toast('⚠️ Oturum süresi dolmuş, tekrar giriş yap','err'); }
     if(ar.error) console.error('alacaklar RLS hatası:', ar.error);
     if(vr.error) console.error('verecekler RLS hatası:', vr.error);
-    if(kr.data)KAYITLAR=kr.data;
-    if(ar.data)ALACAKLAR=ar.data;
-    if(vr.data)VERECEKLER=vr.data;
+    if(kr.data) KAYITLAR = kr.data.sort((a,b)=> (b.id||0)-(a.id||0));
+    if(ar.data) ALACAKLAR = ar.data;
+    if(vr.data) VERECEKLER = vr.data;
   }catch(e){console.error('Veri yükleme hatası:',e);toast('Veri yükleme hatası!','err');}
   lb(false);
 }
@@ -2443,14 +2542,18 @@ function rAna(){
   const bugun=new Date().toDateString();
   const bugK=KAYITLAR.filter(k=>new Date(k.tarih).toDateString()===bugun);
   const bugGel=bugK.filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
+  const bugGid=bugK.filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
   const gel=KAYITLAR.filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
   const gid=KAYITLAR.filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
   const alaT=ALACAKLAR.reduce((a,b)=>a+b.tutar,0);
   const{bas:ayBas}=getTarihAraligi('ay');
   const ayGel=KAYITLAR.filter(k=>k.tur==='gelir'&&new Date(k.tarih)>=ayBas).reduce((a,b)=>a+b.tutar,0);
   const ayGid=KAYITLAR.filter(k=>k.tur==='gider'&&new Date(k.tarih)>=ayBas).reduce((a,b)=>a+b.tutar,0);
+  const bugGidK=bugK.filter(k=>k.tur==='gider');
   setText('kpi-bug','₺'+f(bugGel));
-  setText('kpi-bug-d',bugK.length+' işlem');
+  setText('kpi-bug-d',bugK.filter(k=>k.tur==='gelir').length+' işlem');
+  setText('kpi-bug-gid','₺'+f(bugGid));
+  setText('kpi-bug-gid-d',bugGidK.length+' işlem');
   setText('kpi-bak','₺'+f(gel-gid));
   setText('kpi-ala','₺'+f(alaT));
   setText('kpi-ala-d',ALACAKLAR.length+' kişide');
@@ -2754,8 +2857,9 @@ async function kayitKaydet(){
       toast('❌ '+msg,'err'); lb(false); return;
     }
     await verileriYukle();
-    closeM('m-kayit');formTemizle();rAna();rKayitlar();
-    toast(`${aktifTur==='gelir'?'💵':'💸'} ₺${f(tutar)} kaydedildi!`,'ok');
+    closeM('m-kayit');formTemizle();rAna();rKayitlar();rAlacak();
+    const emoji = aktifTur==='gelir'?'💵':'💸';
+    toast(emoji+' ₺'+f(tutar)+' '+( aktifTur==='gelir'?'gelir':'gider')+' kaydedildi!','ok');
   }
   lb(false);
 }
@@ -3325,6 +3429,16 @@ function go(pg,el){
   if(pg==='rapor') rRapor();
   if(pg==='fatura'){ rFatura(); faturalariYukle(); }
   if(pg==='profil') guncelleUI();
+  if(pg==='auth'){
+    const savedEmail = localStorage.getItem('sd-saved-email');
+    const remember = localStorage.getItem('sd-remember') !== '0';
+    setTimeout(()=>{
+      const ei = document.getElementById('g-email');
+      const ci = document.getElementById('beni-hatirla');
+      if(ei && savedEmail) ei.value = savedEmail;
+      if(ci) ci.checked = remember;
+    }, 80);
+  }
   if(pg==='davet'){
     // Davet kodu hâlâ boşsa profili yeniden yükle
     if(!PROFIL?.davetKodu){
@@ -3704,19 +3818,20 @@ async function sesIsle(metin) {
     if (tur === 'alacak') {
       const yeniA = {
         user_id: USER.id,
-        isim: kisi || 'Bilinmiyor',   // alacaklar tablosunda "isim" kolonu
-        kisi: kisi || 'Bilinmiyor',   // geriye dönük uyumluluk
+        isim: kisi || 'Bilinmiyor',
         tutar: tutar,
         aciklama: metin,
         vade: null,
-        tarih: new Date().toISOString().split('T')[0],
         durum: 'acik',
         sehir: PROFIL?.sehir||'',
         sektor: PROFIL?.sektor||'',
         giris_tipi: 'ses'
       };
+      console.log('Sesli alacak insert:', yeniA);
       const {data:aData, error:aErr} = await sb.from('alacaklar').insert([yeniA]).select();
-      if(aErr){ toast('⚠️ Alacak eklenemedi. Lütfen tekrar deneyin.','err'); console.error('Alacak err:',aErr); return; }
+      if(aErr){ 
+        const errMsg = aErr.code==='42501'?'İzin hatası - tekrar giriş yapın':aErr.message||JSON.stringify(aErr);
+        toast('⚠️ '+errMsg,'err'); console.error('Alacak err:',aErr); return;; return; }
       if(aData && aData[0]) ALACAKLAR.unshift(aData[0]);
       await verileriYukle();
       rAna(); rAlacak();
