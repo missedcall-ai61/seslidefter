@@ -112,7 +112,11 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .bni-center-ico{font-size:22px;line-height:1;}
 
 /* PAGE */
-.pg{display:none;}.pg.on{display:block;min-height:100%;overflow-y:auto;max-height:calc(100dvh - 120px);}
+.pg{display:none;}
+.pg.on{display:flex;flex-direction:column;overflow-y:auto;
+  height:calc(100dvh - 56px - 64px);
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;}
 
 /* DATE FILTER PILLS */
 .tarih-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 2px;}
@@ -1597,7 +1601,19 @@ body.modal-open{overflow:hidden;}
 <nav class="bnav">
   <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
-  <div class="bni-center" onclick="barkodAc()"><div class="bni-center-ico">📷</div><div class="bni-lbl" style="color:#fff;font-size:9px;font-weight:700">STOK</div></div>
+  <div class="bni-center" onclick="barkodAc()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round">
+      <rect x="1" y="5" width="2.5" height="14" rx="0.4"/>
+      <rect x="5" y="5" width="1" height="14" rx="0.4"/>
+      <rect x="8" y="5" width="2" height="14" rx="0.4"/>
+      <rect x="12" y="5" width="1" height="14" rx="0.4"/>
+      <rect x="15" y="5" width="2.5" height="14" rx="0.4"/>
+      <rect x="19.5" y="5" width="1.5" height="14" rx="0.4"/>
+      <line x1="3" y1="21" x2="6" y2="21" stroke-width="1.5"/>
+      <line x1="18" y1="21" x2="21" y2="21" stroke-width="1.5"/>
+    </svg>
+    <div class="bni-lbl" style="color:#fff;font-size:9px;font-weight:700;margin-top:1px">STOK</div>
+  </div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
@@ -1610,12 +1626,42 @@ body.modal-open{overflow:hidden;}
     <div class="mhandle"></div>
     <div class="mtitle">📦 Ürün Ekle / Düzenle</div>
     <input type="hidden" id="stok-edit-id">
-    <div class="fg"><label class="fl">Barkod <span style="color:var(--mu);font-size:11px">(opsiyonel)</span></label>
+
+    <!-- Ürün resmi -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <div id="stok-resim-preview" onclick="document.getElementById('stok-resim-input').click()"
+        style="width:72px;height:72px;border-radius:14px;background:var(--bg);border:2px dashed var(--bd);
+               display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden">
+        <span style="font-size:28px">📷</span>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">Ürün Fotoğrafı</div>
+        <div style="font-size:12px;color:var(--mu)">Galeriden seç veya kameradan çek</div>
+        <button onclick="document.getElementById('stok-resim-input').click()"
+          style="margin-top:6px;padding:5px 12px;border-radius:8px;border:1.5px solid var(--bd);
+                 background:var(--card);color:var(--ink);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">
+          📁 Seç
+        </button>
+      </div>
+      <input type="file" id="stok-resim-input" accept="image/*" capture="environment" style="display:none" onchange="stokResimSec(this)">
+    </div>
+
+    <!-- Barkod -->
+    <div class="fg">
+      <label class="fl">Barkod <span style="color:var(--mu);font-size:11px">(opsiyonel)</span></label>
       <div style="display:flex;gap:8px">
         <input class="fi" id="stok-barkod" placeholder="Barkod numarası" style="flex:1">
-        <button onclick="barkodModalAc()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:18px;cursor:pointer">📷</button>
+        <button onclick="barkodModalAc()" style="background:var(--gr);color:#fff;border:none;border-radius:12px;
+          padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <rect x="1" y="4" width="3" height="16" rx="0.5"/><rect x="6" y="4" width="1" height="16" rx="0.5"/>
+            <rect x="9" y="4" width="2" height="16" rx="0.5"/><rect x="13" y="4" width="1" height="16" rx="0.5"/>
+            <rect x="16" y="4" width="3" height="16" rx="0.5"/><rect x="21" y="4" width="2" height="16" rx="0.5"/>
+          </svg>
+        </button>
       </div>
     </div>
+
     <div class="fg"><label class="fl">Ürün Adı *</label><input class="fi" id="stok-ad" placeholder="Ürün adı gir"></div>
     <div class="fg"><label class="fl">Kategori</label><input class="fi" id="stok-kat" placeholder="Elektronik, Giyim, Gıda..."></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -1639,7 +1685,7 @@ body.modal-open{overflow:hidden;}
     <div class="mhandle"></div>
     <div class="mtitle">📷 Barkod Okut</div>
     <div style="text-align:center;margin-bottom:12px">
-      <video id="barkod-video" style="width:100%;max-width:320px;border-radius:12px;background:#000" autoplay playsinline muted></video>
+      <video id="barkod-video" style="width:100%;max-width:160px;height:120px;object-fit:cover;border-radius:12px;background:#000" autoplay playsinline muted></video>
       <canvas id="barkod-canvas" style="display:none"></canvas>
     </div>
     <div id="barkod-sonuc" style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:12px">Kamerayı barkoda tut...</div>
@@ -2995,20 +3041,36 @@ async function kayitSil(id){
 // ══════════════════════════════════════════════
 let STOKLAR = JSON.parse(localStorage.getItem('sd-stoklar') || '[]');
 
+let _stokResimData = null; // Base64 resim verisi
+
+function stokResimSec(input){
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _stokResimData = e.target.result;
+    const prev = document.getElementById('stok-resim-preview');
+    if(prev) prev.innerHTML = `<img src="${_stokResimData}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
+  };
+  reader.readAsDataURL(file);
+}
+
 function stokKaydet(){
   const id = document.getElementById('stok-edit-id').value;
   const ad = document.getElementById('stok-ad').value.trim();
   const adet = parseInt(document.getElementById('stok-adet').value) || 0;
   if(!ad){ toast('⚠️ Ürün adı gir!','err'); return; }
+  // Mevcut kaydın resmini koru, yeni seçildiyse güncelle
+  const mevcutResim = id ? (STOKLAR.find(s=>s.id===id)?.resim||null) : null;
   const urun = {
     id: id || Date.now().toString(),
     barkod: document.getElementById('stok-barkod').value.trim(),
-    ad, 
+    ad,
     kategori: document.getElementById('stok-kat').value.trim(),
     adet,
     kritikEsik: parseInt(document.getElementById('stok-kritik-esik').value) || 5,
     alis: parseFloat(document.getElementById('stok-alis').value) || 0,
     satis: parseFloat(document.getElementById('stok-satis').value) || 0,
+    resim: _stokResimData || mevcutResim,
     guncelleme: new Date().toISOString()
   };
   if(id){
@@ -3025,6 +3087,11 @@ function stokKaydet(){
 function stokFormTemizle(){
   ['stok-edit-id','stok-barkod','stok-ad','stok-kat','stok-adet','stok-kritik-esik','stok-alis','stok-satis']
     .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  _stokResimData = null;
+  const prev = document.getElementById('stok-resim-preview');
+  if(prev) prev.innerHTML = '<span style="font-size:28px">📷</span>';
+  const inp = document.getElementById('stok-resim-input');
+  if(inp) inp.value = '';
 }
 
 function stokDuzenle(id){
@@ -3037,6 +3104,12 @@ function stokDuzenle(id){
   document.getElementById('stok-kritik-esik').value = s.kritikEsik;
   document.getElementById('stok-alis').value = s.alis;
   document.getElementById('stok-satis').value = s.satis;
+  _stokResimData = null; // mevcut resim zaten kaydedili
+  const prev = document.getElementById('stok-resim-preview');
+  if(prev){
+    if(s.resim) prev.innerHTML = `<img src="${s.resim}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
+    else prev.innerHTML = '<span style="font-size:28px">📷</span>';
+  }
   openM('m-stok-ekle');
 }
 
@@ -3068,33 +3141,43 @@ function rStok(){
   if(!el) return;
   if(!liste.length){ el.innerHTML = empty('📦','Henüz ürün eklenmedi'); return; }
   el.innerHTML = liste.map(s=>{
-    const kritikClass = s.adet <= s.kritikEsik ? 'border:1.5px solid #fdd' : 'border:1px solid var(--bd)';
-    const adetColor = s.adet <= s.kritikEsik ? '#e74c3c' : 'var(--gr)';
-    return `<div style="background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;${kritikClass}">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div>
-          <div style="font-weight:700;font-size:15px;color:var(--ink)">${esc(s.ad)}</div>
-          ${s.kategori?`<div style="font-size:11px;color:var(--mu)">${esc(s.kategori)}</div>`:''}
-          ${s.barkod?`<div style="font-size:11px;color:var(--mu)">🔢 ${s.barkod}</div>`:''}
-        </div>
-        <div style="display:flex;gap:6px">
-          <button onclick="stokDuzenle('${s.id}')" style="background:var(--grl);border:none;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer">✏️</button>
-          <button onclick="stokSil('${s.id}')" style="background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer">🗑️</button>
+    const isKritik = s.adet <= s.kritikEsik;
+    const adetColor = isKritik ? '#e74c3c' : 'var(--gr)';
+    const resimHTML = s.resim
+      ? `<img src="${s.resim}" style="width:58px;height:58px;object-fit:cover;border-radius:10px;flex-shrink:0">`
+      : `<div style="width:58px;height:58px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">📦</div>`;
+    return `<div style="background:var(--card);border-radius:16px;padding:14px;margin-bottom:10px;
+      border:${isKritik?'1.5px solid #ffcdd2':'1px solid var(--bd)'};
+      box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        ${resimHTML}
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-weight:700;font-size:15px;color:var(--ink);line-height:1.2">${esc(s.ad)}</div>
+              ${s.kategori?`<span style="display:inline-block;background:var(--grl);color:var(--gr);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-top:3px">${esc(s.kategori)}</span>`:''}
+              ${s.barkod?`<div style="font-size:11px;color:var(--mu);margin-top:2px">▌${s.barkod}</div>`:''}
+            </div>
+            <div style="display:flex;gap:5px;flex-shrink:0">
+              <button onclick="stokDuzenle('${s.id}')" style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer;font-weight:600;color:var(--ink)">✏️</button>
+              <button onclick="stokSil('${s.id}')" style="background:#fff0f0;border:1px solid #fdd;border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer">🗑️</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <button onclick="stokAdetGuncelle('${s.id}',-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">−</button>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:${adetColor};min-width:28px;text-align:center">${s.adet}</span>
+              <button onclick="stokAdetGuncelle('${s.id}',1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">+</button>
+              <span style="font-size:11px;color:var(--mu)">adet</span>
+            </div>
+            <div style="text-align:right">
+              ${s.satis?`<div style="font-size:13px;font-weight:800;color:var(--gr)">₺${f(s.satis)}</div>`:''}
+              ${s.alis?`<div style="font-size:11px;color:var(--mu)">Alış ₺${f(s.alis)}</div>`:''}
+            </div>
+          </div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px">
-          <button onclick="stokAdetGuncelle('${s.id}',-1)" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
-          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:${adetColor}">${s.adet}</span>
-          <button onclick="stokAdetGuncelle('${s.id}',1)" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
-          <span style="font-size:12px;color:var(--mu)">adet</span>
-        </div>
-        <div style="text-align:right">
-          ${s.satis?`<div style="font-size:13px;font-weight:700;color:var(--gr)">Satış: ₺${f(s.satis)}</div>`:''}
-          ${s.alis?`<div style="font-size:11px;color:var(--mu)">Alış: ₺${f(s.alis)}</div>`:''}
-        </div>
-      </div>
-      ${s.adet<=s.kritikEsik?`<div style="margin-top:8px;background:#fff0f0;border-radius:8px;padding:6px 10px;font-size:12px;color:#e74c3c;font-weight:600">⚠️ Kritik stok! Minimum ${s.kritikEsik} adet</div>`:''}
+      ${isKritik?`<div style="margin-top:10px;background:#fff5f5;border-radius:8px;padding:7px 10px;font-size:12px;color:#e74c3c;font-weight:600;display:flex;align-items:center;gap:6px"><span>⚠️</span> Kritik stok — ${s.kritikEsik} adetten az kaldı!</div>`:''}
     </div>`;
   }).join('');
 }
@@ -3116,7 +3199,7 @@ async function barkodModalAc(){
   sonuc.textContent = 'Kamera açılıyor...';
   try {
     barkodStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width:{ideal:1280}, height:{ideal:720} }
+      video: { facingMode: 'environment', width:{ideal:640}, height:{ideal:480} }
     });
     video.srcObject = barkodStream;
     video.play();
@@ -3136,13 +3219,12 @@ async function barkodModalAc(){
         }
       }, 300);
     } else {
-      // Canvas fallback
-      sonuc.textContent = 'Barkod numarasını manuel girin ↓';
-      setTimeout(()=>{
-        const kod = prompt('Barkod numarasını gir:');
-        if(kod) barkodBulundu(kod);
-        else barkodKapat();
-      }, 1000);
+      // BarcodeDetector desteklenmiyor - manuel giriş alanı göster
+      sonuc.innerHTML = `<div style="font-size:13px;color:var(--mu);margin-bottom:8px">Kamera barkod okuyamıyor</div>
+        <div style="display:flex;gap:8px">
+          <input id="barkod-manuel" class="fi" placeholder="Barkod numarası..." style="flex:1;font-size:14px">
+          <button onclick="barkodManuelEkle()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">Ekle</button>
+        </div>`;
     }
   } catch(e){
     sonuc.textContent = '❌ Kamera izni gerekli';
@@ -3152,26 +3234,39 @@ async function barkodModalAc(){
 
 function barkodBulundu(kod){
   barkodKapat();
-  document.getElementById('stok-barkod').value = kod;
-  // Mevcut stokta var mı?
+  // Mevcut stokta aynı barkod var mı?
   const mevcut = STOKLAR.find(s=>s.barkod===kod);
   if(mevcut){
-    stokDuzenle(mevcut.id);
-    toast('📦 '+mevcut.ad+' bulundu!','ok');
-  } else {
-    openM('m-stok-ekle');
-    toast('🔢 Barkod: '+kod,'info');
-    // Açık ürün veritabanından sorgula
-    fetch('https://world.openfoodfacts.org/api/v0/product/'+kod+'.json')
-      .then(r=>r.json())
-      .then(d=>{
-        if(d.status===1 && d.product?.product_name_tr || d.product?.product_name){
-          const ad = d.product.product_name_tr || d.product.product_name;
-          document.getElementById('stok-ad').value = ad;
-          toast('✅ Ürün bilgisi geldi: '+ad,'ok');
-        }
-      }).catch(()=>{});
+    // ✅ Aynı barkod - direkt adeti artır veya düzenle
+    const secim = confirm(`📦 "${mevcut.ad}" bulundu!\nŞu an: ${mevcut.adet} adet\n\nOK = +1 ekle\nİptal = Düzenle`);
+    if(secim){
+      stokAdetGuncelle(mevcut.id, 1);
+      toast('✅ '+mevcut.ad+' → '+(mevcut.adet+1)+' adet','ok');
+    } else {
+      stokDuzenle(mevcut.id);
+    }
+    return;
   }
+  // Yeni ürün - formu aç
+  document.getElementById('stok-barkod').value = kod;
+  openM('m-stok-ekle');
+  toast('🔢 Yeni ürün - barkod: '+kod,'info');
+  // Open Food Facts veritabanı
+  fetch('https://world.openfoodfacts.org/api/v0/product/'+kod+'.json')
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.status===1){
+        const ad = d.product?.product_name_tr || d.product?.product_name || '';
+        const kat = d.product?.categories_tags?.[0]?.replace('en:','') || '';
+        if(ad){ document.getElementById('stok-ad').value = ad; toast('✅ Ürün bilgisi geldi: '+ad,'ok'); }
+        if(kat) document.getElementById('stok-kat').value = kat;
+      }
+    }).catch(()=>{});
+}
+
+function barkodManuelEkle(){
+  const k = (document.getElementById('barkod-manuel')?.value||'').trim();
+  if(k) barkodBulundu(k);
 }
 
 function barkodKapat(){
