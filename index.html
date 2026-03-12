@@ -104,9 +104,15 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .bni-lbl{font-size:9.5px;font-weight:500;color:var(--mu);}
 .bni.on .bni-lbl{color:var(--gr);font-weight:600;}
 .bni.on .bni-ico{filter:drop-shadow(0 0 5px rgba(26,122,74,.4));}
+.bni-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  background:linear-gradient(135deg,#1a7a4a,#2ecc71);
+  border-radius:50px;width:58px;height:58px;margin-top:-20px;
+  box-shadow:0 4px 15px rgba(26,122,74,.5);cursor:pointer;flex-shrink:0;
+  border:3px solid var(--card);}
+.bni-center-ico{font-size:22px;line-height:1;}
 
 /* PAGE */
-.pg{display:none;}.pg.on{display:block;min-height:100%;}
+.pg{display:none;}.pg.on{display:block;min-height:100%;overflow-y:auto;max-height:calc(100dvh - 120px);}
 
 /* DATE FILTER PILLS */
 .tarih-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 2px;}
@@ -333,7 +339,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   .dsk-item:hover{background:var(--bg);}
   .dsk-item.on{background:var(--grl);color:var(--gr);border-color:var(--grm);font-weight:600;}
   .dsk-mic{margin:9px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);border:none;border-radius:11px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(26,122,74,.3);}
-  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100vh;}
+  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100dvh;}
   .bnav{display:none;}
   .pg{max-width:620px;margin:0 auto;width:100%;}
   .scroll{padding-bottom:20px;}
@@ -644,7 +650,6 @@ body.modal-open{overflow:hidden;}
     <div class="dsk-item" onclick="go('kayitlar',this)">📋 Tüm Kayıtlar</div>
     <div class="dsk-item" onclick="go('alacak',this)">💰 Alacak / Verecek</div>
     <div class="dsk-item" onclick="go('rapor',this)">📊 Raporlar</div>
-<div class="dsk-item" onclick="go('fatura',this)" data-pg="fatura">🧾 Ödeme Planlayıcı</div>
     <div class="dsk-sec">Araçlar</div>
     <div class="dsk-item" onclick="go('siri',this)">🎙️ Sesli Komutlar</div>
     <div class="dsk-item" onclick="go('davet',this)">🎁 Davet Et</div>
@@ -1530,6 +1535,39 @@ body.modal-open{overflow:hidden;}
 
 
 <!-- FATURA / ÖDEME PLANLAYICI -->
+<!-- ══ STOK SAYFASI ══════════════════════════════════ -->
+<div class="pg" id="pg-stok">
+  <div class="pg-hd">
+    <div class="pg-hd-title">📦 Stok Takibi</div>
+    <button onclick="openM('m-stok-ekle')" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">+ Ürün Ekle</button>
+  </div>
+  <div style="padding:14px 14px 100px">
+    <!-- Özet kartları -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Toplam Ürün</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900;color:var(--ink)" id="stok-toplam-urun">0</div>
+      </div>
+      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Kritik Stok</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900;color:#e74c3c" id="stok-kritik">0</div>
+      </div>
+      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Stok Değeri</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:900;color:var(--gr)" id="stok-deger">₺0</div>
+      </div>
+    </div>
+    <!-- Arama -->
+    <div style="position:relative;margin-bottom:12px">
+      <input id="stok-ara" type="text" placeholder="🔍 Ürün ara..." oninput="rStok()"
+        style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--bd);background:var(--card);color:var(--ink);font-size:14px;font-family:'Outfit',sans-serif;outline:none;box-sizing:border-box">
+    </div>
+    <!-- Stok listesi -->
+    <div id="stok-liste"></div>
+  </div>
+</div>
+
+
 <div class="pg" id="pg-fatura">
   <div class="pg-hd"><div class="pg-hd-title">🧾 Ödeme Planlayıcı</div></div>
   <div style="padding:14px 14px 40px">
@@ -1559,12 +1597,57 @@ body.modal-open{overflow:hidden;}
 <nav class="bnav">
   <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
+  <div class="bni-center" onclick="barkodAc()"><div class="bni-center-ico">📷</div><div class="bni-lbl" style="color:#fff;font-size:9px;font-weight:700">STOK</div></div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
-  <div class="bni" onclick="go('rapor',this)" data-pg="rapor"><div class="bni-ico">📊</div><div class="bni-lbl">Rapor</div></div>
-  <div class="bni" onclick="go('fatura',this)" data-pg="fatura"><div class="bni-ico">🧾</div><div class="bni-lbl">Faturalar</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
 </div><!-- /dmain -->
+
+
+<!-- ══ STOK EKLE MODAL ══════════════════════════════ -->
+<div class="mover" id="m-stok-ekle">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">📦 Ürün Ekle / Düzenle</div>
+    <input type="hidden" id="stok-edit-id">
+    <div class="fg"><label class="fl">Barkod <span style="color:var(--mu);font-size:11px">(opsiyonel)</span></label>
+      <div style="display:flex;gap:8px">
+        <input class="fi" id="stok-barkod" placeholder="Barkod numarası" style="flex:1">
+        <button onclick="barkodModalAc()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:18px;cursor:pointer">📷</button>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Ürün Adı *</label><input class="fi" id="stok-ad" placeholder="Ürün adı gir"></div>
+    <div class="fg"><label class="fl">Kategori</label><input class="fi" id="stok-kat" placeholder="Elektronik, Giyim, Gıda..."></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label class="fl">Stok Adedi *</label><input class="fi" type="number" id="stok-adet" placeholder="0" min="0"></div>
+      <div class="fg"><label class="fl">Kritik Eşik</label><input class="fi" type="number" id="stok-kritik-esik" placeholder="5" min="0"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label class="fl">Alış Fiyatı ₺</label><input class="fi" type="number" id="stok-alis" placeholder="0.00"></div>
+      <div class="fg"><label class="fl">Satış Fiyatı ₺</label><input class="fi" type="number" id="stok-satis" placeholder="0.00"></div>
+    </div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-s" onclick="closeM('m-stok-ekle')">İptal</button>
+      <button class="mbtn mbtn-p" onclick="stokKaydet()">💾 Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BARKOD OKUYUCU MODAL ══════════════════════════ -->
+<div class="mover" id="m-barkod">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">📷 Barkod Okut</div>
+    <div style="text-align:center;margin-bottom:12px">
+      <video id="barkod-video" style="width:100%;max-width:320px;border-radius:12px;background:#000" autoplay playsinline muted></video>
+      <canvas id="barkod-canvas" style="display:none"></canvas>
+    </div>
+    <div id="barkod-sonuc" style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:12px">Kamerayı barkoda tut...</div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-s" onclick="barkodKapat()">Kapat</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODALS -->
 <div class="mover" id="m-kayit">
@@ -2565,7 +2648,7 @@ function rAna(){
     lw.innerHTML=`<div class="limit-bar"><div class="lb-ico">⚠️</div><div class="lb-txt">Limit dolmak üzere: ${KAYITLAR.length}/${PAKET_LİMİT.free}</div><button class="lb-btn" onclick="go('paket')">Yükselt</button></div>`;
   }else if(lw){lw.innerHTML='';}
 
-  document.getElementById('ana-kayitlar').innerHTML=KAYITLAR.slice(0,6).map(k=>kayitHTML(k)).join('')||empty('📭','Henüz kayıt yok!');
+  document.getElementById('ana-kayitlar').innerHTML=KAYITLAR.slice(0,5).map(k=>kayitHTML(k,true)).join('')||empty('📭','Henüz kayıt yok!');
 }
 
 // ══════════════════════════════════════════════
@@ -2906,6 +2989,197 @@ async function kayitSil(id){
   if(error){toast('⚠️ Silinemedi: '+error.message,'err');lb(false);return;}
   KAYITLAR=KAYITLAR.filter(x=>x.id!==id);rKayitlar();rAna();toast('🗑️ Kayıt silindi','ok');lb(false);
 }
+
+// ══════════════════════════════════════════════
+// STOK SİSTEMİ
+// ══════════════════════════════════════════════
+let STOKLAR = JSON.parse(localStorage.getItem('sd-stoklar') || '[]');
+
+function stokKaydet(){
+  const id = document.getElementById('stok-edit-id').value;
+  const ad = document.getElementById('stok-ad').value.trim();
+  const adet = parseInt(document.getElementById('stok-adet').value) || 0;
+  if(!ad){ toast('⚠️ Ürün adı gir!','err'); return; }
+  const urun = {
+    id: id || Date.now().toString(),
+    barkod: document.getElementById('stok-barkod').value.trim(),
+    ad, 
+    kategori: document.getElementById('stok-kat').value.trim(),
+    adet,
+    kritikEsik: parseInt(document.getElementById('stok-kritik-esik').value) || 5,
+    alis: parseFloat(document.getElementById('stok-alis').value) || 0,
+    satis: parseFloat(document.getElementById('stok-satis').value) || 0,
+    guncelleme: new Date().toISOString()
+  };
+  if(id){
+    STOKLAR = STOKLAR.map(s => s.id===id ? urun : s);
+    toast('✅ Ürün güncellendi','ok');
+  } else {
+    STOKLAR.unshift(urun);
+    toast('✅ Ürün eklendi','ok');
+  }
+  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
+  closeM('m-stok-ekle'); stokFormTemizle(); rStok();
+}
+
+function stokFormTemizle(){
+  ['stok-edit-id','stok-barkod','stok-ad','stok-kat','stok-adet','stok-kritik-esik','stok-alis','stok-satis']
+    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+function stokDuzenle(id){
+  const s = STOKLAR.find(x=>x.id===id); if(!s) return;
+  document.getElementById('stok-edit-id').value = s.id;
+  document.getElementById('stok-barkod').value = s.barkod||'';
+  document.getElementById('stok-ad').value = s.ad;
+  document.getElementById('stok-kat').value = s.kategori||'';
+  document.getElementById('stok-adet').value = s.adet;
+  document.getElementById('stok-kritik-esik').value = s.kritikEsik;
+  document.getElementById('stok-alis').value = s.alis;
+  document.getElementById('stok-satis').value = s.satis;
+  openM('m-stok-ekle');
+}
+
+function stokSil(id){
+  if(!confirm('Bu ürünü silmek istediğine emin misin?')) return;
+  STOKLAR = STOKLAR.filter(s=>s.id!==id);
+  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
+  rStok(); toast('🗑️ Ürün silindi','ok');
+}
+
+function stokAdetGuncelle(id, delta){
+  const s = STOKLAR.find(x=>x.id===id); if(!s) return;
+  s.adet = Math.max(0, s.adet + delta);
+  s.guncelleme = new Date().toISOString();
+  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
+  rStok();
+  if(s.adet <= s.kritikEsik) toast('⚠️ '+s.ad+' stoku kritik seviyede! ('+s.adet+' adet)','err');
+}
+
+function rStok(){
+  const ara = (document.getElementById('stok-ara')?.value||'').toLowerCase();
+  const liste = STOKLAR.filter(s=> !ara || s.ad.toLowerCase().includes(ara) || (s.barkod||'').includes(ara));
+  const kritik = STOKLAR.filter(s=>s.adet<=s.kritikEsik).length;
+  const deger = STOKLAR.reduce((a,s)=>a+(s.adet*s.alis),0);
+  setText('stok-toplam-urun', STOKLAR.length);
+  setText('stok-kritik', kritik);
+  setText('stok-deger', '₺'+f(deger));
+  const el = document.getElementById('stok-liste');
+  if(!el) return;
+  if(!liste.length){ el.innerHTML = empty('📦','Henüz ürün eklenmedi'); return; }
+  el.innerHTML = liste.map(s=>{
+    const kritikClass = s.adet <= s.kritikEsik ? 'border:1.5px solid #fdd' : 'border:1px solid var(--bd)';
+    const adetColor = s.adet <= s.kritikEsik ? '#e74c3c' : 'var(--gr)';
+    return `<div style="background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;${kritikClass}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <div style="font-weight:700;font-size:15px;color:var(--ink)">${esc(s.ad)}</div>
+          ${s.kategori?`<div style="font-size:11px;color:var(--mu)">${esc(s.kategori)}</div>`:''}
+          ${s.barkod?`<div style="font-size:11px;color:var(--mu)">🔢 ${s.barkod}</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="stokDuzenle('${s.id}')" style="background:var(--grl);border:none;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer">✏️</button>
+          <button onclick="stokSil('${s.id}')" style="background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer">🗑️</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onclick="stokAdetGuncelle('${s.id}',-1)" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:${adetColor}">${s.adet}</span>
+          <button onclick="stokAdetGuncelle('${s.id}',1)" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+          <span style="font-size:12px;color:var(--mu)">adet</span>
+        </div>
+        <div style="text-align:right">
+          ${s.satis?`<div style="font-size:13px;font-weight:700;color:var(--gr)">Satış: ₺${f(s.satis)}</div>`:''}
+          ${s.alis?`<div style="font-size:11px;color:var(--mu)">Alış: ₺${f(s.alis)}</div>`:''}
+        </div>
+      </div>
+      ${s.adet<=s.kritikEsik?`<div style="margin-top:8px;background:#fff0f0;border-radius:8px;padding:6px 10px;font-size:12px;color:#e74c3c;font-weight:600">⚠️ Kritik stok! Minimum ${s.kritikEsik} adet</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ── BARKOD OKUYUCU ───────────────────────────────────
+let barkodStream = null;
+let barkodInterval = null;
+
+async function barkodAc(){
+  // Stok sayfasına git ve barkod modalı aç
+  go('stok');
+  setTimeout(()=> barkodModalAc(), 300);
+}
+
+async function barkodModalAc(){
+  openM('m-barkod');
+  const video = document.getElementById('barkod-video');
+  const sonuc = document.getElementById('barkod-sonuc');
+  sonuc.textContent = 'Kamera açılıyor...';
+  try {
+    barkodStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment', width:{ideal:1280}, height:{ideal:720} }
+    });
+    video.srcObject = barkodStream;
+    video.play();
+    sonuc.textContent = 'Kamerayı barkoda tut...';
+    // BarcodeDetector API
+    if('BarcodeDetector' in window){
+      const detector = new BarcodeDetector({formats:['ean_13','ean_8','code_128','code_39','qr_code','upc_a','upc_e']});
+      barkodInterval = setInterval(async()=>{
+        if(video.readyState === video.HAVE_ENOUGH_DATA){
+          try{
+            const codes = await detector.detect(video);
+            if(codes.length > 0){
+              const kod = codes[0].rawValue;
+              barkodBulundu(kod);
+            }
+          }catch(e){}
+        }
+      }, 300);
+    } else {
+      // Canvas fallback
+      sonuc.textContent = 'Barkod numarasını manuel girin ↓';
+      setTimeout(()=>{
+        const kod = prompt('Barkod numarasını gir:');
+        if(kod) barkodBulundu(kod);
+        else barkodKapat();
+      }, 1000);
+    }
+  } catch(e){
+    sonuc.textContent = '❌ Kamera izni gerekli';
+    toast('Kamera iznine izin ver','err');
+  }
+}
+
+function barkodBulundu(kod){
+  barkodKapat();
+  document.getElementById('stok-barkod').value = kod;
+  // Mevcut stokta var mı?
+  const mevcut = STOKLAR.find(s=>s.barkod===kod);
+  if(mevcut){
+    stokDuzenle(mevcut.id);
+    toast('📦 '+mevcut.ad+' bulundu!','ok');
+  } else {
+    openM('m-stok-ekle');
+    toast('🔢 Barkod: '+kod,'info');
+    // Açık ürün veritabanından sorgula
+    fetch('https://world.openfoodfacts.org/api/v0/product/'+kod+'.json')
+      .then(r=>r.json())
+      .then(d=>{
+        if(d.status===1 && d.product?.product_name_tr || d.product?.product_name){
+          const ad = d.product.product_name_tr || d.product.product_name;
+          document.getElementById('stok-ad').value = ad;
+          toast('✅ Ürün bilgisi geldi: '+ad,'ok');
+        }
+      }).catch(()=>{});
+  }
+}
+
+function barkodKapat(){
+  if(barkodInterval){ clearInterval(barkodInterval); barkodInterval=null; }
+  if(barkodStream){ barkodStream.getTracks().forEach(t=>t.stop()); barkodStream=null; }
+  closeM('m-barkod');
+}
+
 
 // ══════════════════════════════════════════════
 // VADE BİLDİRİMİ
@@ -3429,6 +3703,7 @@ function go(pg,el){
   if(pg==='rapor') rRapor();
   if(pg==='fatura'){ rFatura(); faturalariYukle(); }
   if(pg==='profil') guncelleUI();
+  if(pg==='stok') rStok();
   if(pg==='auth'){
     const savedEmail = localStorage.getItem('sd-saved-email');
     const remember = localStorage.getItem('sd-remember') !== '0';
@@ -3816,12 +4091,33 @@ async function sesIsle(metin) {
   if (tutar > 0) {
     // Alacak komutu → alacaklar tablosuna
     if (tur === 'alacak') {
+      // Vade parsing - "ayın 10u", "10 gün sonra", "15 nisan"
+      let vade = null;
+      const vadeParse = m.match(/ay[ıi]n\s*(\d+)/i);
+      const vadeSonra = m.match(/(\d+)\s*g[üu]n\s*sonra/i);
+      const vadeAy = m.match(/(ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık)\s*(\d+)/i);
+      const aylar = {ocak:0,şubat:1,mart:2,nisan:3,mayıs:4,haziran:5,temmuz:6,ağustos:7,eylül:8,ekim:9,kasım:10,aralık:11};
+      if(vadeParse){
+        const gun = parseInt(vadeParse[1]);
+        const d = new Date(); d.setDate(gun);
+        if(d < new Date()) d.setMonth(d.getMonth()+1);
+        vade = d.toISOString().split('T')[0];
+      } else if(vadeSonra){
+        const d = new Date();
+        d.setDate(d.getDate() + parseInt(vadeSonra[1]));
+        vade = d.toISOString().split('T')[0];
+      } else if(vadeAy){
+        const d = new Date();
+        d.setMonth(aylar[vadeAy[1].toLowerCase()]);
+        d.setDate(parseInt(vadeAy[2]));
+        vade = d.toISOString().split('T')[0];
+      }
       const yeniA = {
         user_id: USER.id,
         isim: kisi || 'Bilinmiyor',
         tutar: tutar,
         aciklama: metin,
-        vade: null,
+        vade: vade,
         durum: 'acik',
         sehir: PROFIL?.sehir||'',
         sektor: PROFIL?.sektor||'',
