@@ -525,6 +525,7 @@ body.modal-open{overflow:hidden;}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <!-- Google AdSense - Yayıncı ID'nizi girin -->
+<script src="https://unpkg.com/@zxing/browser@0.1.4/umd/index.min.js"></script>
 </head>
 <body>
 
@@ -3183,11 +3184,9 @@ function rStok(){
 }
 
 // ── BARKOD OKUYUCU ───────────────────────────────────
-let barkodStream = null;
-let barkodInterval = null;
+let _zxingReader = null;
 
 async function barkodAc(){
-  // Stok sayfasına git ve barkod modalı aç
   go('stok');
   setTimeout(()=> barkodModalAc(), 300);
 }
@@ -3196,40 +3195,50 @@ async function barkodModalAc(){
   openM('m-barkod');
   const video = document.getElementById('barkod-video');
   const sonuc = document.getElementById('barkod-sonuc');
-  sonuc.textContent = 'Kamera açılıyor...';
+  sonuc.textContent = 'Kamera başlatılıyor...';
+
   try {
-    barkodStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width:{ideal:640}, height:{ideal:480} }
-    });
-    video.srcObject = barkodStream;
-    video.play();
-    sonuc.textContent = 'Kamerayı barkoda tut...';
-    // BarcodeDetector API
-    if('BarcodeDetector' in window){
-      const detector = new BarcodeDetector({formats:['ean_13','ean_8','code_128','code_39','qr_code','upc_a','upc_e']});
-      barkodInterval = setInterval(async()=>{
-        if(video.readyState === video.HAVE_ENOUGH_DATA){
-          try{
-            const codes = await detector.detect(video);
-            if(codes.length > 0){
-              const kod = codes[0].rawValue;
-              barkodBulundu(kod);
-            }
-          }catch(e){}
+    // ZXing ile okuma
+    if(typeof ZXingBrowser !== 'undefined'){
+      _zxingReader = new ZXingBrowser.BrowserMultiFormatReader();
+      const devices = await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
+      // Arka kamerayı tercih et
+      const device = devices.find(d=>
+        d.label.toLowerCase().includes('back') ||
+        d.label.toLowerCase().includes('arka') ||
+        d.label.toLowerCase().includes('environment')
+      ) || devices[devices.length-1] || devices[0];
+
+      if(!device){ sonuc.textContent = '❌ Kamera bulunamadı'; return; }
+
+      await _zxingReader.decodeFromVideoDevice(device.deviceId, video, (result, err) => {
+        if(result){
+          const kod = result.getText();
+          barkodBulundu(kod);
         }
-      }, 300);
+      });
+      sonuc.textContent = '📷 Barkodu kameraya tut...';
     } else {
-      // BarcodeDetector desteklenmiyor - manuel giriş alanı göster
-      sonuc.innerHTML = `<div style="font-size:13px;color:var(--mu);margin-bottom:8px">Kamera barkod okuyamıyor</div>
-        <div style="display:flex;gap:8px">
-          <input id="barkod-manuel" class="fi" placeholder="Barkod numarası..." style="flex:1;font-size:14px">
-          <button onclick="barkodManuelEkle()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">Ekle</button>
-        </div>`;
+      // ZXing yüklenmediyse manuel
+      _barkodManuelGoster(sonuc);
     }
   } catch(e){
-    sonuc.textContent = '❌ Kamera izni gerekli';
-    toast('Kamera iznine izin ver','err');
+    console.error('Barkod hata:', e);
+    if(e.name === 'NotAllowedError'){
+      sonuc.textContent = '❌ Kamera izni gerekli — tarayıcı ayarlarından izin ver';
+    } else {
+      _barkodManuelGoster(sonuc);
+    }
   }
+}
+
+function _barkodManuelGoster(sonuc){
+  sonuc.innerHTML = `
+    <div style="font-size:13px;color:var(--mu);margin-bottom:10px">Barkodu manuel gir:</div>
+    <div style="display:flex;gap:8px">
+      <input id="barkod-manuel" class="fi" placeholder="Barkod numarası..." style="flex:1;font-size:15px;font-weight:600">
+      <button onclick="barkodManuelEkle()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;font-size:14px">Ekle</button>
+    </div>`;
 }
 
 function barkodBulundu(kod){
@@ -3270,8 +3279,9 @@ function barkodManuelEkle(){
 }
 
 function barkodKapat(){
-  if(barkodInterval){ clearInterval(barkodInterval); barkodInterval=null; }
-  if(barkodStream){ barkodStream.getTracks().forEach(t=>t.stop()); barkodStream=null; }
+  try{
+    if(_zxingReader){ _zxingReader.reset(); _zxingReader=null; }
+  }catch(e){}
   closeM('m-barkod');
 }
 
