@@ -1,6 +1,6 @@
 {
   "name": "SesliDefter",
-  "short_name": "SesliDefter",
+  "short_name": "SesliDft",
   "description": "Konuş, kaydet. Esnaf için sesli defter.",
   "start_url": "/",
   "display": "standalone",
@@ -26,12 +26,22 @@
     {
       "name": "Gelir Ekle",
       "url": "/?action=gelir",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Gider Ekle",
       "url": "/?action=gider",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

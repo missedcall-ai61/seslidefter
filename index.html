@@ -113,10 +113,15 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 
 /* PAGE */
 .pg{display:none;}
-.pg.on{display:flex;flex-direction:column;overflow-y:auto;
-  height:calc(100dvh - 56px - 64px);
+.pg.on{
+  display:block;
+  overflow-y:auto;
+  overflow-x:hidden;
+  height:calc(100dvh - 64px);
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;}
+  overscroll-behavior-y:contain;
+  position:relative;
+}
 
 /* DATE FILTER PILLS */
 .tarih-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 2px;}
@@ -606,8 +611,24 @@ body.modal-open{overflow:hidden;}
 
       </div>
       <div class="auth-divider"><span>veya e-posta ile</span></div>
+
+      <!-- Hesap Tipi -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">
+        <div id="tip-bireysel" onclick="hesapTipiSec('bireysel')"
+          style="padding:12px;border-radius:12px;border:2px solid var(--gr);background:var(--grl);text-align:center;cursor:pointer">
+          <div style="font-size:20px">👤</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gr);margin-top:3px">Bireysel</div>
+        </div>
+        <div id="tip-kurumsal" onclick="hesapTipiSec('kurumsal')"
+          style="padding:12px;border-radius:12px;border:2px solid var(--bd);background:var(--card);text-align:center;cursor:pointer">
+          <div style="font-size:20px">🏢</div>
+          <div style="font-size:12px;font-weight:700;color:var(--mu);margin-top:3px">Kurumsal</div>
+        </div>
+      </div>
+      <input type="hidden" id="k-hesap-tipi" value="bireysel">
+
       <div class="fg"><label class="fl">Ad Soyad</label><input class="fi" type="text" id="k-isim" placeholder="Ahmet Yılmaz" autocomplete="name"></div>
-      <div class="fg"><label class="fl">İşletme Adı</label><input class="fi" type="text" id="k-isletme" placeholder="Ahmet Usta'nın Tamircisi"></div>
+      <div id="k-isletme-wrap" style="display:none"><div class="fg"><label class="fl">İşletme Adı</label><input class="fi" type="text" id="k-isletme" placeholder="İşletme / Şirket adı" maxlength="60"></div></div>
       <div class="fg"><label class="fl">E-posta</label><input class="fi" type="email" id="k-email" placeholder="ornek@gmail.com"></div>
       <div class="fg"><label class="fl">Şifre (min 8 karakter)</label><input class="fi" type="password" id="k-pass" placeholder="••••••••" oninput="passTeyitKontrol();sifreGuc(this.value)">
 <div style="height:4px;border-radius:2px;background:var(--bd);margin-top:4px;overflow:hidden"><div id="sifre-guc-bar" style="height:100%;width:0%;transition:all .3s;border-radius:2px"></div></div>
@@ -773,6 +794,50 @@ body.modal-open{overflow:hidden;}
 </div>
 
 <!-- ALACAK/VERECEK -->
+<!-- ══ YATIRIM SAYFASI ═══════════════════════════════════ -->
+<div class="pg" id="pg-yatirim">
+  <div class="pg-hd">
+    <div class="pg-hd-title">📈 Yatırım & Kurlar</div>
+    <button onclick="kurlarYukle()" style="background:transparent;border:none;font-size:18px;cursor:pointer;color:var(--gr)" title="Yenile">🔄</button>
+  </div>
+  <div style="padding:12px 14px 100px">
+
+    <!-- Güncel Kurlar -->
+    <div style="background:var(--card);border-radius:16px;padding:14px;margin-bottom:14px;border:1px solid var(--bd)">
+      <div style="font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📡 Güncel Kurlar</div>
+      <div id="kurlar-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="text-align:center;color:var(--mu);font-size:13px;grid-column:1/-1;padding:8px">Yükleniyor...</div>
+      </div>
+      <div id="kurlar-guncelleme" style="font-size:10px;color:var(--mu);text-align:right;margin-top:8px"></div>
+    </div>
+
+    <!-- Yatırım Portföyü -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:14px;font-weight:700;color:var(--ink)">💼 Portföyüm</div>
+      <button onclick="openM('m-yatirim-ekle')" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">+ Ekle</button>
+    </div>
+
+    <!-- Portföy özeti -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);text-align:center">
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Toplam Maliyet</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900;color:var(--ink)" id="ptf-maliyet">₺0</div>
+      </div>
+      <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);text-align:center">
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Güncel Değer</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900" id="ptf-deger">₺0</div>
+      </div>
+    </div>
+    <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:13px;font-weight:600;color:var(--mu)">Toplam Kar/Zarar</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900" id="ptf-karzarar">₺0</div>
+    </div>
+
+    <div id="yatirim-liste"></div>
+  </div>
+</div>
+
+
 <div class="pg" id="pg-alacak">
   <div class="pg-hd"><div class="pg-hd-title">🤝 Alacak / Verecek</div></div>
   <div style="padding:14px 14px 0">
@@ -854,6 +919,14 @@ body.modal-open{overflow:hidden;}
     <div class="chart-card">
       <div class="chart-title">🗂️ Kategori Dağılımı</div>
       <div id="cat-chart" style="margin-top:8px"></div>
+    </div>
+    <div class="chart-card" style="margin-top:10px">
+      <div class="chart-title">🔥 En Çok Harcanan Günler</div>
+      <div id="top-gunler" style="margin-top:8px"></div>
+    </div>
+    <div class="chart-card" style="margin-top:10px">
+      <div class="chart-title">💰 Gelir Kaynakları</div>
+      <div id="gelir-kaynak" style="margin-top:8px"></div>
     </div>
   </div>
   <div style="padding:0 14px 14px;display:flex;gap:8px">
@@ -1602,18 +1675,9 @@ body.modal-open{overflow:hidden;}
 <nav class="bnav">
   <div class="bni on" onclick="go('ana',this)" data-pg="ana"><div class="bni-ico">🏠</div><div class="bni-lbl">Ana</div></div>
   <div class="bni" onclick="go('kayitlar',this)" data-pg="kayitlar"><div class="bni-ico">📋</div><div class="bni-lbl">Kayıtlar</div></div>
-  <div class="bni-center" onclick="barkodAc()">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round">
-      <rect x="1" y="5" width="2.5" height="14" rx="0.4"/>
-      <rect x="5" y="5" width="1" height="14" rx="0.4"/>
-      <rect x="8" y="5" width="2" height="14" rx="0.4"/>
-      <rect x="12" y="5" width="1" height="14" rx="0.4"/>
-      <rect x="15" y="5" width="2.5" height="14" rx="0.4"/>
-      <rect x="19.5" y="5" width="1.5" height="14" rx="0.4"/>
-      <line x1="3" y1="21" x2="6" y2="21" stroke-width="1.5"/>
-      <line x1="18" y1="21" x2="21" y2="21" stroke-width="1.5"/>
-    </svg>
-    <div class="bni-lbl" style="color:#fff;font-size:9px;font-weight:700;margin-top:1px">STOK</div>
+  <div class="bni-center" onclick="go('yatirim')">
+    <div style="font-size:22px;line-height:1">📈</div>
+    <div class="bni-lbl" style="color:#fff;font-size:9px;font-weight:700;margin-top:1px">YATIRIM</div>
   </div>
   <div class="bni" onclick="go('alacak',this)" data-pg="alacak"><div class="bni-ico">💰</div><div class="bni-lbl">Alacak</div></div>
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
@@ -1692,6 +1756,44 @@ body.modal-open{overflow:hidden;}
     <div id="barkod-sonuc" style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:12px">Kamerayı barkoda tut...</div>
     <div class="mbtns">
       <button class="mbtn mbtn-s" onclick="barkodKapat()">Kapat</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ YATIRIM EKLE MODAL ═══════════════════════════════ -->
+<div class="mover" id="m-yatirim-ekle">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">📈 Yatırım Ekle</div>
+    <input type="hidden" id="ytm-edit-id">
+    <div class="fg">
+      <label class="fl">Yatırım Türü</label>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        <div class="ytm-tip on" onclick="ytmTipSec('dolar')" id="ytmtip-dolar" style="padding:10px 4px;border-radius:10px;border:2px solid var(--gr);background:var(--grl);text-align:center;cursor:pointer">
+          <div style="font-size:18px">💵</div><div style="font-size:10px;font-weight:700;color:var(--gr)">Dolar</div>
+        </div>
+        <div class="ytm-tip" onclick="ytmTipSec('euro')" id="ytmtip-euro" style="padding:10px 4px;border-radius:10px;border:2px solid var(--bd);background:var(--card);text-align:center;cursor:pointer">
+          <div style="font-size:18px">💶</div><div style="font-size:10px;font-weight:700;color:var(--mu)">Euro</div>
+        </div>
+        <div class="ytm-tip" onclick="ytmTipSec('altin')" id="ytmtip-altin" style="padding:10px 4px;border-radius:10px;border:2px solid var(--bd);background:var(--card);text-align:center;cursor:pointer">
+          <div style="font-size:18px">🥇</div><div style="font-size:10px;font-weight:700;color:var(--mu)">Altın</div>
+        </div>
+        <div class="ytm-tip" onclick="ytmTipSec('gumüs')" id="ytmtip-gumüs" style="padding:10px 4px;border-radius:10px;border:2px solid var(--bd);background:var(--card);text-align:center;cursor:pointer">
+          <div style="font-size:18px">🥈</div><div style="font-size:10px;font-weight:700;color:var(--mu)">Gümüş</div>
+        </div>
+      </div>
+      <input type="hidden" id="ytm-tip" value="dolar">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label class="fl">Miktar</label><input class="fi" type="number" id="ytm-miktar" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><label class="fl">Alış Kuru ₺</label><input class="fi" type="number" id="ytm-alis-kur" placeholder="0.00" step="0.01" min="0"></div>
+    </div>
+    <div class="fg"><label class="fl">Not <span style="color:var(--mu);font-size:11px">(opsiyonel)</span></label>
+      <input class="fi" id="ytm-not" placeholder="Neden aldım, ne zaman satalım..."></div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-s" onclick="closeM('m-yatirim-ekle')">İptal</button>
+      <button class="mbtn mbtn-p" onclick="yatirimKaydet()">💾 Kaydet</button>
     </div>
   </div>
 </div>
@@ -2412,6 +2514,26 @@ async function emailGiris(){
   }
 }
 
+function hesapTipiSec(tip){
+  document.getElementById('k-hesap-tipi').value = tip;
+  const bEl = document.getElementById('tip-bireysel');
+  const kEl = document.getElementById('tip-kurumsal');
+  const iWrap = document.getElementById('k-isletme-wrap');
+  if(tip==='bireysel'){
+    bEl.style.border='2px solid var(--gr)'; bEl.style.background='var(--grl)';
+    bEl.querySelector('div:last-child').style.color='var(--gr)';
+    kEl.style.border='2px solid var(--bd)'; kEl.style.background='var(--card)';
+    kEl.querySelector('div:last-child').style.color='var(--mu)';
+    if(iWrap) iWrap.style.display='none';
+  } else {
+    kEl.style.border='2px solid var(--gr)'; kEl.style.background='var(--grl)';
+    kEl.querySelector('div:last-child').style.color='var(--gr)';
+    bEl.style.border='2px solid var(--bd)'; bEl.style.background='var(--card)';
+    bEl.querySelector('div:last-child').style.color='var(--mu)';
+    if(iWrap) iWrap.style.display='block';
+  }
+}
+
 async function emailKayit(){
   if(!document.getElementById('kvkk-check').checked){authErr('kayit','KVKK\'yı kabul etmelisiniz!');return;}
   const isim=document.getElementById('k-isim').value.trim();
@@ -2441,7 +2563,8 @@ async function emailKayit(){
     }
   }
 
-  const meta = {isim, isletme, paket:'free'};
+  const hesapTipi = document.getElementById('k-hesap-tipi')?.value || 'bireysel';
+  const meta = {isim, isletme: hesapTipi==='kurumsal' ? isletme : '', hesap_tipi: hesapTipi, paket:'free'};
   if(davetEdenId) meta.davet_eden_id = davetEdenId;
 
   const{data,error}=await sb.auth.signUp({
@@ -2608,7 +2731,25 @@ async function verileriYukle(){
     if(kr.data) KAYITLAR = kr.data.sort((a,b)=> (b.id||0)-(a.id||0));
     if(ar.data) ALACAKLAR = ar.data;
     if(vr.data) VERECEKLER = vr.data;
-  }catch(e){console.error('Veri yükleme hatası:',e);toast('Veri yükleme hatası!','err');}
+    // Offline cache - localStorage'a yedekle
+    try{
+      localStorage.setItem('sd-cache-kayitlar', JSON.stringify(KAYITLAR.slice(0,100)));
+      localStorage.setItem('sd-cache-alacaklar', JSON.stringify(ALACAKLAR));
+      localStorage.setItem('sd-cache-verecekler', JSON.stringify(VERECEKLER));
+    }catch(ce){}
+  }catch(e){
+    console.error('Veri yükleme hatası:',e);
+    // Cache'den yükle
+    try{
+      const ck=localStorage.getItem('sd-cache-kayitlar');
+      const ca=localStorage.getItem('sd-cache-alacaklar');
+      const cv=localStorage.getItem('sd-cache-verecekler');
+      if(ck) KAYITLAR=JSON.parse(ck);
+      if(ca) ALACAKLAR=JSON.parse(ca);
+      if(cv) VERECEKLER=JSON.parse(cv);
+      toast('📴 Çevrimdışı mod - önbellek gösteriliyor','info');
+    }catch(ce){}
+  }
   lb(false);
 }
 
@@ -2877,6 +3018,49 @@ function rRapor(){
       <div class="cat-pct" style="color:${KAT_RENKLERİ[id]||'#888'}">%${pct}</div>
     </div>`;
   }).join(''):`<div class="empty"><div class="empty-ico">📊</div><div class="empty-txt">Kategori verisi yok</div></div>`;
+
+  // En çok harcanan günler
+  const gunHarcama = {};
+  filK.filter(k=>k.tur==='gider').forEach(k=>{
+    const d = k.tarih ? k.tarih.substring(0,10) : '';
+    if(d) gunHarcama[d] = (gunHarcama[d]||0) + k.tutar;
+  });
+  const topGunler = Object.entries(gunHarcama).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxGun = topGunler[0]?.[1] || 1;
+  const topGunEl = document.getElementById('top-gunler');
+  if(topGunEl){
+    topGunEl.innerHTML = topGunler.length ? topGunler.map(([d,v])=>{
+      const tarih = new Date(d).toLocaleDateString('tr-TR',{day:'numeric',month:'short',weekday:'short'});
+      const pct = Math.round(v/maxGun*100);
+      return `<div class="cat-row">
+        <div class="cat-lbl" style="min-width:90px">${tarih}</div>
+        <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%;background:#e74c3c;opacity:.8"></div></div>
+        <div class="cat-pct" style="color:#e74c3c">₺${f(v)}</div>
+      </div>`;
+    }).join('') : '<div class="empty"><div class="empty-ico">📅</div><div class="empty-txt">Gider verisi yok</div></div>';
+  }
+
+  // Gelir kaynakları
+  const gelirKat = {};
+  filK.filter(k=>k.tur==='gelir').forEach(k=>{
+    const kat = k.kategori || 'diger';
+    gelirKat[kat] = (gelirKat[kat]||0) + k.tutar;
+  });
+  const topGelir = Object.entries(gelirKat).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxGelir = topGelir[0]?.[1] || 1;
+  const gelirKaynakEl = document.getElementById('gelir-kaynak');
+  if(gelirKaynakEl){
+    gelirKaynakEl.innerHTML = topGelir.length ? topGelir.map(([id,v])=>{
+      const kat = Object.values(KATEGORİLER).flat().find(x=>x.id===id);
+      const pct = Math.round(v/maxGelir*100);
+      const lbl = kat ? kat.ico+' '+kat.ad : (id==='diger'?'📌 Diğer':id);
+      return `<div class="cat-row">
+        <div class="cat-lbl">${lbl}</div>
+        <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%;background:var(--gr);opacity:.8"></div></div>
+        <div class="cat-pct" style="color:var(--gr)">₺${f(v)}</div>
+      </div>`;
+    }).join('') : '<div class="empty"><div class="empty-ico">💰</div><div class="empty-txt">Gelir verisi yok</div></div>';
+  }
 }
 
 
@@ -3036,6 +3220,198 @@ async function kayitSil(id){
   if(error){toast('⚠️ Silinemedi: '+error.message,'err');lb(false);return;}
   KAYITLAR=KAYITLAR.filter(x=>x.id!==id);rKayitlar();rAna();toast('🗑️ Kayıt silindi','ok');lb(false);
 }
+
+// ══════════════════════════════════════════════
+// YATIRIM & DÖVİZ KURLARI
+// ══════════════════════════════════════════════
+let YATIRIMLAR = JSON.parse(localStorage.getItem('sd-yatirimlar') || '[]');
+let KURLAR = {};
+let _kurYuklendi = false;
+
+const KUR_LABELS = {
+  dolar: {ico:'💵', ad:'USD/TRY', birim:'$'},
+  euro: {ico:'💶', ad:'EUR/TRY', birim:'€'},
+  altin: {ico:'🥇', ad:'Gram Altın', birim:'gr'},
+  gumüs: {ico:'🥈', ad:'Gram Gümüş', birim:'gr'},
+  sterlin: {ico:'💷', ad:'GBP/TRY', birim:'£'},
+  bitcoin: {ico:'₿', ad:'BTC/TRY', birim:'BTC'}
+};
+
+async function kurlarYukle(){
+  const grid = document.getElementById('kurlar-grid');
+  if(grid) grid.innerHTML = '<div style="text-align:center;color:var(--mu);font-size:13px;grid-column:1/-1;padding:8px">Yükleniyor...</div>';
+
+  try {
+    // ExchangeRate-API (ücretsiz, Türk kurlarını destekler)
+    const r = await fetch('https://api.exchangerate-api.com/v4/latest/TRY');
+    const data = await r.json();
+    // TRY bazlı → ters çevir
+    KURLAR.dolar = 1 / data.rates.USD;
+    KURLAR.euro = 1 / data.rates.EUR;
+    KURLAR.sterlin = 1 / data.rates.GBP;
+    _kurYuklendi = true;
+    rKurlar();
+    rYatirim();
+  } catch(e) {
+    // Yedek API
+    try {
+      const r2 = await fetch('https://open.er-api.com/v6/latest/USD');
+      const d2 = await r2.json();
+      KURLAR.dolar = d2.rates.TRY;
+      KURLAR.euro = d2.rates.TRY / d2.rates.EUR;
+      KURLAR.sterlin = d2.rates.TRY / d2.rates.GBP;
+      _kurYuklendi = true;
+      rKurlar();
+      rYatirim();
+    } catch(e2){
+      if(grid) grid.innerHTML = '<div style="text-align:center;color:#e74c3c;font-size:13px;grid-column:1/-1;padding:8px">⚠️ Kur bilgisi alınamadı</div>';
+    }
+  }
+}
+
+function rKurlar(){
+  const grid = document.getElementById('kurlar-grid');
+  if(!grid) return;
+  const kurList = [
+    {key:'dolar', ico:'💵', ad:'Dolar', birim:'USD'},
+    {key:'euro', ico:'💶', ad:'Euro', birim:'EUR'},
+    {key:'sterlin', ico:'💷', ad:'Sterlin', birim:'GBP'},
+    {key:'altin', ico:'🥇', ad:'Gram Altın', birim:'gr'},
+  ];
+  grid.innerHTML = kurList.map(k => {
+    const fiyat = KURLAR[k.key];
+    if(!fiyat) return `<div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
+      <div style="font-size:20px">${k.ico}</div>
+      <div style="font-size:12px;font-weight:700;color:var(--mu)">${k.birim}</div>
+      <div style="font-size:13px;color:var(--mu)">—</div>
+    </div>`;
+    return `<div style="background:var(--bg);border-radius:10px;padding:10px;text-align:center">
+      <div style="font-size:20px">${k.ico}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--mu)">${k.birim}</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink)">₺${f(fiyat)}</div>
+    </div>`;
+  }).join('');
+  const gEl = document.getElementById('kurlar-guncelleme');
+  if(gEl) gEl.textContent = 'Güncellendi: ' + new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+}
+
+function ytmTipSec(tip){
+  document.getElementById('ytm-tip').value = tip;
+  document.querySelectorAll('.ytm-tip').forEach(el=>{
+    el.style.border='2px solid var(--bd)';
+    el.style.background='var(--card)';
+    el.querySelector('div:last-child').style.color='var(--mu)';
+  });
+  const sel = document.getElementById('ytmtip-'+tip);
+  if(sel){
+    sel.style.border='2px solid var(--gr)';
+    sel.style.background='var(--grl)';
+    sel.querySelector('div:last-child').style.color='var(--gr)';
+  }
+  // Güncel kuru otomatik doldur
+  const kurEl = document.getElementById('ytm-alis-kur');
+  if(kurEl && KURLAR[tip]) kurEl.value = KURLAR[tip].toFixed(2);
+}
+
+function yatirimKaydet(){
+  const id = document.getElementById('ytm-edit-id').value;
+  const tip = document.getElementById('ytm-tip').value;
+  const miktar = parseFloat(document.getElementById('ytm-miktar').value) || 0;
+  const alisKur = parseFloat(document.getElementById('ytm-alis-kur').value) || 0;
+  if(!miktar || !alisKur){ toast('⚠️ Miktar ve alış kuru gerekli','err'); return; }
+  const ytm = {
+    id: id || Date.now().toString(),
+    tip, miktar, alisKur,
+    maliyet: miktar * alisKur,
+    not: document.getElementById('ytm-not').value.trim(),
+    tarih: new Date().toISOString()
+  };
+  if(id) YATIRIMLAR = YATIRIMLAR.map(y=>y.id===id?ytm:y);
+  else YATIRIMLAR.unshift(ytm);
+  localStorage.setItem('sd-yatirimlar', JSON.stringify(YATIRIMLAR));
+  closeM('m-yatirim-ekle');
+  document.getElementById('ytm-edit-id').value='';
+  document.getElementById('ytm-miktar').value='';
+  document.getElementById('ytm-alis-kur').value='';
+  document.getElementById('ytm-not').value='';
+  rYatirim();
+  toast('✅ Yatırım kaydedildi','ok');
+}
+
+function yatirimSil(id){
+  if(!confirm('Bu yatırımı silmek istediğine emin misin?')) return;
+  YATIRIMLAR = YATIRIMLAR.filter(y=>y.id!==id);
+  localStorage.setItem('sd-yatirimlar', JSON.stringify(YATIRIMLAR));
+  rYatirim(); toast('🗑️ Yatırım silindi','ok');
+}
+
+function rYatirim(){
+  const liste = document.getElementById('yatirim-liste');
+  if(!liste) return;
+
+  let toplamMaliyet=0, toplamDeger=0;
+  const icoMap = {dolar:'💵',euro:'💶',altin:'🥇',gumüs:'🥈',sterlin:'💷'};
+  const adMap = {dolar:'Dolar (USD)',euro:'Euro (EUR)',altin:'Gram Altın',gumüs:'Gram Gümüş',sterlin:'Sterlin (GBP)'};
+
+  if(!YATIRIMLAR.length){
+    liste.innerHTML = empty('📈','Henüz yatırım eklenmedi');
+    setText('ptf-maliyet','₺0'); setText('ptf-deger','₺0');
+    const kzEl=document.getElementById('ptf-karzarar');
+    if(kzEl){kzEl.textContent='₺0';kzEl.style.color='var(--mu)';}
+    return;
+  }
+
+  liste.innerHTML = YATIRIMLAR.map(y=>{
+    const guncelKur = KURLAR[y.tip] || y.alisKur;
+    const guncelDeger = y.miktar * guncelKur;
+    const karZarar = guncelDeger - y.maliyet;
+    const yuzde = y.maliyet > 0 ? ((karZarar/y.maliyet)*100).toFixed(1) : 0;
+    const isKar = karZarar >= 0;
+    toplamMaliyet += y.maliyet;
+    toplamDeger += guncelDeger;
+    const tarih = new Date(y.tarih).toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+    return `<div style="background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--bd);box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:28px">${icoMap[y.tip]||'📊'}</div>
+          <div>
+            <div style="font-weight:700;font-size:15px;color:var(--ink)">${adMap[y.tip]||y.tip}</div>
+            <div style="font-size:12px;color:var(--mu)">${y.miktar} adet · ${tarih}</div>
+          </div>
+        </div>
+        <button onclick="yatirimSil('${y.id}')" style="background:#fff0f0;border:1px solid #fdd;border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer">🗑️</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:var(--bg);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:10px;color:var(--mu);font-weight:600">Alış</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">₺${f(y.alisKur)}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:10px;color:var(--mu);font-weight:600">Güncel</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">₺${f(guncelKur)}</div>
+        </div>
+        <div style="background:${isKar?'var(--grl)':'#fff0f0'};border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:10px;color:var(--mu);font-weight:600">Kar/Zarar</div>
+          <div style="font-size:13px;font-weight:800;color:${isKar?'var(--gr)':'#e74c3c'}">${isKar?'+':''}${yuzde}%</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px;color:var(--mu)">Maliyet: ₺${f(y.maliyet)}</div>
+        <div style="font-size:14px;font-weight:800;color:${isKar?'var(--gr)':'#e74c3c'}">${isKar?'+':''}₺${f(karZarar)}</div>
+      </div>
+      ${y.not?`<div style="margin-top:8px;font-size:12px;color:var(--mu);background:var(--bg);border-radius:8px;padding:6px 10px">📝 ${esc(y.not)}</div>`:''}
+    </div>`;
+  }).join('');
+
+  setText('ptf-maliyet','₺'+f(toplamMaliyet));
+  const degerEl=document.getElementById('ptf-deger');
+  const kzEl=document.getElementById('ptf-karzarar');
+  const topKZ = toplamDeger-toplamMaliyet;
+  const isKar = topKZ>=0;
+  if(degerEl){degerEl.textContent='₺'+f(toplamDeger);degerEl.style.color=isKar?'var(--gr)':'#e74c3c';}
+  if(kzEl){kzEl.textContent=(isKar?'+':'')+'₺'+f(topKZ);kzEl.style.color=isKar?'var(--gr)':'#e74c3c';}
+}
+
 
 // ══════════════════════════════════════════════
 // STOK SİSTEMİ
@@ -3809,6 +4185,7 @@ function go(pg,el){
   if(pg==='fatura'){ rFatura(); faturalariYukle(); }
   if(pg==='profil') guncelleUI();
   if(pg==='stok') rStok();
+  if(pg==='yatirim'){ rYatirim(); if(!_kurYuklendi) kurlarYukle(); }
   if(pg==='auth'){
     const savedEmail = localStorage.getItem('sd-saved-email');
     const remember = localStorage.getItem('sd-remember') !== '0';
@@ -4181,7 +4558,23 @@ async function sesIsle(metin) {
   else if (km3 && tur === 'alacak') kisi = km3.charAt(0).toUpperCase() + km3.slice(1);
   // Kategori
   let kat = null;
-  const katMap = {kira:['kira'],malzeme:['malzeme','hammadde'],hizmet:['hizmet','tamir','servis'],satis:['sattım','satış'],maas:['maaş'],fatura:['fatura','elektrik','su'],vergi:['vergi'],tahsilat:['tahsil','ödedi']};
+  const katMap = {
+    kira:['kira','ev kirası','işyeri kirası'],
+    malzeme:['malzeme','hammadde','malzeme aldım','ürün aldım'],
+    hizmet:['hizmet','tamir','servis','bakım'],
+    satis:['sattım','satış','satiş','müşteriye'],
+    maas:['maaş','mağaş','ücret','maaşım','maaş aldım','maaş geldi'],
+    fatura:['fatura','elektrik','su faturası','doğalgaz','internet faturası','telefon faturası'],
+    vergi:['vergi','kdv','sgk','sigorta'],
+    market:['market','alışveriş','bakkal','süpermarket'],
+    yakıt:['benzin','motorin','yakıt','akaryakıt','lpg'],
+    yemek:['yemek','restoran','cafe','kahvaltı','öğle yemeği'],
+    saglik:['doktor','hastane','ilaç','sağlık','eczane'],
+    ulasim:['taksi','uber','otobüs','metro','ulaşım'],
+    egitim:['okul','kurs','eğitim','öğrenim'],
+    kırtasiye:['kalem','defter','kırtasiye','ofis malzemesi'],
+    tahsilat:['tahsilat','tahsil ettim','müşteriden aldım']
+  };
   for(const[k,v] of Object.entries(katMap)){if(v.some(x=>m.includes(x))){kat=k;break;}}
   // Sorgu
   if(['kazandım','bakiye','ne kadar','özet','bugün ne','bu ay','toplam'].some(k=>m.includes(k))){
