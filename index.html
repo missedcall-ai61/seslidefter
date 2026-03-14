@@ -117,11 +117,13 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   display:block;
   overflow-y:auto;
   overflow-x:hidden;
-  height:calc(100dvh - 64px);
+  height:calc(100dvh - 56px - 64px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
-  position:relative;
+  scroll-behavior:smooth;
 }
+/* Profil ve diğer sayfalarda içerik tamamen görünsün */
+.pg.on > div:last-child { padding-bottom: calc(20px + env(safe-area-inset-bottom,0px)); }
 
 /* DATE FILTER PILLS */
 .tarih-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 2px;}
@@ -131,7 +133,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
 .tarih-pill:active{transform:scale(.95);}
 
 /* ANA HERO */
-.ana-hero{background:linear-gradient(160deg,#1a7a4a,#145f38);padding:18px 16px 55px;position:relative;overflow:hidden;}
+.ana-hero{background:linear-gradient(160deg,#1a7a4a,#145f38);padding:16px 16px 48px;position:relative;overflow:hidden;}
 .ana-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05);}
 .ana-greet{font-size:12.5px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:2px;}
 .ana-name{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:14px;}
@@ -348,7 +350,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   .dsk-item:hover{background:var(--bg);}
   .dsk-item.on{background:var(--grl);color:var(--gr);border-color:var(--grm);font-weight:600;}
   .dsk-mic{margin:9px;background:linear-gradient(135deg,#1a7a4a,#2ecc71);border:none;border-radius:11px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(26,122,74,.3);}
-  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100dvh;}
+  .dmain{flex:1;display:flex;flex-direction:column;overflow:hidden;height:calc(100dvh - env(safe-area-inset-top,0px));}
   .bnav{display:none;}
   .pg{max-width:620px;margin:0 auto;width:100%;}
   .scroll{padding-bottom:20px;}
@@ -817,9 +819,15 @@ body.modal-open{overflow:hidden;}
     </div>
 
     <!-- Portföy özeti -->
+    <!-- Kasa Bakiyesi - en üstte büyük -->
+    <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:16px;padding:16px;margin-bottom:12px;color:#fff">
+      <div style="font-size:12px;font-weight:600;opacity:.8;margin-bottom:4px">💰 Kasa Bakiyesi</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:900" id="ptf-kasa">₺0</div>
+      <div style="font-size:11px;opacity:.7;margin-top:2px">Toplam Gelir - Toplam Gider</div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);text-align:center">
-        <div style="font-size:11px;color:var(--mu);font-weight:600">Toplam Maliyet</div>
+        <div style="font-size:11px;color:var(--mu);font-weight:600">Yatırım Maliyeti</div>
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:900;color:var(--ink)" id="ptf-maliyet">₺0</div>
       </div>
       <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);text-align:center">
@@ -828,7 +836,7 @@ body.modal-open{overflow:hidden;}
       </div>
     </div>
     <div style="background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--bd);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:13px;font-weight:600;color:var(--mu)">Toplam Kar/Zarar</div>
+      <div style="font-size:13px;font-weight:600;color:var(--mu)">Yatırım Kar/Zarar</div>
       <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900" id="ptf-karzarar">₺0</div>
     </div>
 
@@ -1085,7 +1093,7 @@ body.modal-open{overflow:hidden;}
 <!-- PROFİL -->
 <div class="pg" id="pg-profil">
   <div class="pg-hd"><div class="pg-hd-title">👤 Profil & Ayarlar</div></div>
-  <div style="padding:14px 14px 100px">
+  <div style="padding:14px 14px 120px">
 
     <!-- Kullanıcı Bilgisi -->
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--bd)">
@@ -1699,7 +1707,7 @@ body.modal-open{overflow:hidden;}
       <label class="fl">Kategori</label>
       <div class="kat-grid" id="kat-sec-grid"></div>
     </div>
-    <div class="fg"><label class="fl">Tutar ₺ *</label><input class="fi" type="number" id="mk-tutar" placeholder="0,00" inputmode="decimal"></div>
+    <div class="fg"><label class="fl">Tutar ₺ *</label><input class="fi" type="number" id="mk-tutar" placeholder="Örn: 500" inputmode="decimal" min="0.01" step="0.01"></div>
     <div class="fg"><label class="fl">Açıklama *</label><input class="fi" id="mk-aciklama" placeholder="Ne için?"></div>
     <div class="fg" id="mk-kisi-w" style="display:none"><label class="fl">Kişi Adı *</label><input class="fi" id="mk-kisi" placeholder="Ad Soyad"></div>
     <div class="fg" id="mk-vade-w" style="display:none"><label class="fl">Vade Tarihi</label><input class="fi" type="date" id="mk-vade"></div>
@@ -2749,22 +2757,51 @@ function rKayitlar(){
   const oz=document.getElementById('kayit-ozet');
   if(oz){
     oz.innerHTML=`
-      <div style="flex:1;background:var(--grl);border:1px solid var(--grm);border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:13px;color:var(--mu);font-weight:500">Gelir</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--gr)">₺${f(gel)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:var(--grl);border:1px solid var(--grm);border-radius:12px;padding:10px;text-align:center">
+          <div style="font-size:11px;color:var(--gr);font-weight:700;margin-bottom:3px">💵 Gelir</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:900;color:var(--gr)">₺${f(gel)}</div>
+        </div>
+        <div style="background:var(--rdl);border:1px solid var(--rdm);border-radius:12px;padding:10px;text-align:center">
+          <div style="font-size:11px;color:#e74c3c;font-weight:700;margin-bottom:3px">💸 Gider</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:900;color:#e74c3c">₺${f(gid)}</div>
+        </div>
+        <div style="background:${gel-gid>=0?'var(--grl)':'var(--rdl)'};border:1px solid ${gel-gid>=0?'var(--grm)':'var(--rdm)'};border-radius:12px;padding:10px;text-align:center">
+          <div style="font-size:11px;color:${gel-gid>=0?'var(--gr)':'#e74c3c'};font-weight:700;margin-bottom:3px">📊 Net</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:900;color:${gel-gid>=0?'var(--gr)':'#e74c3c'}">${gel-gid>=0?'+':'-'}₺${f(Math.abs(gel-gid))}</div>
+        </div>
       </div>
-      <div style="flex:1;background:var(--rdl);border:1px solid var(--rdm);border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:13px;color:var(--mu);font-weight:500">Gider</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--rd)">₺${f(gid)}</div>
-      </div>
-      <div style="flex:1;background:${gel-gid>=0?'var(--grl)':'var(--rdl)'};border:1px solid ${gel-gid>=0?'var(--grm)':'var(--rdm)'};border-radius:10px;padding:9px;text-align:center">
-        <div style="font-size:13px;color:var(--mu);font-weight:500">Net</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:${gel-gid>=0?'var(--gr)':'var(--rd)'}">₺${f(gel-gid)}</div>
-      </div>
-    `;
-  }
+    `;}
   _bakMap=kayitlarBakiye();
-  document.getElementById('tum-kayitlar').innerHTML=list.map(k=>kayitHTML(k,true,_bakMap[k.id]??null)).join('')||empty('📭','Kayıt bulunamadı');
+  // Tarihe göre grupla
+  const gruplar = {};
+  list.forEach(k=>{
+    const d = k.tarih ? k.tarih.substring(0,10) : 'Tarihsiz';
+    if(!gruplar[d]) gruplar[d]=[];
+    gruplar[d].push(k);
+  });
+  const bugun = new Date().toISOString().split('T')[0];
+  const dun = new Date(Date.now()-86400000).toISOString().split('T')[0];
+  const tarihAd = d => {
+    if(d===bugun) return '📅 Bugün';
+    if(d===dun) return '📅 Dün';
+    return '📅 '+new Date(d).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  };
+  const html = Object.keys(gruplar).sort((a,b)=>b.localeCompare(a)).map(d=>{
+    const gunGel = gruplar[d].filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
+    const gunGid = gruplar[d].filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
+    const netStr = gunGel-gunGid >= 0
+      ? `<span style="color:var(--gr);font-weight:700">+₺${f(gunGel-gunGid)}</span>`
+      : `<span style="color:#e74c3c;font-weight:700">-₺${f(gunGid-gunGel)}</span>`;
+    return `<div style="margin-bottom:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 4px 4px;margin-bottom:2px">
+        <span style="font-size:12px;font-weight:700;color:var(--mu)">${tarihAd(d)}</span>
+        <span style="font-size:11px;color:var(--mu)">${netStr}</span>
+      </div>
+      ${gruplar[d].map(k=>kayitHTML(k,true,_bakMap[k.id]??null)).join('')}
+    </div>`;
+  }).join('');
+  document.getElementById('tum-kayitlar').innerHTML = html||empty('📭','Kayıt bulunamadı');
 }
 
 // Kayıtların kümülatif bakiyesini hesapla (en eski → en yeni)
@@ -2790,7 +2827,7 @@ function kayitHTML(k,sil=false,bakiye=null){
   const tarih=new Date(k.tarih).toLocaleDateString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
   const katObj=k.kategori?Object.values(KATEGORİLER).flat().find(x=>x.id===k.kategori):null;
   const katBadge=katObj?`<span style="display:inline-block;background:${KAT_RENKLERİ[k.kategori]||'#888'}22;color:${KAT_RENKLERİ[k.kategori]||'#888'};padding:1px 7px;border-radius:99px;font-size:13px;font-weight:600;margin-top:3px">${katObj.ico} ${katObj.ad}</span>`:'';
-  const bakStr = bakiye!==null ? `<span style="font-size:10px;color:var(--mu);font-weight:500">Kasa: ₺${f(bakiye)}</span>` : '';
+  const bakStr = bakiye!==null ? `<span style="font-size:10px;color:var(--mu);margin-left:6px">· Kasa: ₺${f(bakiye)}</span>` : '';
   return`<div class="kayit-card">
     <div class="kayit-ico ${cls}">${ico}</div>
     <div class="kayit-info">
@@ -3042,6 +3079,7 @@ function rSiri(){
 // KAYIT İŞLEMLERİ
 // ══════════════════════════════════════════════
 async function kayitKaydet(){
+  if(!USER){ toast('⚠️ Oturum açık değil, sayfayı yenile','err'); return; }
   const tutarRaw = document.getElementById('mk-tutar').value.replace(',','.');
   const tutar = parseFloat(tutarRaw);
   const aciklama = document.getElementById('mk-aciklama').value.trim();
@@ -3264,6 +3302,12 @@ function yatirimSil(id){
 function rYatirim(){
   const liste = document.getElementById('yatirim-liste');
   if(!liste) return;
+
+  // Kasa bakiyesi
+  const gel = KAYITLAR.filter(k=>k.tur==='gelir').reduce((a,b)=>a+b.tutar,0);
+  const gid = KAYITLAR.filter(k=>k.tur==='gider').reduce((a,b)=>a+b.tutar,0);
+  const kasaEl = document.getElementById('ptf-kasa');
+  if(kasaEl){ kasaEl.textContent = '₺'+f(gel-gid); }
 
   let toplamMaliyet=0, toplamDeger=0;
   const icoMap = {dolar:'💵',euro:'💶',altin:'🥇',gumüs:'🥈',sterlin:'💷'};
@@ -3758,7 +3802,11 @@ async function davetKoduKontrol(kod){
 
 function davetKopyala(){
   const kod = PROFIL?.davetKodu;
-  if(!kod || kod==='—') return;
+  if(!kod || kod==='—'){ 
+    toast('⏳ Davet kodu yükleniyor, lütfen bekle...','info');
+    profilYukle().then(()=>{ guncelleUI(); setTimeout(davetKopyala, 1000); });
+    return; 
+  }
   const metin = `SesliDefter'e katıl! Davet kodun: ${kod}\nhttps://seslidefter.vercel.app`;
   if(navigator.clipboard){ navigator.clipboard.writeText(metin).then(()=>toast('📋 Kopyalandı!','ok')); }
   else { const ta=document.createElement('textarea');ta.value=metin;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 Kopyalandı!','ok'); }
@@ -3863,6 +3911,12 @@ function go(pg,el){
     } else {
       guncelleUI();
     }
+  }
+  if(pg==='davet'){
+    // Davet kodu yoksa yenile
+    if(!PROFIL?.davetKodu || PROFIL.davetKodu==='—'){
+      profilYukle().then(()=>guncelleUI());
+    } else { guncelleUI(); }
   }
   if(pg==='profil'){
     guncelleUI(); // davet kodu, isim, plan vs güncelle
@@ -4179,6 +4233,7 @@ function sesBaslat() {
 
 async function sesIsle(metin) {
   if (!metin) return;
+  if (!USER) { toast('⚠️ Oturum açık değil, sayfayı yenile','err'); return; }
   const m = metin.toLowerCase().trim();
   // Tutar - "10 bin", "5 milyon", "200 bin 500" desteği
   let tutar = 0;
@@ -4320,11 +4375,15 @@ async function sesIsle(metin) {
     user_id:USER.id, sehir:PROFIL?.sehir||'', sektor:PROFIL?.sektor||'', giris_tipi:'ses'};
     if(kat) yeni.kategori = kat;
     const{data,error}=await sb.from('kayitlar').insert([yeni]).select();
-    if(error){toast('⚠️ Kayıt eklenemedi: '+error.message,'err');return;}
-    if(data) KAYITLAR.unshift(data[0]);
-    rAna();
+    if(error){
+      const msg = error.code==='42501'?'İzin hatası - tekrar giriş yapın':error.message||JSON.stringify(error);
+      toast('⚠️ '+msg,'err'); console.error('sesIsle insert err:',error); return;
+    }
+    if(data && data[0]) KAYITLAR.unshift(data[0]);
+    _bakMap=kayitlarBakiye();
+    rAna(); rKayitlar(); rYatirim();
     const emoji=tur==='gelir'?'💵':'💸';
-    toast(emoji+' ₺'+f(tutar)+' '+tur+' kaydedildi!','ok');
+    toast(emoji+' ₺'+f(tutar)+' '+( tur==='gelir'?'gelir':'gider')+' eklendi!','ok');
     if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(f(tutar)+' lira '+tur+' kaydedildi');u.lang='tr-TR';speechSynthesis.speak(u);}
   } else {
     const res=document.getElementById('mic-result');
