@@ -375,8 +375,7 @@ html.font-buyuk a, html.font-buyuk li { font-size: inherit; }
 .pg-hd{
   background:var(--card);
   border-bottom:1px solid var(--bd);
-  padding:14px 16px;
-  padding-top:calc(14px + var(--safe-t));
+  padding:12px 16px;
   display:flex;
   align-items:center;
   gap:10px;
@@ -456,8 +455,9 @@ body.modal-open{overflow:hidden;}
   .topbar{ display:none; }
 }
 
-/* ── MOBILE: topbar brand gizle (dsk nav'da var) ────── */
+/* ── MOBILE: pg-hd gizle, başlık topbar'da ────── */
 @media(max-width:859px){
+  .pg-hd{ display:none !important; }
   .dskbar{ display:none !important; }
 }
 
@@ -695,7 +695,7 @@ body.modal-open{overflow:hidden;}
 <div class="topbar">
   <div class="tb-brand">
     <div class="tb-logo">📒</div>
-    <div class="tb-name">Sesli<span>Defter</span></div>
+    <div class="tb-name" id="tb-brand-name">Sesli<span>Defter</span></div>
   </div>
   <div class="tb-right">
     <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()"></button>
@@ -2503,13 +2503,24 @@ async function profilYukle(){
   try {
     const {data:pr} = await sb.from('profiller').select('*').eq('id',USER.id).single();
     if(pr){
-      // Davet kodu yoksa client'ta üret ve DB'ye yaz
+      // Davet kodu: DB > localStorage > üret
       let davetKodu = pr.davet_kodu || '';
+      const lsKey = 'sd-davet-' + USER.id;
       if(!davetKodu){
-        davetKodu = 'SD' + Math.random().toString(36).substring(2,6).toUpperCase();
-        try {
-          await sb.from('profiller').update({davet_kodu: davetKodu}).eq('id', USER.id);
-        } catch(e){ console.log('Davet kodu kaydedilemedi:', e); }
+        // localStorage'dan dene
+        davetKodu = localStorage.getItem(lsKey) || '';
+      }
+      if(!davetKodu){
+        // Yeni üret - user ID'den deterministik
+        const hash = USER.id.replace(/-/g,'').substring(0,6).toUpperCase();
+        davetKodu = 'SD' + hash.substring(0,4);
+      }
+      // localStorage'a kaydet (güvenilir)
+      localStorage.setItem(lsKey, davetKodu);
+      // DB'ye arka planda yaz (hata olursa önemli değil)
+      if(!pr.davet_kodu){
+        sb.from('profiller').update({davet_kodu: davetKodu}).eq('id', USER.id)
+          .then(()=>{}).catch(()=>{});
       }
       PROFIL={
         isim:pr.isim||meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
@@ -2525,12 +2536,18 @@ async function profilYukle(){
       };
     } else {
       // Profil henüz oluşmadıysa (trigger geciktiyse) meta'dan al
+      const lsKeyFb = 'sd-davet-' + USER.id;
+      let davetKoduFb = localStorage.getItem(lsKeyFb) || '';
+      if(!davetKoduFb){
+        davetKoduFb = 'SD' + USER.id.replace(/-/g,'').substring(0,4).toUpperCase();
+        localStorage.setItem(lsKeyFb, davetKoduFb);
+      }
       PROFIL={
         isim:meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
         isletme:meta.isletme||'İşletmem',
         sehir:'', sektor:'', paket:'free',
         email:USER.email||'', emailVerified:USER.email_confirmed_at!=null,
-        davetKodu:'', davetSayisi:0, kredi:0,
+        davetKodu: davetKoduFb, davetSayisi:0, kredi:0,
       };
     }
   } catch(e) {
@@ -3876,6 +3893,13 @@ function authKvkkAc(tip){
   }
 }
 
+const _PG_BASLIKLAR = {
+  ana:'SesliDefter', kayitlar:'📋 Kayıtlar', alacak:'💰 Alacak & Verecek',
+  rapor:'📊 Raporlar', profil:'👤 Profil', yatirim:'📈 Yatırım',
+  davet:'🎁 Davet Et', paket:'⚡ Paketler', siri:'🎙️ Sesli Komutlar',
+  hakkinda:'ℹ️ Hakkımızda', fatura:'🧾 Faturalar'
+};
+
 function go(pg,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.bni,.dsk-item').forEach(x=>x.classList.remove('on'));
@@ -3886,6 +3910,14 @@ function go(pg,el){
   // Scroll'u her zaman sıfırla
   const _s=document.getElementById('scroll');
   if(_s){ _s.scrollTop=0; }
+  // Mobil topbar başlığını güncelle
+  const tbName = document.getElementById('tb-brand-name');
+  if(tbName && pg !== 'ana'){
+    const baslik = _PG_BASLIKLAR[pg] || '';
+    tbName.innerHTML = `<span style="font-size:15px;font-weight:700">${baslik}</span>`;
+  } else if(tbName && pg === 'ana'){
+    tbName.innerHTML = 'Sesli<span>Defter</span>';
+  }
   // Sayfa bazlı işlemler
   if(pg==='ana'){ rAna(); adSenseGoster(); }
   if(pg==='kayitlar') rKayitlar();
