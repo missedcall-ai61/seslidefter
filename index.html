@@ -14,6 +14,8 @@
 <!-- CDN scripts moved to body -->
 <style>
 :root{
+  --topbar-h: 56px;
+  --bnav-h: 64px;
   --fs-xs:12px;--fs-sm:13.5px;--fs-md:15px;--fs-lg:17px;
   --bg:#f5f3ee;--card:#fff;--card2:#faf9f6;--bd:#e8e4dc;
   --ink:#1a1814;--ink2:#3d3a34;--mu:#9b9488;
@@ -117,7 +119,7 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   display:block;
   overflow-y:auto;
   overflow-x:hidden;
-  height:calc(100dvh - 56px - 64px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  height:calc(100dvh - var(--topbar-h, 56px) - var(--bnav-h, 64px));
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
   scroll-behavior:smooth;
@@ -1092,7 +1094,6 @@ body.modal-open{overflow:hidden;}
 
 <!-- PROFİL -->
 <div class="pg" id="pg-profil">
-  <div class="pg-hd"><div class="pg-hd-title">👤 Profil & Ayarlar</div></div>
   <div style="padding:14px 14px 120px">
 
     <!-- Kullanıcı Bilgisi -->
@@ -1990,6 +1991,16 @@ async function init(){
   try { rSiri(); } catch(e){}
   try { siriKontrol(); } catch(e){}
   try { setTimeout(lockInit, 1200); } catch(e){}
+  // Topbar & bnav gerçek yüksekliklerini ölç
+  function _olcYukseklik(){
+    const tb = document.querySelector('.topbar');
+    const bn = document.querySelector('.bnav');
+    if(tb){ document.documentElement.style.setProperty('--topbar-h', tb.getBoundingClientRect().height+'px'); }
+    if(bn){ document.documentElement.style.setProperty('--bnav-h', bn.getBoundingClientRect().height+'px'); }
+  }
+  setTimeout(_olcYukseklik, 50);
+  setTimeout(_olcYukseklik, 300);
+  window.addEventListener('resize', _olcYukseklik);
 }
 
 // ══════════════════════════════════════════════
@@ -3114,9 +3125,9 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
 
     if(error){toast('Kayıt eklenemedi. Lütfen tekrar deneyin.','err'); console.error('DB error:',error);lb(false);return;}
-    // Veriyi yeniden çek — en güvenilir yöntem
     await verileriYukle();
-    closeM('m-kayit');formTemizle();rAna();rAlacak();toast('🤝 Alacak eklendi!','ok');
+    closeM('m-kayit'); formTemizle(); rAna(); rAlacak(); rKayitlar();
+    toast('🤝 Alacak eklendi!','ok'); lb(false); return;
   }else if(aktifTur==='verecek'){
     const y={isim:kisi||'Bilinmiyor',tutar,aciklama,vade:vade||null,user_id:USER.id};
 
@@ -3163,8 +3174,11 @@ async function tahsil(id){
 async function alacakSil(id){
   if(!confirm('Bu alacak kaydını silmek istediğine emin misin?'))return;
   lb(true);
-  await sb.from('alacaklar').delete().eq('id',id).eq('user_id',USER.id);
-  ALACAKLAR=ALACAKLAR.filter(x=>x.id!==id);rAlacak();rAna();toast('🗑️ Alacak silindi','ok');lb(false);
+  const {error} = await sb.from('alacaklar').delete().eq('id',id).eq('user_id',USER.id);
+  if(error){ toast('⚠️ Silinemedi: '+error.message,'err'); lb(false); return; }
+  ALACAKLAR=ALACAKLAR.filter(x=>x.id!==id);
+  rAlacak(); rAna();
+  toast('🗑️ Alacak silindi','ok'); lb(false);
 }
 
 async function verecekOde(id){
@@ -3189,7 +3203,10 @@ async function kayitSil(id){
   lb(true);
   const{error}=await sb.from('kayitlar').delete().eq('id',id).eq('user_id',USER.id);
   if(error){toast('⚠️ Silinemedi: '+error.message,'err');lb(false);return;}
-  KAYITLAR=KAYITLAR.filter(x=>x.id!==id);rKayitlar();rAna();toast('🗑️ Kayıt silindi','ok');lb(false);
+  KAYITLAR=KAYITLAR.filter(x=>x.id!==id);
+  _bakMap=kayitlarBakiye();
+  rKayitlar(); rAna(); rYatirim();
+  toast('🗑️ Kayıt silindi','ok'); lb(false);
 }
 
 // ══════════════════════════════════════════════
