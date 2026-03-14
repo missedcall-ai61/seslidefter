@@ -530,7 +530,6 @@ body.modal-open{overflow:hidden;}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <!-- Google AdSense - Yayıncı ID'nizi girin -->
-<script src="https://unpkg.com/@zxing/browser@0.1.4/umd/index.min.js"></script>
 </head>
 <body>
 
@@ -1613,39 +1612,6 @@ body.modal-open{overflow:hidden;}
 
 
 <!-- FATURA / ÖDEME PLANLAYICI -->
-<!-- ══ STOK SAYFASI ══════════════════════════════════ -->
-<div class="pg" id="pg-stok">
-  <div class="pg-hd">
-    <div class="pg-hd-title">📦 Stok Takibi</div>
-    <button onclick="openM('m-stok-ekle')" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">+ Ürün Ekle</button>
-  </div>
-  <div style="padding:14px 14px 100px">
-    <!-- Özet kartları -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
-      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
-        <div style="font-size:11px;color:var(--mu);font-weight:600">Toplam Ürün</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900;color:var(--ink)" id="stok-toplam-urun">0</div>
-      </div>
-      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
-        <div style="font-size:11px;color:var(--mu);font-weight:600">Kritik Stok</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:900;color:#e74c3c" id="stok-kritik">0</div>
-      </div>
-      <div style="background:var(--card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--bd)">
-        <div style="font-size:11px;color:var(--mu);font-weight:600">Stok Değeri</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:900;color:var(--gr)" id="stok-deger">₺0</div>
-      </div>
-    </div>
-    <!-- Arama -->
-    <div style="position:relative;margin-bottom:12px">
-      <input id="stok-ara" type="text" placeholder="🔍 Ürün ara..." oninput="rStok()"
-        style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--bd);background:var(--card);color:var(--ink);font-size:14px;font-family:'Outfit',sans-serif;outline:none;box-sizing:border-box">
-    </div>
-    <!-- Stok listesi -->
-    <div id="stok-liste"></div>
-  </div>
-</div>
-
-
 <div class="pg" id="pg-fatura">
   <div class="pg-hd"><div class="pg-hd-title">🧾 Ödeme Planlayıcı</div></div>
   <div style="padding:14px 14px 40px">
@@ -1683,82 +1649,6 @@ body.modal-open{overflow:hidden;}
   <div class="bni" onclick="go('profil',this)" data-pg="profil"><div class="bni-ico">👤</div><div class="bni-lbl">Profil</div></div>
 </nav>
 </div><!-- /dmain -->
-
-
-<!-- ══ STOK EKLE MODAL ══════════════════════════════ -->
-<div class="mover" id="m-stok-ekle">
-  <div class="modal">
-    <div class="mhandle"></div>
-    <div class="mtitle">📦 Ürün Ekle / Düzenle</div>
-    <input type="hidden" id="stok-edit-id">
-
-    <!-- Ürün resmi -->
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
-      <div id="stok-resim-preview" onclick="document.getElementById('stok-resim-input').click()"
-        style="width:72px;height:72px;border-radius:14px;background:var(--bg);border:2px dashed var(--bd);
-               display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden">
-        <span style="font-size:28px">📷</span>
-      </div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">Ürün Fotoğrafı</div>
-        <div style="font-size:12px;color:var(--mu)">Galeriden seç veya kameradan çek</div>
-        <button onclick="document.getElementById('stok-resim-input').click()"
-          style="margin-top:6px;padding:5px 12px;border-radius:8px;border:1.5px solid var(--bd);
-                 background:var(--card);color:var(--ink);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">
-          📁 Seç
-        </button>
-      </div>
-      <input type="file" id="stok-resim-input" accept="image/*" capture="environment" style="display:none" onchange="stokResimSec(this)">
-    </div>
-
-    <!-- Barkod -->
-    <div class="fg">
-      <label class="fl">Barkod <span style="color:var(--mu);font-size:11px">(opsiyonel)</span></label>
-      <div style="display:flex;gap:8px">
-        <input class="fi" id="stok-barkod" placeholder="Barkod numarası" style="flex:1">
-        <button onclick="barkodModalAc()" style="background:var(--gr);color:#fff;border:none;border-radius:12px;
-          padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <rect x="1" y="4" width="3" height="16" rx="0.5"/><rect x="6" y="4" width="1" height="16" rx="0.5"/>
-            <rect x="9" y="4" width="2" height="16" rx="0.5"/><rect x="13" y="4" width="1" height="16" rx="0.5"/>
-            <rect x="16" y="4" width="3" height="16" rx="0.5"/><rect x="21" y="4" width="2" height="16" rx="0.5"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="fg"><label class="fl">Ürün Adı *</label><input class="fi" id="stok-ad" placeholder="Ürün adı gir"></div>
-    <div class="fg"><label class="fl">Kategori</label><input class="fi" id="stok-kat" placeholder="Elektronik, Giyim, Gıda..."></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="fg"><label class="fl">Stok Adedi *</label><input class="fi" type="number" id="stok-adet" placeholder="0" min="0"></div>
-      <div class="fg"><label class="fl">Kritik Eşik</label><input class="fi" type="number" id="stok-kritik-esik" placeholder="5" min="0"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="fg"><label class="fl">Alış Fiyatı ₺</label><input class="fi" type="number" id="stok-alis" placeholder="0.00"></div>
-      <div class="fg"><label class="fl">Satış Fiyatı ₺</label><input class="fi" type="number" id="stok-satis" placeholder="0.00"></div>
-    </div>
-    <div class="mbtns">
-      <button class="mbtn mbtn-s" onclick="closeM('m-stok-ekle')">İptal</button>
-      <button class="mbtn mbtn-p" onclick="stokKaydet()">💾 Kaydet</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ BARKOD OKUYUCU MODAL ══════════════════════════ -->
-<div class="mover" id="m-barkod">
-  <div class="modal">
-    <div class="mhandle"></div>
-    <div class="mtitle">📷 Barkod Okut</div>
-    <div style="text-align:center;margin-bottom:12px">
-      <video id="barkod-video" style="width:100%;max-width:160px;height:120px;object-fit:cover;border-radius:12px;background:#000" autoplay playsinline muted></video>
-      <canvas id="barkod-canvas" style="display:none"></canvas>
-    </div>
-    <div id="barkod-sonuc" style="text-align:center;font-size:14px;color:var(--mu);margin-bottom:12px">Kamerayı barkoda tut...</div>
-    <div class="mbtns">
-      <button class="mbtn mbtn-s" onclick="barkodKapat()">Kapat</button>
-    </div>
-  </div>
-</div>
 
 
 <!-- ══ YATIRIM EKLE MODAL ═══════════════════════════════ -->
@@ -2605,6 +2495,14 @@ async function profilYukle(){
   try {
     const {data:pr} = await sb.from('profiller').select('*').eq('id',USER.id).single();
     if(pr){
+      // Davet kodu yoksa client'ta üret ve DB'ye yaz
+      let davetKodu = pr.davet_kodu || '';
+      if(!davetKodu){
+        davetKodu = 'SD' + Math.random().toString(36).substring(2,6).toUpperCase();
+        try {
+          await sb.from('profiller').update({davet_kodu: davetKodu}).eq('id', USER.id);
+        } catch(e){ console.log('Davet kodu kaydedilemedi:', e); }
+      }
       PROFIL={
         isim:pr.isim||meta.isim||USER.email?.split('@')[0]||'Kullanıcı',
         isletme:pr.isletme_adi||meta.isletme||'İşletmem',
@@ -2613,7 +2511,7 @@ async function profilYukle(){
         paket:pr.paket||'free',
         email:USER.email||'',
         emailVerified:USER.email_confirmed_at!=null,
-        davetKodu:pr.davet_kodu||'',
+        davetKodu: davetKodu,
         davetSayisi:pr.davet_sayisi||0,
         kredi:pr.kredi||0,
       };
@@ -2836,7 +2734,8 @@ function rAna(){
     lw.innerHTML=`<div class="limit-bar"><div class="lb-ico">⚠️</div><div class="lb-txt">Limit dolmak üzere: ${KAYITLAR.length}/${PAKET_LİMİT.free}</div><button class="lb-btn" onclick="go('paket')">Yükselt</button></div>`;
   }else if(lw){lw.innerHTML='';}
 
-  document.getElementById('ana-kayitlar').innerHTML=KAYITLAR.slice(0,5).map(k=>kayitHTML(k,true)).join('')||empty('📭','Henüz kayıt yok!');
+  _bakMap=kayitlarBakiye();
+  document.getElementById('ana-kayitlar').innerHTML=KAYITLAR.slice(0,5).map(k=>kayitHTML(k,true,_bakMap[k.id]??null)).join('')||empty('📭','Henüz kayıt yok!');
 }
 
 // ══════════════════════════════════════════════
@@ -2864,10 +2763,26 @@ function rKayitlar(){
       </div>
     `;
   }
-  document.getElementById('tum-kayitlar').innerHTML=list.map(k=>kayitHTML(k,true)).join('')||empty('📭','Kayıt bulunamadı');
+  _bakMap=kayitlarBakiye();
+  document.getElementById('tum-kayitlar').innerHTML=list.map(k=>kayitHTML(k,true,_bakMap[k.id]??null)).join('')||empty('📭','Kayıt bulunamadı');
 }
 
-function kayitHTML(k,sil=false){
+// Kayıtların kümülatif bakiyesini hesapla (en eski → en yeni)
+function kayitlarBakiye(){
+  // KAYITLAR id DESC (yeni → eski), ters çevirerek hesapla
+  const sirali = [...KAYITLAR].reverse();
+  let bak = 0;
+  const bakMap = {};
+  sirali.forEach(k => {
+    if(k.tur==='gelir') bak += k.tutar;
+    else if(k.tur==='gider') bak -= k.tutar;
+    bakMap[k.id] = bak;
+  });
+  return bakMap;
+}
+let _bakMap = {};
+
+function kayitHTML(k,sil=false,bakiye=null){
   const ico=k.tur==='gelir'?'💵':k.tur==='gider'?'💸':'🤝';
   const cls=k.tur==='gelir'?'ico-g':k.tur==='gider'?'ico-r':'ico-a';
   const ac=k.tur==='gelir'?'amt-g':k.tur==='gider'?'amt-r':'amt-a';
@@ -2875,11 +2790,12 @@ function kayitHTML(k,sil=false){
   const tarih=new Date(k.tarih).toLocaleDateString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
   const katObj=k.kategori?Object.values(KATEGORİLER).flat().find(x=>x.id===k.kategori):null;
   const katBadge=katObj?`<span style="display:inline-block;background:${KAT_RENKLERİ[k.kategori]||'#888'}22;color:${KAT_RENKLERİ[k.kategori]||'#888'};padding:1px 7px;border-radius:99px;font-size:13px;font-weight:600;margin-top:3px">${katObj.ico} ${katObj.ad}</span>`:'';
+  const bakStr = bakiye!==null ? `<span style="font-size:10px;color:var(--mu);font-weight:500">Kasa: ₺${f(bakiye)}</span>` : '';
   return`<div class="kayit-card">
     <div class="kayit-ico ${cls}">${ico}</div>
     <div class="kayit-info">
       <div class="kayit-desc">${esc(k.aciklama)}${k.kisi?` — <span style="color:var(--mu);font-weight:400">${esc(k.kisi)}</span>`:''}</div>
-      <div class="kayit-meta">${tarih}</div>
+      <div class="kayit-meta">${tarih} ${bakStr}</div>
       ${katBadge}
     </div>
     <div style="display:flex;align-items:center;gap:7px">
@@ -3413,261 +3329,8 @@ function rYatirim(){
 }
 
 
-// ══════════════════════════════════════════════
-// STOK SİSTEMİ
-// ══════════════════════════════════════════════
-let STOKLAR = JSON.parse(localStorage.getItem('sd-stoklar') || '[]');
-
-let _stokResimData = null; // Base64 resim verisi
-
-function stokResimSec(input){
-  const file = input.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    _stokResimData = e.target.result;
-    const prev = document.getElementById('stok-resim-preview');
-    if(prev) prev.innerHTML = `<img src="${_stokResimData}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
-  };
-  reader.readAsDataURL(file);
-}
-
-function stokKaydet(){
-  const id = document.getElementById('stok-edit-id').value;
-  const ad = document.getElementById('stok-ad').value.trim();
-  const adet = parseInt(document.getElementById('stok-adet').value) || 0;
-  if(!ad){ toast('⚠️ Ürün adı gir!','err'); return; }
-  // Mevcut kaydın resmini koru, yeni seçildiyse güncelle
-  const mevcutResim = id ? (STOKLAR.find(s=>s.id===id)?.resim||null) : null;
-  const urun = {
-    id: id || Date.now().toString(),
-    barkod: document.getElementById('stok-barkod').value.trim(),
-    ad,
-    kategori: document.getElementById('stok-kat').value.trim(),
-    adet,
-    kritikEsik: parseInt(document.getElementById('stok-kritik-esik').value) || 5,
-    alis: parseFloat(document.getElementById('stok-alis').value) || 0,
-    satis: parseFloat(document.getElementById('stok-satis').value) || 0,
-    resim: _stokResimData || mevcutResim,
-    guncelleme: new Date().toISOString()
-  };
-  if(id){
-    STOKLAR = STOKLAR.map(s => s.id===id ? urun : s);
-    toast('✅ Ürün güncellendi','ok');
-  } else {
-    STOKLAR.unshift(urun);
-    toast('✅ Ürün eklendi','ok');
-  }
-  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
-  closeM('m-stok-ekle'); stokFormTemizle(); rStok();
-}
-
-function stokFormTemizle(){
-  ['stok-edit-id','stok-barkod','stok-ad','stok-kat','stok-adet','stok-kritik-esik','stok-alis','stok-satis']
-    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  _stokResimData = null;
-  const prev = document.getElementById('stok-resim-preview');
-  if(prev) prev.innerHTML = '<span style="font-size:28px">📷</span>';
-  const inp = document.getElementById('stok-resim-input');
-  if(inp) inp.value = '';
-}
-
-function stokDuzenle(id){
-  const s = STOKLAR.find(x=>x.id===id); if(!s) return;
-  document.getElementById('stok-edit-id').value = s.id;
-  document.getElementById('stok-barkod').value = s.barkod||'';
-  document.getElementById('stok-ad').value = s.ad;
-  document.getElementById('stok-kat').value = s.kategori||'';
-  document.getElementById('stok-adet').value = s.adet;
-  document.getElementById('stok-kritik-esik').value = s.kritikEsik;
-  document.getElementById('stok-alis').value = s.alis;
-  document.getElementById('stok-satis').value = s.satis;
-  _stokResimData = null; // mevcut resim zaten kaydedili
-  const prev = document.getElementById('stok-resim-preview');
-  if(prev){
-    if(s.resim) prev.innerHTML = `<img src="${s.resim}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
-    else prev.innerHTML = '<span style="font-size:28px">📷</span>';
-  }
-  openM('m-stok-ekle');
-}
-
-function stokSil(id){
-  if(!confirm('Bu ürünü silmek istediğine emin misin?')) return;
-  STOKLAR = STOKLAR.filter(s=>s.id!==id);
-  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
-  rStok(); toast('🗑️ Ürün silindi','ok');
-}
-
-function stokAdetGuncelle(id, delta){
-  const s = STOKLAR.find(x=>x.id===id); if(!s) return;
-  s.adet = Math.max(0, s.adet + delta);
-  s.guncelleme = new Date().toISOString();
-  localStorage.setItem('sd-stoklar', JSON.stringify(STOKLAR));
-  rStok();
-  if(s.adet <= s.kritikEsik) toast('⚠️ '+s.ad+' stoku kritik seviyede! ('+s.adet+' adet)','err');
-}
-
-function rStok(){
-  const ara = (document.getElementById('stok-ara')?.value||'').toLowerCase();
-  const liste = STOKLAR.filter(s=> !ara || s.ad.toLowerCase().includes(ara) || (s.barkod||'').includes(ara));
-  const kritik = STOKLAR.filter(s=>s.adet<=s.kritikEsik).length;
-  const deger = STOKLAR.reduce((a,s)=>a+(s.adet*s.alis),0);
-  setText('stok-toplam-urun', STOKLAR.length);
-  setText('stok-kritik', kritik);
-  setText('stok-deger', '₺'+f(deger));
-  const el = document.getElementById('stok-liste');
-  if(!el) return;
-  if(!liste.length){ el.innerHTML = empty('📦','Henüz ürün eklenmedi'); return; }
-  el.innerHTML = liste.map(s=>{
-    const isKritik = s.adet <= s.kritikEsik;
-    const adetColor = isKritik ? '#e74c3c' : 'var(--gr)';
-    const resimHTML = s.resim
-      ? `<img src="${s.resim}" style="width:58px;height:58px;object-fit:cover;border-radius:10px;flex-shrink:0">`
-      : `<div style="width:58px;height:58px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">📦</div>`;
-    return `<div style="background:var(--card);border-radius:16px;padding:14px;margin-bottom:10px;
-      border:${isKritik?'1.5px solid #ffcdd2':'1px solid var(--bd)'};
-      box-shadow:0 2px 8px rgba(0,0,0,0.04)">
-      <div style="display:flex;gap:12px;align-items:flex-start">
-        ${resimHTML}
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <div style="font-weight:700;font-size:15px;color:var(--ink);line-height:1.2">${esc(s.ad)}</div>
-              ${s.kategori?`<span style="display:inline-block;background:var(--grl);color:var(--gr);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-top:3px">${esc(s.kategori)}</span>`:''}
-              ${s.barkod?`<div style="font-size:11px;color:var(--mu);margin-top:2px">▌${s.barkod}</div>`:''}
-            </div>
-            <div style="display:flex;gap:5px;flex-shrink:0">
-              <button onclick="stokDuzenle('${s.id}')" style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer;font-weight:600;color:var(--ink)">✏️</button>
-              <button onclick="stokSil('${s.id}')" style="background:#fff0f0;border:1px solid #fdd;border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer">🗑️</button>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
-            <div style="display:flex;align-items:center;gap:8px">
-              <button onclick="stokAdetGuncelle('${s.id}',-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">−</button>
-              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:${adetColor};min-width:28px;text-align:center">${s.adet}</span>
-              <button onclick="stokAdetGuncelle('${s.id}',1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);background:var(--card);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">+</button>
-              <span style="font-size:11px;color:var(--mu)">adet</span>
-            </div>
-            <div style="text-align:right">
-              ${s.satis?`<div style="font-size:13px;font-weight:800;color:var(--gr)">₺${f(s.satis)}</div>`:''}
-              ${s.alis?`<div style="font-size:11px;color:var(--mu)">Alış ₺${f(s.alis)}</div>`:''}
-            </div>
-          </div>
-        </div>
-      </div>
-      ${isKritik?`<div style="margin-top:10px;background:#fff5f5;border-radius:8px;padding:7px 10px;font-size:12px;color:#e74c3c;font-weight:600;display:flex;align-items:center;gap:6px"><span>⚠️</span> Kritik stok — ${s.kritikEsik} adetten az kaldı!</div>`:''}
-    </div>`;
-  }).join('');
-}
-
-// ── BARKOD OKUYUCU ───────────────────────────────────
-let _zxingReader = null;
-
-async function barkodAc(){
-  go('stok');
-  setTimeout(()=> barkodModalAc(), 300);
-}
-
-async function barkodModalAc(){
-  openM('m-barkod');
-  const video = document.getElementById('barkod-video');
-  const sonuc = document.getElementById('barkod-sonuc');
-  sonuc.textContent = 'Kamera başlatılıyor...';
-
-  try {
-    // ZXing ile okuma
-    if(typeof ZXingBrowser !== 'undefined'){
-      _zxingReader = new ZXingBrowser.BrowserMultiFormatReader();
-      const devices = await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
-      // Arka kamerayı tercih et
-      const device = devices.find(d=>
-        d.label.toLowerCase().includes('back') ||
-        d.label.toLowerCase().includes('arka') ||
-        d.label.toLowerCase().includes('environment')
-      ) || devices[devices.length-1] || devices[0];
-
-      if(!device){ sonuc.textContent = '❌ Kamera bulunamadı'; return; }
-
-      await _zxingReader.decodeFromVideoDevice(device.deviceId, video, (result, err) => {
-        if(result){
-          const kod = result.getText();
-          barkodBulundu(kod);
-        }
-      });
-      sonuc.textContent = '📷 Barkodu kameraya tut...';
-    } else {
-      // ZXing yüklenmediyse manuel
-      _barkodManuelGoster(sonuc);
-    }
-  } catch(e){
-    console.error('Barkod hata:', e);
-    if(e.name === 'NotAllowedError'){
-      sonuc.textContent = '❌ Kamera izni gerekli — tarayıcı ayarlarından izin ver';
-    } else {
-      _barkodManuelGoster(sonuc);
-    }
-  }
-}
-
-function _barkodManuelGoster(sonuc){
-  sonuc.innerHTML = `
-    <div style="font-size:13px;color:var(--mu);margin-bottom:10px">Barkodu manuel gir:</div>
-    <div style="display:flex;gap:8px">
-      <input id="barkod-manuel" class="fi" placeholder="Barkod numarası..." style="flex:1;font-size:15px;font-weight:600">
-      <button onclick="barkodManuelEkle()" style="background:var(--gr);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;font-size:14px">Ekle</button>
-    </div>`;
-}
-
-function barkodBulundu(kod){
-  barkodKapat();
-  // Mevcut stokta aynı barkod var mı?
-  const mevcut = STOKLAR.find(s=>s.barkod===kod);
-  if(mevcut){
-    // ✅ Aynı barkod - direkt adeti artır veya düzenle
-    const secim = confirm(`📦 "${mevcut.ad}" bulundu!\nŞu an: ${mevcut.adet} adet\n\nOK = +1 ekle\nİptal = Düzenle`);
-    if(secim){
-      stokAdetGuncelle(mevcut.id, 1);
-      toast('✅ '+mevcut.ad+' → '+(mevcut.adet+1)+' adet','ok');
-    } else {
-      stokDuzenle(mevcut.id);
-    }
-    return;
-  }
-  // Yeni ürün - formu aç
-  document.getElementById('stok-barkod').value = kod;
-  openM('m-stok-ekle');
-  toast('🔢 Yeni ürün - barkod: '+kod,'info');
-  // Open Food Facts veritabanı
-  fetch('https://world.openfoodfacts.org/api/v0/product/'+kod+'.json')
-    .then(r=>r.json())
-    .then(d=>{
-      if(d.status===1){
-        const ad = d.product?.product_name_tr || d.product?.product_name || '';
-        const kat = d.product?.categories_tags?.[0]?.replace('en:','') || '';
-        if(ad){ document.getElementById('stok-ad').value = ad; toast('✅ Ürün bilgisi geldi: '+ad,'ok'); }
-        if(kat) document.getElementById('stok-kat').value = kat;
-      }
-    }).catch(()=>{});
-}
-
-function barkodManuelEkle(){
-  const k = (document.getElementById('barkod-manuel')?.value||'').trim();
-  if(k) barkodBulundu(k);
-}
-
-function barkodKapat(){
-  try{
-    if(_zxingReader){ _zxingReader.reset(); _zxingReader=null; }
-  }catch(e){}
-  closeM('m-barkod');
-}
-
-
-// ══════════════════════════════════════════════
 // VADE BİLDİRİMİ
-// ══════════════════════════════════════════════
 
-
-// ══════════════════════════════════════════════
 // TAKVİM - Alacak vade takibi
 // ══════════════════════════════════════════════
 let takvimYil = new Date().getFullYear();
@@ -4063,9 +3726,7 @@ function csvExport(){
 
 // ══════════════════════════════════════════════
 // DARK MODE
-// ══════════════════════════════════════════════
 
-// ══════════════════════════════════════════════
 // MODAL & NAV
 // ══════════════════════════════════════════════
 // ── DAVET SİSTEMİ ───────────────────────────────────────────────────
@@ -4184,7 +3845,6 @@ function go(pg,el){
   if(pg==='rapor') rRapor();
   if(pg==='fatura'){ rFatura(); faturalariYukle(); }
   if(pg==='profil') guncelleUI();
-  if(pg==='stok') rStok();
   if(pg==='yatirim'){ rYatirim(); if(!_kurYuklendi) kurlarYukle(); }
   if(pg==='auth'){
     const savedEmail = localStorage.getItem('sd-saved-email');
