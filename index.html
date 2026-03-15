@@ -123,6 +123,10 @@ body{font-family:'Outfit',sans-serif;display:flex;flex-direction:column;}
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
   scroll-behavior:smooth;
+  box-sizing:border-box;
+}
+#pg-profil > div {
+  min-height:100%;
 }
 /* Profil ve diğer sayfalarda içerik tamamen görünsün */
 .pg.on > div:last-child { padding-bottom: calc(20px + env(safe-area-inset-bottom,0px)); }
@@ -1095,21 +1099,24 @@ body.modal-open{overflow:hidden;}
 
 <!-- PROFİL -->
 <div class="pg" id="pg-profil">
-  <div style="padding:14px 14px 120px">
+  <div id="profil-scroll-wrap" style="padding:16px 16px 100px;display:flex;flex-direction:column;gap:12px">
 
-    <!-- Kullanıcı Bilgisi -->
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--bd)">
-      <div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;flex-shrink:0" id="profil-av">?</div>
-      <div style="min-width:0">
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="profil-isim">—</div>
-        <div style="font-size:13px;color:var(--mu);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="profil-email">—</div>
-        <div class="tb-plan plan-free" style="display:inline-block;margin-top:5px" id="profil-plan">—</div>
+    <!-- KULLANICI KARTI -->
+    <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+      <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1">
+        <div id="profil-av" style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.4)">?</div>
+        <div style="min-width:0">
+          <div id="profil-isim" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+          <div id="profil-email" style="font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+          <div id="profil-plan" class="tb-plan plan-free" style="margin-top:5px">Ücretsiz</div>
+        </div>
       </div>
     </div>
 
-    <!-- Hesap -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Hesap</div>
-    <div class="profil-card" style="margin-bottom:16px">
+    <!-- HESAP -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Hesap</div>
+    <div class="profil-card">
       <div class="profil-row" onclick="openM('m-profil-edit')">
         <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">👤</div><div><div class="pr-label">Profil Bilgileri</div><div class="pr-sub">Ad, işletme adı düzenle</div></div></div>
         <div class="pr-arr">›</div>
@@ -1118,103 +1125,82 @@ body.modal-open{overflow:hidden;}
         <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-      <div class="profil-row" onclick="go('fatura')">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff3cd">🧾</div><div><div class="pr-label">Ödeme Planlayıcı</div><div class="pr-sub">Fatura ve ödeme takibi</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
       <div class="profil-row" onclick="go('davet')">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff8e8">🎁</div><div><div class="pr-label">Davet Et & Kazan</div><div class="pr-sub" id="davet-kredi-txt">Her davet = 30 gün bonus</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:#fff8e8">🎁</div><div><div class="pr-label">Davet Et & Kazan</div><div class="pr-sub">Her davet = 30 gün bonus</div></div></div>
         <div class="pr-arr">›</div>
       </div>
     </div>
 
-    <!-- Görünüm -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Görünüm</div>
-    <div class="profil-card" style="margin-bottom:16px">
+    <!-- GÖRÜNÜM -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Görünüm</div>
+    <div class="profil-card">
       <div class="profil-row" onclick="toggleDark()">
         <div class="pr-left"><div class="pr-ico" style="background:var(--card2)">🌙</div><div><div class="pr-label">Karanlık Mod</div><div class="pr-sub">Şu an: <span id="dark-durum">Açık tema</span></div></div></div>
-        <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px"></button>
+        <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px;flex-shrink:0"></button>
       </div>
       <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub" id="font-durum">Şu an: Normal</div></div></div>
-        <div style="display:flex;gap:6px;align-items:center">
-          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .2s">A</button>
-          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:2px solid var(--gr);border-radius:10px;padding:7px 12px;font-size:15px;font-weight:700;cursor:pointer;background:var(--gr);color:#fff;transition:all .2s">A</button>
-          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:18px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;background:var(--gr);color:#fff">A</button>
+        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub" id="font-durum">Normal</div></div></div>
+        <div style="display:flex;gap:6px">
+          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
+          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:2px solid var(--gr);border-radius:10px;padding:7px 12px;font-size:15px;font-weight:700;cursor:pointer;background:var(--gr);color:#fff">A</button>
+          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:18px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
         </div>
       </div>
     </div>
 
-    <!-- Veri & Gizlilik -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Veri & Gizlilik</div>
-    <div class="profil-card" style="margin-bottom:16px">
+    <!-- VERİ & GİZLİLİK -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Veri</div>
+    <div class="profil-card">
       <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:#e8fff4">📊</div><div><div class="pr-label">Veri Yedekle</div><div class="pr-sub">Excel veya JSON formatında indir</div></div></div>
+        <div class="pr-left"><div class="pr-ico" style="background:#e8fff4">📊</div><div><div class="pr-label">Veri Yedekle</div><div class="pr-sub">Excel veya JSON</div></div></div>
         <div style="display:flex;gap:6px">
-          <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📊 Excel</button>
-          <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
+          <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📊 Excel</button>
+          <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
         </div>
       </div>
-      <div class="profil-row" onclick="siriKurulumGoster()">
-        <div class="pr-left"><div class="pr-ico" style="background:#f0fff0">🎙️</div><div><div class="pr-label">Siri / Asistan Kurulumu</div><div class="pr-sub">Sesli komut nasıl kurulur?</div></div></div>
+      <div class="profil-row" onclick="go('kvkk')">
+        <div class="pr-left"><div class="pr-ico" style="background:#fff0f0">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
         <div class="pr-arr">›</div>
       </div>
       <div class="profil-row" onclick="go('iletisim')">
         <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">📬</div><div><div class="pr-label">İletişim & Destek</div><div class="pr-sub">Bize ulaşın</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-      <div class="profil-row" onclick="go('kvkk')">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff0f0">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
     </div>
 
-    <!-- Uygulama -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Uygulama</div>
-    <div class="profil-card" style="margin-bottom:20px">
-      <div class="profil-row" onclick="go('hakkinda')">
-        <div class="pr-left"><div class="pr-ico" style="background:#f0f0ff">ℹ️</div><div><div class="pr-label">Hakkımızda</div><div class="pr-sub">Ekip ve uygulama hakkında</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-    </div>
-
-    <!-- Güvenlik -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Güvenlik</div>
-    <div class="profil-card" style="margin-bottom:16px">
+    <!-- GÜVENLİK -->
+    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Güvenlik</div>
+    <div class="profil-card">
       <div class="profil-row" onclick="sifreDegistir()">
         <div class="pr-left"><div class="pr-ico" style="background:#fff8e1">🔑</div><div><div class="pr-label">Şifre Değiştir</div><div class="pr-sub">Hesabını güvende tut</div></div></div>
         <div class="pr-arr">›</div>
       </div>
-      <div class="profil-row" onclick="oturumlarimGoster()">
-        <div class="pr-left"><div class="pr-ico" style="background:#e8f5e9">📱</div><div><div class="pr-label">Aktif Oturumlar</div><div class="pr-sub">Hangi cihazlar bağlı</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-      <div class="profil-row" onclick="biyometrikKur()" id="biometrik-row" style="display:flex">
+      <div class="profil-row" onclick="biyometrikKur()" id="biometrik-row">
         <div class="pr-left"><div class="pr-ico" style="background:#f3e8ff">🔒</div><div><div class="pr-label" id="biometrik-label">Face ID / Parmak İzi</div><div class="pr-sub" id="biometrik-sub">Uygulamayı kilitle</div></div></div>
         <div id="biometrik-toggle" style="width:38px;height:22px;border-radius:99px;background:var(--bd);position:relative;transition:background .3s;flex-shrink:0">
           <div style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .3s" id="biometrik-knob"></div>
         </div>
       </div>
     </div>
-    <!-- Güven Rozetleri -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🔐 SSL Şifreli</div>
-      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇪🇺 KVKK Uyumlu</div>
-      <div style="display:flex;align-items:center;gap:5px;background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇩🇪 Sunucu: Almanya</div>
-    </div>
 
-    <!-- Hesap İşlemleri -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:4px">Hesap İşlemleri</div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+    <!-- HESAP İŞLEMLERİ -->
+    <div style="display:flex;flex-direction:column;gap:10px">
       <button onclick="hesapCikis()" style="width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
         🚪 Çıkış Yap
       </button>
-      <button onclick="openM('m-hesap-sil')" style="width:100%;background:var(--card);color:#e74c3c;border:1.5px solid #fdd;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+      <button onclick="openM('m-hesap-sil')" style="width:100%;background:#fff5f5;color:#e74c3c;border:1.5px solid #fdd;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
         🗑️ Hesabımı Sil
       </button>
     </div>
 
-    <!-- Hidden IDs for JS -->
+    <!-- Rozet -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:8px">
+      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🔐 SSL</div>
+      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇪🇺 KVKK</div>
+      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇩🇪 Almanya</div>
+    </div>
+
+    <!-- Gizli ID'ler -->
     <div style="display:none">
       <div id="profil-davet-kodu"></div>
       <div id="profil-davet-sayisi"></div>
@@ -1962,6 +1948,11 @@ async function _appBaslat(){
       if(event==='SIGNED_IN' && session?.user){
         const ss = document.getElementById('sifre-sifirla-ekran');
         if(ss && ss.style.display==='flex') return;
+        // Token yenileme SIGNED_IN tetikler - sadece ilk girişte init et
+        if(USER && USER.id === session.user.id) {
+          USER = session.user; // session'ı güncelle ama init çalıştırma
+          return;
+        }
         USER = session.user;
         try { await init(); } catch(e){ console.error('init hatası:', e); }
         authGizle(); lsGizle();
