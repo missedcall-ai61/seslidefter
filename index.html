@@ -1099,108 +1099,123 @@ body.modal-open{overflow:hidden;}
 
 <!-- PROFİL -->
 <div class="pg" id="pg-profil">
-  <div id="profil-scroll-wrap" style="padding:16px 16px 100px;display:flex;flex-direction:column;gap:12px">
+  <div style="padding:0 0 90px">
 
-    <!-- KULLANICI KARTI -->
-    <div style="background:linear-gradient(135deg,#1a7a4a,#2ecc71);border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
-      <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1">
-        <div id="profil-av" style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.4)">?</div>
-        <div style="min-width:0">
-          <div id="profil-isim" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
-          <div id="profil-email" style="font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
-          <div id="profil-plan" class="tb-plan plan-free" style="margin-top:5px">Ücretsiz</div>
+    <!-- ── KULLANICI HERO ── -->
+    <div style="background:linear-gradient(160deg,#1a7a4a 0%,#145f38 100%);padding:28px 20px 48px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.07)"></div>
+      <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+      <div style="display:flex;align-items:center;gap:16px;position:relative;z-index:1">
+        <div id="profil-av" style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);border:2.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:900;color:#fff;flex-shrink:0">?</div>
+        <div style="flex:1;min-width:0">
+          <div id="profil-isim" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Yükleniyor...</div>
+          <div id="profil-email" style="font-size:12px;color:rgba(255,255,255,.75);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+        </div>
+        <div id="profil-plan" class="tb-plan plan-free" style="flex-shrink:0">Ücretsiz</div>
+      </div>
+    </div>
+
+    <!-- ── İÇERİK (negatif margin ile hero'nun üstüne biner) ── -->
+    <div style="margin-top:-24px;padding:0 14px;display:flex;flex-direction:column;gap:12px">
+
+      <!-- HESAP -->
+      <div class="prf-section">
+        <div class="prf-row" onclick="openM('m-profil-edit')">
+          <div class="prf-icon" style="background:#e8f4ff">👤</div>
+          <div class="prf-text"><span class="prf-label">Profil Bilgileri</span><span class="prf-sub">Ad, işletme adı düzenle</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="prf-row" onclick="go('paket')">
+          <div class="prf-icon" style="background:#f0fdf4">⚡</div>
+          <div class="prf-text"><span class="prf-label">Paket Yönetimi</span><span class="prf-sub">Mevcut planını gör</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="prf-row" onclick="go('davet')">
+          <div class="prf-icon" style="background:#fff8e8">🎁</div>
+          <div class="prf-text"><span class="prf-label">Davet Et & Kazan</span><span class="prf-sub">Her davet = 30 gün bonus</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
       </div>
-    </div>
 
-    <!-- HESAP -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Hesap</div>
-    <div class="profil-card">
-      <div class="profil-row" onclick="openM('m-profil-edit')">
-        <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">👤</div><div><div class="pr-label">Profil Bilgileri</div><div class="pr-sub">Ad, işletme adı düzenle</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-      <div class="profil-row" onclick="go('paket')">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--grl)">⚡</div><div><div class="pr-label">Paket Yönetimi</div><div class="pr-sub">Mevcut planını gör</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-      <div class="profil-row" onclick="go('davet')">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff8e8">🎁</div><div><div class="pr-label">Davet Et & Kazan</div><div class="pr-sub">Her davet = 30 gün bonus</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-    </div>
-
-    <!-- GÖRÜNÜM -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Görünüm</div>
-    <div class="profil-card">
-      <div class="profil-row" onclick="toggleDark()">
-        <div class="pr-left"><div class="pr-ico" style="background:var(--card2)">🌙</div><div><div class="pr-label">Karanlık Mod</div><div class="pr-sub">Şu an: <span id="dark-durum">Açık tema</span></div></div></div>
-        <button class="dark-toggle" id="dark-toggle2" style="margin-right:4px;flex-shrink:0"></button>
-      </div>
-      <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:#f0fff4">🔤</div><div><div class="pr-label">Yazı Boyutu</div><div class="pr-sub" id="font-durum">Normal</div></div></div>
-        <div style="display:flex;gap:6px">
-          <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
-          <button id="fb-orta"  onclick="fontUygula('orta')"  style="border:2px solid var(--gr);border-radius:10px;padding:7px 12px;font-size:15px;font-weight:700;cursor:pointer;background:var(--gr);color:#fff">A</button>
-          <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="border:2px solid var(--bd);border-radius:10px;padding:7px 12px;font-size:18px;font-weight:700;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
+      <!-- GÖRÜNÜM -->
+      <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:4px">Görünüm</div>
+      <div class="prf-section">
+        <div class="prf-row" onclick="toggleDark()">
+          <div class="prf-icon" style="background:#f8f8ff">🌙</div>
+          <div class="prf-text"><span class="prf-label">Karanlık Mod</span><span class="prf-sub" id="dark-durum">Açık tema</span></div>
+          <button class="dark-toggle" id="dark-toggle2" style="flex-shrink:0"></button>
+        </div>
+        <div class="prf-row" style="cursor:default;flex-wrap:wrap;gap:10px">
+          <div class="prf-icon" style="background:#f0fff4">🔤</div>
+          <div class="prf-text"><span class="prf-label">Yazı Boyutu</span><span class="prf-sub" id="font-durum">Normal</span></div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button id="fb-kucuk" onclick="fontUygula('kucuk')" style="width:36px;height:36px;border:2px solid var(--bd);border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
+            <button id="fb-orta"  onclick="fontUygula('orta')"  style="width:36px;height:36px;border:2px solid var(--gr);border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;background:var(--gr);color:#fff">A</button>
+            <button id="fb-buyuk" onclick="fontUygula('buyuk')" style="width:36px;height:36px;border:2px solid var(--bd);border-radius:10px;font-size:18px;font-weight:800;cursor:pointer;background:var(--bg);color:var(--ink)">A</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- VERİ & GİZLİLİK -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Veri</div>
-    <div class="profil-card">
-      <div class="profil-row" style="cursor:default">
-        <div class="pr-left"><div class="pr-ico" style="background:#e8fff4">📊</div><div><div class="pr-label">Veri Yedekle</div><div class="pr-sub">Excel veya JSON</div></div></div>
-        <div style="display:flex;gap:6px">
-          <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📊 Excel</button>
-          <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
+      <!-- VERİ -->
+      <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:4px">Veri & Destek</div>
+      <div class="prf-section">
+        <div class="prf-row" style="cursor:default">
+          <div class="prf-icon" style="background:#e8fff4">📊</div>
+          <div class="prf-text"><span class="prf-label">Veri Yedekle</span><span class="prf-sub">Excel veya JSON</span></div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button onclick="verileriIndir('excel')" style="background:var(--gr);color:#fff;border:none;border-radius:8px;padding:8px 11px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap">📊 Excel</button>
+            <button onclick="verileriIndir('json')"  style="background:var(--bg);color:var(--ink);border:1.5px solid var(--bd);border-radius:8px;padding:8px 11px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">💾 JSON</button>
+          </div>
+        </div>
+        <div class="prf-row" onclick="go('iletisim')">
+          <div class="prf-icon" style="background:#e8f4ff">📬</div>
+          <div class="prf-text"><span class="prf-label">İletişim & Destek</span><span class="prf-sub">Bize ulaşın</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="prf-row" onclick="go('kvkk')">
+          <div class="prf-icon" style="background:#fff0f0">🔒</div>
+          <div class="prf-text"><span class="prf-label">KVKK & Gizlilik</span><span class="prf-sub">Verilerini yönet</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
       </div>
-      <div class="profil-row" onclick="go('kvkk')">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff0f0">🔒</div><div><div class="pr-label">KVKK & Gizlilik</div><div class="pr-sub">Verilerini yönet</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-      <div class="profil-row" onclick="go('iletisim')">
-        <div class="pr-left"><div class="pr-ico" style="background:#e8f4ff">📬</div><div><div class="pr-label">İletişim & Destek</div><div class="pr-sub">Bize ulaşın</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-    </div>
 
-    <!-- GÜVENLİK -->
-    <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:2px">Güvenlik</div>
-    <div class="profil-card">
-      <div class="profil-row" onclick="sifreDegistir()">
-        <div class="pr-left"><div class="pr-ico" style="background:#fff8e1">🔑</div><div><div class="pr-label">Şifre Değiştir</div><div class="pr-sub">Hesabını güvende tut</div></div></div>
-        <div class="pr-arr">›</div>
-      </div>
-      <div class="profil-row" onclick="biyometrikKur()" id="biometrik-row">
-        <div class="pr-left"><div class="pr-ico" style="background:#f3e8ff">🔒</div><div><div class="pr-label" id="biometrik-label">Face ID / Parmak İzi</div><div class="pr-sub" id="biometrik-sub">Uygulamayı kilitle</div></div></div>
-        <div id="biometrik-toggle" style="width:38px;height:22px;border-radius:99px;background:var(--bd);position:relative;transition:background .3s;flex-shrink:0">
-          <div style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .3s" id="biometrik-knob"></div>
+      <!-- GÜVENLİK -->
+      <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;padding-left:4px">Güvenlik</div>
+      <div class="prf-section">
+        <div class="prf-row" onclick="sifreDegistir()">
+          <div class="prf-icon" style="background:#fff8e1">🔑</div>
+          <div class="prf-text"><span class="prf-label">Şifre Değiştir</span><span class="prf-sub">Hesabını güvende tut</span></div>
+          <svg class="prf-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="prf-row" onclick="biyometrikKur()" id="biometrik-row">
+          <div class="prf-icon" style="background:#f3e8ff">🔒</div>
+          <div class="prf-text"><span class="prf-label" id="biometrik-label">Face ID / Parmak İzi</span><span class="prf-sub" id="biometrik-sub">Uygulamayı kilitle</span></div>
+          <div id="biometrik-toggle" style="width:44px;height:26px;border-radius:99px;background:var(--bd);position:relative;transition:background .3s;flex-shrink:0">
+            <div id="biometrik-knob" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- HESAP İŞLEMLERİ -->
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <button onclick="hesapCikis()" style="width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
-        🚪 Çıkış Yap
-      </button>
-      <button onclick="openM('m-hesap-sil')" style="width:100%;background:#fff5f5;color:#e74c3c;border:1.5px solid #fdd;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
-        🗑️ Hesabımı Sil
-      </button>
-    </div>
+      <!-- HESAP İŞLEMLERİ -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button onclick="hesapCikis()" style="width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--bd);border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-tap-highlight-color:transparent">
+          🚪 Çıkış Yap
+        </button>
+        <button onclick="openM('m-hesap-sil')" style="width:100%;background:#fff5f5;color:#e74c3c;border:1.5px solid #fecdd3;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-tap-highlight-color:transparent">
+          🗑️ Hesabımı Sil
+        </button>
+      </div>
 
-    <!-- Rozet -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:8px">
-      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🔐 SSL</div>
-      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇪🇺 KVKK</div>
-      <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--gr);font-weight:700">🇩🇪 Almanya</div>
-    </div>
+      <!-- ROZET -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:4px 0 8px">
+        <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--gr);font-weight:700">🔐 SSL Şifreli</div>
+        <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--gr);font-weight:700">🇪🇺 KVKK</div>
+        <div style="background:var(--grl);border:1px solid var(--grm);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--gr);font-weight:700">🇩🇪 Almanya</div>
+      </div>
 
-    <!-- Gizli ID'ler -->
+    </div><!-- /içerik -->
+
+    <!-- Gizli JS ID'leri -->
     <div style="display:none">
       <div id="profil-davet-kodu"></div>
       <div id="profil-davet-sayisi"></div>
@@ -2691,6 +2706,16 @@ async function profilGuncelle(){
 // ══════════════════════════════════════════════
 // VERİ
 // ══════════════════════════════════════════════
+// Cache güncelleme - her başarılı DB işleminden sonra çağır
+function _cacheGuncelle(){
+  try{
+    localStorage.setItem('sd-cache-kayitlar', JSON.stringify(KAYITLAR.slice(0,200)));
+    localStorage.setItem('sd-cache-alacaklar', JSON.stringify(ALACAKLAR));
+    localStorage.setItem('sd-cache-verecekler', JSON.stringify(VERECEKLER));
+    localStorage.setItem('sd-cache-ts', Date.now().toString());
+  }catch(e){}
+}
+
 async function verileriYukle(){
   if(!USER)return;
   lb(true);
@@ -2710,14 +2735,9 @@ async function verileriYukle(){
     if(kr.data) KAYITLAR = kr.data.sort((a,b)=> (b.id||0)-(a.id||0));
     if(ar.data) ALACAKLAR = ar.data;
     if(vr.data) VERECEKLER = vr.data;
-    // UI güncelle
+    // UI güncelle + cache kaydet
     _bakMap = kayitlarBakiye();
-    // Offline cache - localStorage'a yedekle
-    try{
-      localStorage.setItem('sd-cache-kayitlar', JSON.stringify(KAYITLAR.slice(0,100)));
-      localStorage.setItem('sd-cache-alacaklar', JSON.stringify(ALACAKLAR));
-      localStorage.setItem('sd-cache-verecekler', JSON.stringify(VERECEKLER));
-    }catch(ce){}
+    _cacheGuncelle();
   }catch(e){
     console.error('Veri yükleme hatası:',e);
     // Cache'den yükle
@@ -3172,6 +3192,8 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('alacaklar').insert([y]).select();
 
     if(error){toast('Kayıt eklenemedi. Lütfen tekrar deneyin.','err'); console.error('DB error:',error);lb(false);return;}
+    if(data && data[0]) ALACAKLAR.unshift(data[0]);
+    _cacheGuncelle();
     await verileriYukle();
     closeM('m-kayit'); formTemizle(); rAna(); rAlacak(); rKayitlar();
     toast('🤝 Alacak eklendi!','ok'); lb(false); return;
@@ -3181,8 +3203,11 @@ async function kayitKaydet(){
     const{data,error}=await sb.from('verecekler').insert([y]).select();
 
     if(error){ toast('❌ '+(error.message||JSON.stringify(error)),'err'); lb(false); return; }
+    if(data && data[0]) VERECEKLER.unshift(data[0]);
+    _cacheGuncelle();
     await verileriYukle();
-    closeM('m-kayit');formTemizle();rAna();rAlacak();rKayitlar();toast('📤 Verecek eklendi!','ok');
+    closeM('m-kayit');formTemizle();rAna();rAlacak();rKayitlar();
+    toast('📤 Verecek eklendi!','ok'); lb(false);
   }else{
     const tarihStr = new Date().toISOString().split('T')[0];
     const y={tur:aktifTur,tutar,aciklama,kisi,tarih:tarihStr,user_id:USER.id,
@@ -3199,6 +3224,8 @@ async function kayitKaydet(){
                 : (error.message || JSON.stringify(error));
       toast('❌ '+msg,'err'); lb(false); return;
     }
+    if(data && data[0]) { KAYITLAR.unshift(data[0]); _bakMap=kayitlarBakiye(); }
+    _cacheGuncelle();
     await verileriYukle();
     closeM('m-kayit');formTemizle();rAna();rKayitlar();rAlacak();
     const emoji = aktifTur==='gelir'?'💵':'💸';
@@ -3224,6 +3251,7 @@ async function alacakSil(id){
   const {error} = await sb.from('alacaklar').delete().eq('id',id).eq('user_id',USER.id);
   if(error){ toast('⚠️ Silinemedi: '+error.message,'err'); lb(false); return; }
   ALACAKLAR=ALACAKLAR.filter(x=>x.id!==id);
+  _cacheGuncelle();
   rAlacak(); rAna();
   toast('🗑️ Alacak silindi','ok'); lb(false);
 }
@@ -3244,6 +3272,7 @@ async function verecekSil(id){
   const{error}=await sb.from('verecekler').delete().eq('id',id).eq('user_id',USER.id);
   if(error){toast('⚠️ Silinemedi: '+error.message,'err');lb(false);return;}
   VERECEKLER=VERECEKLER.filter(x=>x.id!==id);
+  _cacheGuncelle();
   rAlacak();rAna();
   toast('🗑️ Verecek silindi','ok');lb(false);
 }
@@ -3255,6 +3284,7 @@ async function kayitSil(id){
   if(error){toast('⚠️ Silinemedi: '+error.message,'err');lb(false);return;}
   KAYITLAR=KAYITLAR.filter(x=>x.id!==id);
   _bakMap=kayitlarBakiye();
+  _cacheGuncelle();
   rKayitlar(); rAna(); rYatirim();
   toast('🗑️ Kayıt silindi','ok'); lb(false);
 }
